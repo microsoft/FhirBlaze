@@ -5,8 +5,6 @@ using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using FhirBlaze.SharedComponents;
-using FhirBlaze.SharedComponents.Services;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace FhirBlaze
 {
