@@ -1,6 +1,24 @@
 ﻿@page "/patient"
 @inject FhirBlaze.SharedComponents.FhirDataConnection fhirData
-<h3>This is the patient list</h3>
 
-    @fhirData.Authority
-    <FhirBlaze.SharedComponents.LoadingSpinner/>
+<div>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">Patients</a>
+        <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
+                </li>
+            </ul>
+     </nav>
+    <div class="container">
+                @if (ShowCreate)
+                {
+                    <PatientCreate />
+                }
+
+
+                @(ShowCreate)
+                @fhirData.Authority
+                <FhirBlaze.SharedComponents.LoadingSpinner />
+        </div>
+</div>
