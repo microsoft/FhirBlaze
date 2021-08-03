@@ -7,8 +7,15 @@
 
 <AuthorizeView>
     <Authorized>
-        <ProfilePhoto/>
-        <button class="nav-link btn btn-link" @onclick="BeginLogout">Log out</button>
+        <a class="text-decoration-none" data-toggle="dropdown" href="#" role="button">
+            <ProfilePhoto/>
+        </a>
+        <div class="dropdown-menu dropdown-menu-right">
+            <h5 class="dropdown-item-text mb-0">@context.User.Identity.Name</h5>
+            <p class="dropdown-item-text text-muted mb-0">placeholder@contoso.com</p>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item" @onclick="BeginLogout">Log out</button>
+        </div>
     </Authorized>
     <NotAuthorized>
         <a href="authentication/login">Log in</a>
