@@ -1,0 +1,33 @@
+﻿@page "/claims"
+
+<div>
+
+    <h1> Claims View</h1>
+
+    <ErrorDisplay Errors="@Errors" />
+    
+    <h2>Token</h2>
+    Hello from GraphAPI. @User?.Mail
+    <p>
+        <input id="accessToken" @bind-value="AccessToken" size="150" />
+    </p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var claim in Claims)
+            {
+                <tr>
+                    <td>@claim.Type</td>
+                    <td>@claim.Value</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+
+</div>
