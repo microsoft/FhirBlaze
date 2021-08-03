@@ -26,7 +26,7 @@
             if (args.Path == "patient")
             {
                 var assemblies = await AssemblyLoader.LoadAssembliesAsync(
-                    new[] { "FhirBlaze.PatientModule.dll" });
+                    new[] { "FhirBlaze.PatientModule.dll", "FhirBlaze.SharedComponents.dll" });
                 lazyLoadedAssemblies.AddRange(assemblies);
             }
         }
