@@ -21,8 +21,4 @@
   <ItemGroup>
     <BlazorWebAssemblyLazyLoad Include="FhirBlaze.PatientModule.dll" />
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\img\" />
-  </ItemGroup>
 </Project>
