@@ -39,6 +39,7 @@ namespace FhirBlaze.PatientModule
                 Patients.Add(createdPatient);
                 ProcessingCreate = false;
                 ToggleCreate();
+                ShouldRender();
             }catch (Exception e)
             {
                 Console.WriteLine("Exception");
