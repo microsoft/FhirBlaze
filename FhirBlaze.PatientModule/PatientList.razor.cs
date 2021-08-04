@@ -18,6 +18,8 @@ namespace FhirBlaze.PatientModule
         
         protected bool ShowCreate { get; set; } = false;
         protected bool Loading { get; set; } = true;
+        protected bool ProcessingCreate { get; set; } = false;
+        
         public IList<Patient> Patients { get; set; } = new List<Patient>();
 
         protected override async System.Threading.Tasks.Task OnInitializedAsync()
@@ -28,6 +30,23 @@ namespace FhirBlaze.PatientModule
             Patients = await FBService.GetPatientsAsync();
             Loading = false;
             ShouldRender();
+        }
+
+        public async void CreatePatient(Patient patient)
+        {
+            try
+            {
+                ProcessingCreate = true;
+                var createdPatient = await FBService.CreatePatientsAsync(patient);
+                Patients.Add(createdPatient);
+                ProcessingCreate = false;
+                ToggleCreate();
+            }catch (Exception e)
+            {
+                Console.WriteLine("Exception");
+                Console.WriteLine(e.Message);
+            }
+            
         }
 
         public void ToggleCreate()
