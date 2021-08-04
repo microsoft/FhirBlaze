@@ -1,15 +1,14 @@
 using System;
-using System.Net.Http;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
+using Microsoft.AspNetCore.Components.WebAssembly;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using FhirBlaze.SharedComponents;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using FhirBlaze.Graph;
+using FhirBlaze.SharedComponents.Services;
+using System.Net.Http;
 
 namespace FhirBlaze
 {
@@ -19,10 +18,15 @@ namespace FhirBlaze
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-
-            // HttpClient for passing into GraphServiceClient constructor
+            
+            var fhir = new FhirDataConnection
+            {
+                Scope = "https://hlsfhirpower.azurehealthcareapis.com/user_impersonation",
+                FhirServerUri = "https://hlsfhirpower.azurehealthcareapis.com/metadata",
+                Authority = "https://login.microsoftonline.com"
+            };
+            
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://graph.microsoft.com") });
-            builder.Services.AddScoped(fhir => new FhirDataConnection { FhirServerUri = "https://fhirserver.sample.com", Authority = "https://login.microsoftonline.com" });           
 
             builder.Services.AddMsalAuthentication<RemoteAuthenticationState, RemoteUserAccount>(options =>
             {
@@ -33,17 +37,19 @@ namespace FhirBlaze
                     scopes = "User.Read";
                 }
 
-                foreach (var scope in scopes.Split(';'))
-                {
-                    Console.WriteLine($"Adding {scope} to requested permissions");
-                    options.ProviderOptions.DefaultAccessTokenScopes.Add(scope);
-                }
-
+            builder.Services.AddMsalAuthentication(options =>
+            {
                 builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
             })
             .AddAccountClaimsPrincipalFactory<RemoteAuthenticationState, RemoteUserAccount, GraphUserAccountFactory>();
 
-            builder.Services.AddScoped<GraphClientFactory>();
+            builder.Services.AddScoped<GraphClientFactory>();                           
+            
+            builder.Services.AddHttpClient<IFHIRBlazeServices, FHIRBlazeServices>(s => s.BaseAddress = new Uri(fhir.FhirServerUri))
+                .AddHttpMessageHandler(sp => sp.GetRequiredService<AuthorizationMessageHandler>()
+                    .ConfigureHandler(
+                        authorizedUrls: new[] { fhir.FhirServerUri },
+                        scopes: new[] { fhir.Scope }));
 
             await builder.Build().RunAsync();
         }

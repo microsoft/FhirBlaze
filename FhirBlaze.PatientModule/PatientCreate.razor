@@ -1,0 +1,17 @@
+﻿<Microsoft.AspNetCore.Components.Forms.EditForm Model="PatientName">
+    <div class="form-group">
+        <label>First</label>
+        <Microsoft.AspNetCore.Components.Forms.InputText @bind-Value="FirstName" />
+    </div>
+   <div class="form-group">
+        <label>Last</label>
+        <Microsoft.AspNetCore.Components.Forms.InputText @bind-Value="PatientName.Family" />
+    </div>
+    <button type="button" class="btn btn-primary" @onclick="CreatePatient"  >Save</button>
+</Microsoft.AspNetCore.Components.Forms.EditForm>
+
+@if (Patient.Name.Count >0 ) {
+
+    @Patient.Name.First().ToString()
+}
+L:
