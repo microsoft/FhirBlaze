@@ -42,9 +42,12 @@ namespace FhirBlaze
 
             builder.Services.AddScoped<GraphClientFactory>();
 
-            var fhirConnection = new FhirDataConnection();
-            builder.Configuration.Bind("FhirConnection", fhirConnection);
-            builder.Services.AddFhirService(fhirConnection);
+            builder.Services.AddFhirService(() => 
+            {
+                var fhir = new FhirDataConnection();
+                builder.Configuration.Bind("FhirConnection", fhir);
+                return fhir;
+            });
 
             await builder.Build().RunAsync();
         }

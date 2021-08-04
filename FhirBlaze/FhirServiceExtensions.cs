@@ -8,19 +8,21 @@ using Microsoft.Authentication.WebAssembly.Msal.Models;
 internal static class FhirServiceExtensions
 {
     public static IServiceCollection AddFhirService(
-        this IServiceCollection services, FhirDataConnection connection)
+        this IServiceCollection services, Func<FhirDataConnection> connection)
     {
+        var fhirData = connection.Invoke();        
+
         services.Configure<RemoteAuthenticationOptions<MsalProviderOptions>>(
             options =>
-            {
-                options.ProviderOptions.AdditionalScopesToConsent.Add(connection.Scope);
+            {                
+                options.ProviderOptions.AdditionalScopesToConsent.Add(fhirData.Scope);
             });
 
-        services.AddHttpClient<IFhirService, FhirService>(s => s.BaseAddress = new Uri(connection.FhirServerUri))
+        services.AddHttpClient<IFhirService, FhirService>(s => s.BaseAddress = new Uri(fhirData.FhirServerUri))
                 .AddHttpMessageHandler(sp => sp.GetRequiredService<AuthorizationMessageHandler>()
                     .ConfigureHandler(
-                        authorizedUrls: new[] { connection.FhirServerUri },
-                        scopes: new[] { connection.Scope }));
+                        authorizedUrls: new[] { fhirData.FhirServerUri },
+                        scopes: new[] { fhirData.Scope }));
 
         return services;
     }
