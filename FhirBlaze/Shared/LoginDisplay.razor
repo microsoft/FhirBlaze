@@ -1,6 +1,6 @@
 @using Microsoft.AspNetCore.Components.Authorization
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-@using FhirBlaze.SharedComponents
+@using FhirBlaze.Graph
 
 @inject NavigationManager Navigation
 @inject SignOutSessionStateManager SignOutManager
@@ -8,11 +8,11 @@
 <AuthorizeView>
     <Authorized>
         <a class="text-decoration-none" data-toggle="dropdown" href="#" role="button">
-            <ProfilePhoto/>
+            <img src="@(context.User.GetUserGraphPhoto() ?? "/img/no-profile-photo.png")" class="nav-profile-photo rounded-circle align-self-center mr-2"/>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
             <h5 class="dropdown-item-text mb-0">@context.User.Identity.Name</h5>
-            <p class="dropdown-item-text text-muted mb-0">placeholder@contoso.com</p>
+            <p class="dropdown-item-text text-muted mb-0">@context.User.GetUserGraphEmail()</p>
             <div class="dropdown-divider"></div>
             <button class="dropdown-item" @onclick="BeginLogout">Log out</button>
         </div>
