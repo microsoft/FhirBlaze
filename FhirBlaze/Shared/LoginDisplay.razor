@@ -8,7 +8,7 @@
 <AuthorizeView>
     <Authorized>
         <a class="text-decoration-none" data-toggle="dropdown" href="#" role="button">
-            <img src="@(context.User.GetUserGraphPhoto() ?? "/img/default-profile-photo.jpg")" class="nav-profile-photo rounded-circle align-self-center mr-2"/>
+            <img src="@(context.User.GetUserGraphPhoto() ?? "/img/default-profile-photo.jpg")" class="nav-profile-photo rounded-circle align-self-center mr-2" height="48" width="48"/>
         </a>
         <div class="dropdown-menu dropdown-menu-right">
             <h5 class="dropdown-item-text mb-0">@context.User.Identity.Name</h5>

@@ -20,9 +20,6 @@ namespace FhirBlaze.Pages
         [Inject]
         AuthenticationStateProvider context { get; set; }
 
-        [Inject]
-        GraphServiceClient graphClient { get; set; }
-
         public string AccessToken { get; set; }
 
         public string Name { get; set; }
@@ -42,8 +39,6 @@ namespace FhirBlaze.Pages
             {
                 Claims = res.User.Claims;
                 Name = res.User.Identity.Name;
-
-                User = await graphClient.Me.Request().GetAsync();
             }
             else
             {
