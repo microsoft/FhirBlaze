@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hl7.Fhir.R4" Version="3.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.8" />
   </ItemGroup>
 

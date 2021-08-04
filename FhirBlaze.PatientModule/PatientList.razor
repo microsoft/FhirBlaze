@@ -1,5 +1,5 @@
 ﻿@page "/patient"
-@inject FhirBlaze.SharedComponents.FhirDataConnection fhirData
+@using FhirBlaze.SharedComponents
 
 <div>
     <nav class="navbar navbar-light bg-light">
@@ -17,8 +17,15 @@
                 }
 
 
-                @(ShowCreate)
-                @fhirData.Authority
-                <FhirBlaze.SharedComponents.LoadingSpinner />
+                <div class="container">
+            @if (Loading)
+            {
+                <LoadingSpinner />
+            }
+            else
+            {
+              <h3>Found: @Patients.Count patients! </h3>  
+            }
+                </div>
         </div>
 </div>

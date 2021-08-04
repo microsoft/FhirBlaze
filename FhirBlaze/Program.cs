@@ -1,13 +1,12 @@
 using System;
-using System.Net.Http;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
+using Microsoft.AspNetCore.Components.WebAssembly;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using FhirBlaze.SharedComponents;
+using FhirBlaze.SharedComponents.Services;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 
 namespace FhirBlaze
 {
@@ -17,14 +16,30 @@ namespace FhirBlaze
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-
-            builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
-            builder.Services.AddScoped(fhir => new FhirDataConnection { FhirServerUri = "https://fhirserver.sample.com", Authority = "https://login.microsoftonline.com" });
+            var fhir = new FhirDataConnection
+            {
+                Scope = "https://hlsfhirpower.azurehealthcareapis.com/user_impersonation",
+                FhirServerUri = "https://hlsfhirpower.azurehealthcareapis.com/metadata",
+                Authority = "https://login.microsoftonline.com"
+            };
+           // builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            
 
             builder.Services.AddMsalAuthentication(options =>
             {
                 builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+                options.ProviderOptions.DefaultAccessTokenScopes.Add(fhir.Scope);
+
             });
+            
+            builder.Services.AddHttpClient<IFHIRBlazeServices, FHIRBlazeServices>
+    (s =>
+        s.BaseAddress = new Uri(fhir.FhirServerUri))
+        .AddHttpMessageHandler(sp => sp.GetRequiredService<AuthorizationMessageHandler>()
+        .ConfigureHandler(
+                authorizedUrls: new[] { fhir.FhirServerUri },
+                scopes: new[] { fhir.Scope }));
+
 
             await builder.Build().RunAsync();
         }
