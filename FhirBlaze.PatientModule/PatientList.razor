@@ -5,27 +5,36 @@
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">Patients</a>
         <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
-                </li>
-            </ul>
-     </nav>
+            <li class="nav-item active">
+                <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
+            </li>
+        </ul>
+    </nav>
     <div class="container">
                 @if (ShowCreate)
                 {
-                    <PatientCreate />
+                    <PatientCreate Processing="@ProcessingCreate" CreatePatient="CreatePatient" />
                 }
 
 
-                <div class="container">
-            @if (Loading)
+        <table>
+            <tr class="my-table-header">
+                <th>Name</th>
+                <th>Address</th>
+            </tr>
+            @foreach (var patient in Patients)
             {
-                <LoadingSpinner />
+                <tr class="my-table-row">
+                    <td>@patient.Name</td>
+                    <td>@patient.Address</td>
+                </tr>
             }
-            else
-            {
-              <h3>Found: @Patients.Count patients! </h3>  
-            }
-                </div>
-        </div>
+        </table>
+        <br />
+
+        
+
+        <!--<FhirBlaze.SharedComponents.LoadingSpinner />-->
+    </div>
 </div>
+
