@@ -1,0 +1,26 @@
+﻿@page "/questionnaire"
+@inject FhirBlaze.SharedComponents.FhirDataConnection fhirData
+<h3>This is Questionnaire</h3>
+
+<div>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">Patients</a>
+        <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <button @onclick="Create" class="btn btn-primary" title="+ Questionnaire" />
+                </li>
+            </ul>
+     </nav>
+    <div class="container">
+            <div class="container">
+            @if (Loading)
+            {
+                <LoadingSpinner />
+            }
+            else
+            {
+              <h3>Found: @Questionnaires.Count Quesionnaires! </h3>  
+            }
+                </div>
+        </div>
+</div>

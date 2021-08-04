@@ -6,5 +6,6 @@ namespace FhirBlaze.SharedComponents.Services
     public interface IFhirService
     {
         Task<IList<Hl7.Fhir.Model.Patient>> GetPatientsAsync();
+        Task<IList<Hl7.Fhir.Model.Questionnaire>> GetQuestionnaireAsync();
     }
 }
