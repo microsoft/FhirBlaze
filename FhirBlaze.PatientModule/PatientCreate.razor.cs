@@ -16,30 +16,13 @@ namespace FhirBlaze.PatientModule
         [Parameter]
         public bool Processing { get; set; }
 
-        public Patient Patient { get; set; } = new Patient();
-
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string PatientID { get; set; } = Guid.NewGuid().ToString();
-        public string Birthdate { get; set; } = DateTime.Now.AddYears(-29).AddMonths(-2).AddDays(-3).ToString("yyyy-MM-dd");
-
-      
+        [Parameter]
+        public models.SimplePatient Patient { get; set; }
+             
 
         protected async void SavePatient()
-        {
-            var PatientName = new HumanName();
-            PatientName.Use = Hl7.Fhir.Model.HumanName.NameUse.Usual;
-            PatientName.Given.Append(FirstName);
-            PatientName.Family = LastName;
-            Patient.Name.Add(PatientName);
-            var PatientIdentifier = new Hl7.Fhir.Model.Identifier();
-            PatientIdentifier.System = "http://hlsemops.microsoft.com";
-            PatientIdentifier.Value = PatientID;
-            Patient.Active = true;
-            Patient.BirthDate = Birthdate;
-            Patient.Identifier = new List<Hl7.Fhir.Model.Identifier>();
-            Patient.Identifier.Add(PatientIdentifier);
-            await CreatePatient.InvokeAsync(Patient);
+        {  
+            await CreatePatient.InvokeAsync(Patient.ToHl7Patient());
         }
 
 

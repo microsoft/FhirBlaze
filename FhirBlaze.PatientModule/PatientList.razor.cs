@@ -1,4 +1,5 @@
-﻿using FhirBlaze.SharedComponents.Services;
+﻿using FhirBlaze.PatientModule.models;
+using FhirBlaze.SharedComponents.Services;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
@@ -18,7 +19,8 @@ namespace FhirBlaze.PatientModule
         protected bool ShowCreate { get; set; } = false;
         protected bool Loading { get; set; } = true;
         protected bool ProcessingCreate { get; set; } = false;
-        
+        protected SimplePatient DraftPatient {get;set;}
+
         public IList<Patient> Patients { get; set; } = new List<Patient>();
 
         protected override async System.Threading.Tasks.Task OnInitializedAsync()
@@ -30,12 +32,13 @@ namespace FhirBlaze.PatientModule
             ShouldRender();
         }
 
-        public async void CreatePatient(Patient patient)
+        public async Task<Patient> CreatePatient(Patient patient)
         {
+            Patient createdPatient = null;
             try
             {
                 ProcessingCreate = true;
-                var createdPatient = await FhirService.CreatePatientsAsync(patient);
+                 createdPatient = await FhirService.CreatePatientsAsync(patient);
                 Patients.Add(createdPatient);
                 ProcessingCreate = false;
                 ToggleCreate();
@@ -45,12 +48,19 @@ namespace FhirBlaze.PatientModule
                 Console.WriteLine("Exception");
                 Console.WriteLine(e.Message);
             }
-            
+            return createdPatient;
         }
 
         public void ToggleCreate()
         {
             ShowCreate = !ShowCreate;
+            if (ShowCreate)
+            {
+                DraftPatient = new SimplePatient() {
+                    PatientID = Guid.NewGuid().ToString(),
+                    Birthdate = DateTime.Now.AddDays(DateTime.Now.Second).AddMonths(DateTime.Now.Hour).AddYears(-DateTime.Now.Second)
+                };
+            }
         }
     }
 }
