@@ -20,14 +20,18 @@
         <table>
             <tr class="my-table-header">
                 <th>Name</th>
+                <th>Name Count</th>
                 <th>Address</th>
+                <th>Address Count</th>
             </tr>
             @foreach (var patient in Patients)
             {
-                <tr class="my-table-row">
-                    <td>@patient.Name.Count()</td>
-                    <td>@patient.Address.Count()</td>
-                </tr>
+        <tr class="my-table-row">
+            <td>@patient.Name.FirstOrDefault()</td>
+            <td>@patient.Name.Count()</td>
+            <td>@patient.Address.FirstOrDefault()</td>
+            <td>@patient.Address.Count()</td>
+        </tr>
             }
         </table>
         <br />
