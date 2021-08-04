@@ -19,16 +19,15 @@ namespace FhirBlaze.SharedComponents.Services
             _parser = new FhirJsonParser();
             
         }
-
       
         public async Task<IList<Patient>>  GetPatientsAsync()
         {
             var r=await _client.GetAsync("/Patient");
             var js=await r.Content.ReadAsStringAsync();
             
-            var bunndle=_parser.Parse<Bundle>(js);
+            var bundle=_parser.Parse<Bundle>(js);
             var ret = new List<Patient>();
-            foreach (var item in bun.Entry)
+            foreach (var item in bundle.Entry)
             {
                 ret.Add((Patient)item.Resource);
             }
