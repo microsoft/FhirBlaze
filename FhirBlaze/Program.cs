@@ -18,14 +18,14 @@ namespace FhirBlaze
         {
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
-            
+
             var fhir = new FhirDataConnection
             {
                 Scope = "https://hlsfhirpower.azurehealthcareapis.com/user_impersonation",
                 FhirServerUri = "https://hlsfhirpower.azurehealthcareapis.com/metadata",
                 Authority = "https://login.microsoftonline.com"
             };
-            
+
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("https://graph.microsoft.com") });
 
             builder.Services.AddMsalAuthentication<RemoteAuthenticationState, RemoteUserAccount>(options =>
@@ -37,14 +37,20 @@ namespace FhirBlaze
                     scopes = "User.Read";
                 }
 
-            builder.Services.AddMsalAuthentication(options =>
-            {
+                options.ProviderOptions.DefaultAccessTokenScopes.Add(fhir.Scope);
+
+                foreach (var scope in scopes.Split(';'))
+                {
+                    Console.WriteLine($"Adding {scope} to requested permissions");
+                    options.ProviderOptions.DefaultAccessTokenScopes.Add(scope);
+                }
+
                 builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
             })
             .AddAccountClaimsPrincipalFactory<RemoteAuthenticationState, RemoteUserAccount, GraphUserAccountFactory>();
 
-            builder.Services.AddScoped<GraphClientFactory>();                           
-            
+            builder.Services.AddScoped<GraphClientFactory>();
+
             builder.Services.AddHttpClient<IFHIRBlazeServices, FHIRBlazeServices>(s => s.BaseAddress = new Uri(fhir.FhirServerUri))
                 .AddHttpMessageHandler(sp => sp.GetRequiredService<AuthorizationMessageHandler>()
                     .ConfigureHandler(
