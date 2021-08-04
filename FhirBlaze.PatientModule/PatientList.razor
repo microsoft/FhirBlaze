@@ -5,20 +5,64 @@
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">Patients</a>
         <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
-                </li>
-            </ul>
-     </nav>
+            <li class="nav-item active">
+                <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
+            </li>
+        </ul>
+    </nav>
     <div class="container">
-                @if (ShowCreate)
-                {
-                    <PatientCreate />
-                }
+        @if (ShowCreate)
+        {
+            <PatientCreate />
+        }
 
+        @(ShowCreate)
 
-                @(ShowCreate)
-                @fhirData.Authority
-                <FhirBlaze.SharedComponents.LoadingSpinner />
-        </div>
+        <table>
+            <tr class="my-table-header">
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Address</th>
+            </tr>
+            @foreach (var patient in patients)
+            {
+                <tr class="my-table-row">
+                    <td>@patient.Name</td>
+                    <td>@patient.PhoneNumber</td>
+                    <td>@patient.Address</td>
+                </tr>
+            }
+        </table>
+        <br/>
+
+        @fhirData.Authority
+
+        <!--<FhirBlaze.SharedComponents.LoadingSpinner />-->
+    </div>
 </div>
+
+@code
+{
+    public class Patient
+    {
+        public string Name { get; set; }
+        public string PhoneNumber { get; set; }
+        public string Address { get; set; }
+
+        public Patient(string name, string phoneNumber, string address)
+        {
+            Name = name;
+            PhoneNumber = phoneNumber;
+            Address = address;
+        }
+    }
+
+    Patient[] patients = new[]
+    {
+        new Patient("Smith, John", "978-555-2121", "1 Main St. Boston, MA 01811"),
+        new Patient("Brown, Tom", "617-555-2121", "6547 Willow St. Lowell, MA 01851"),
+        new Patient("Goodman, Richard", "508-555-2121", "43 Elm St. Foxboro, MA 01862"),
+        new Patient("Hampton, Scott", "873-555-2121", "671 Spruce St. Brockton, MA 01811"),
+        new Patient("Greene, Jay", "310-555-2121", "1846 Main St. Worcester, MA 01891")
+    };
+}
