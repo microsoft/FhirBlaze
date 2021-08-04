@@ -14,8 +14,7 @@ namespace FhirBlaze.PatientModule
     public partial class PatientList
     {
         [Inject]
-        public IFHIRBlazeServices FBService { get; set; }
-        
+        IFhirService FhirService { get; set; }
         protected bool ShowCreate { get; set; } = false;
         protected bool Loading { get; set; } = true;
         protected bool ProcessingCreate { get; set; } = false;
@@ -23,11 +22,10 @@ namespace FhirBlaze.PatientModule
         public IList<Patient> Patients { get; set; } = new List<Patient>();
 
         protected override async System.Threading.Tasks.Task OnInitializedAsync()
-        {
-            
+        {            
             Loading = true;
             await base.OnInitializedAsync();
-            Patients = await FBService.GetPatientsAsync();
+            Patients = await FhirService.GetPatientsAsync();
             Loading = false;
             ShouldRender();
         }
