@@ -25,16 +25,16 @@
             @foreach (var patient in Patients)
             {
                 <tr class="my-table-row">
-                    <td>@patient.Name</td>
-                    <td>@patient.Address</td>
+                    <td>@patient.Name.Count()</td>
+                    <td>@patient.Address.Count()</td>
                 </tr>
             }
         </table>
         <br />
 
-        
+        <h3>Found: @Patients.Count patients!</h3>
 
         <!--<FhirBlaze.SharedComponents.LoadingSpinner />-->
-    </div>
+</div>
 </div>
 
