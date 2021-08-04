@@ -14,7 +14,7 @@ namespace FhirBlaze.PatientModule
     public partial class PatientList
     {
         [Inject]
-        public IFHIRBlazeServices FBService { get; set; }
+        public IFhirService FBService { get; set; }
         
         protected bool ShowCreate { get; set; } = false;
         protected bool Loading { get; set; } = true;

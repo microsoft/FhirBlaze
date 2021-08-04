@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 
 namespace FhirBlaze.SharedComponents.Services
 {
-    public interface IFHIRBlazeServices
+    public interface IFhirService
     {
         Task<IList<Hl7.Fhir.Model.Patient>> GetPatientsAsync();
     }

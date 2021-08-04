@@ -9,18 +9,18 @@ using System.Threading.Tasks;
 
 namespace FhirBlaze.SharedComponents.Services
 {
-    public class FHIRBlazeServices:IFHIRBlazeServices
+    public class FhirService:IFhirService
     {
         public HttpClient _client { get; set; }
         public FhirJsonParser _parser { get; set; }
-        public FHIRBlazeServices(HttpClient client)
+        public FhirService(HttpClient client)
         {
             _client = client;
             _parser = new FhirJsonParser();
             
         }
       
-        public async Task<IList<Patient>>  GetPatientsAsync()
+        public async Task<IList<Patient>> GetPatientsAsync()
         {
             var r=await _client.GetAsync("/Patient");
             var js=await r.Content.ReadAsStringAsync();
