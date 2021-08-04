@@ -1,17 +1,27 @@
-﻿<Microsoft.AspNetCore.Components.Forms.EditForm Model="PatientName">
+﻿<form class="form-horizontal">
+    <div class="form-group">
+        <label>ID</label>
+        <input required @bind="PatientID" />
+   </div>
+   <div class="form-group">
+        <label>Birthday</label>
+        <input required @bind="Birthdate" />
+    </div>
     <div class="form-group">
         <label>First</label>
-        <Microsoft.AspNetCore.Components.Forms.InputText @bind-Value="FirstName" />
-    </div>
+        <input required @bind="FirstName" />
+   </div>
+
    <div class="form-group">
         <label>Last</label>
-        <Microsoft.AspNetCore.Components.Forms.InputText @bind-Value="PatientName.Family" />
+        <input required @bind="LastName" />
     </div>
-    <button type="button" class="btn btn-primary" @onclick="CreatePatient"  >Save</button>
-</Microsoft.AspNetCore.Components.Forms.EditForm>
+    @if (Processing)
+    {
+        <button type="button" class="btn btn-primary-outline" disabled  >Processing</button>
+    }
+    else{
+        <button type="button" class="btn btn-primary"  @onclick="SavePatient"  >Save</button>
+    }
+</form>
 
-@if (Patient.Name.Count >0 ) {
-
-    @Patient.Name.First().ToString()
-}
-L:

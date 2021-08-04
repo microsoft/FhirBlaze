@@ -11,12 +11,11 @@
         </ul>
     </nav>
     <div class="container">
-        @if (ShowCreate)
-        {
-            <PatientCreate />
-        }
+                @if (ShowCreate)
+                {
+                    <PatientCreate Processing="@ProcessingCreate" CreatePatient="CreatePatient" />
+                }
 
-        @(ShowCreate)
 
         <table>
             <tr class="my-table-header">
@@ -33,8 +32,9 @@
         </table>
         <br />
 
-        <h3>Found: @Patients.Count patients!</h3>
+        
 
         <!--<FhirBlaze.SharedComponents.LoadingSpinner />-->
     </div>
 </div>
+
