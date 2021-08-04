@@ -35,7 +35,7 @@ namespace FhirBlaze.PatientModule
             try
             {
                 ProcessingCreate = true;
-                var createdPatient = await FBService.CreatePatientsAsync(patient);
+                var createdPatient = await FhirService.CreatePatientsAsync(patient);
                 Patients.Add(createdPatient);
                 ProcessingCreate = false;
                 ToggleCreate();
