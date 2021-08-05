@@ -22,7 +22,6 @@ namespace FhirBlaze.SharedComponents.Services
             _serializer = new FhirJsonSerializer();
             
         }
-      
         public async Task<IList<Patient>> GetPatientsAsync()
         {
             string json = await DoGetAsync("/Patient");           
@@ -31,6 +30,17 @@ namespace FhirBlaze.SharedComponents.Services
             foreach (var item in bundle.Entry)
             {
                 ret.Add((Patient)item.Resource);
+            }
+            return ret;
+        }
+        public async Task<IList<Questionnaire>> GetQuestionnaireAsync()
+        {
+            string json = await DoGetAsync("/Questionnaire");
+            var bundle = _parser.Parse<Bundle>(json);
+            var ret = new List<Questionnaire>();
+            foreach (var item in bundle.Entry)
+            {
+                ret.Add((Questionnaire)item.Resource);
             }
             return ret;
         }
@@ -79,5 +89,6 @@ namespace FhirBlaze.SharedComponents.Services
           string json = await DoPost("/Patient", pjson);
           return _parser.Parse<Patient>(json);
         }
+
     }
 }

@@ -13,23 +13,22 @@ namespace FhirBlaze.QuestionnaireModule
     public partial class QuestionnaireList
     {
         [Inject]
-        public IFhirService FBService { get; set; }
-
+        public IFhirService FhirService { get; set; }
         protected bool ShowCreate { get; set; } = false;
         protected bool Loading { get; set; } = true;
+        protected bool ProcessingCreate { get; set; } = false;
         public IList<Questionnaire> Questionnaires { get; set; } = new List<Questionnaire>();
 
-        private void Create()
+        private void CreateQuestionnaire(Questionnaire questionnaire)
         {
 
         }
 
-        protected override async Task OnInitializedAsync()
+        protected override async System.Threading.Tasks.Task OnInitializedAsync()
         {
-
             Loading = true;
             await base.OnInitializedAsync();
-            Questionnaires = await FBService.GetQuestionnaireAsync();
+            Questionnaires = await FhirService.GetQuestionnaireAsync();
             Loading = false;
             ShouldRender();
         }
