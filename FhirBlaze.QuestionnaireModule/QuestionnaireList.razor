@@ -1,25 +1,42 @@
 ﻿@page "/questionnaire"
-@inject FhirBlaze.SharedComponents.FhirDataConnection fhirData
-<h3>This is Questionnaire</h3>
+
+@using FhirBlaze.SharedComponents
+@*@inject FhirBlaze.SharedComponents.FhirDataConnection fhirData*@
+<h3>Questionnaires List</h3>
 
 <div>
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">Patients</a>
+        <a class="navbar-brand" href="#">Questionnaire</a>
         <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <button @onclick="Create" class="btn btn-primary" title="+ Questionnaire" />
+                    <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Questionnaire")</button>
                 </li>
             </ul>
      </nav>
     <div class="container">
             <div class="container">
+                
+        <table>
+            <tr class="my-table-header">
+                <th>Title</th>
+                <th>Description</th>
+            </tr>
+            @foreach (var questionnaire in Questionnaires)
+            {
+                <tr class="my-table-row">
+                    <td>@questionnaire.Title</td>
+                    <td>@questionnaire.Description</td>
+                </tr>
+            }
+        </table>
+        <br />
             @if (Loading)
             {
                 <LoadingSpinner />
             }
             else
             {
-              <h3>Found: @Questionnaires.Count Quesionnaires! </h3>  
+              <h3>Found: @Questionnaires.Count Questionnaires! </h3>  
             }
                 </div>
         </div>

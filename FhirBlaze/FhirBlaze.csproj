@@ -15,10 +15,12 @@
 
   <ItemGroup>
     <ProjectReference Include="..\FhirBlaze.PatientModule\FhirBlaze.PatientModule.csproj" />
+    <ProjectReference Include="..\FhirBlaze.QuestionnaireModule\FhirBlaze.QuestionnaireModule.csproj" />
     <ProjectReference Include="..\FhirBlaze.SharedComponents\FhirBlaze.SharedComponents.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <BlazorWebAssemblyLazyLoad Include="FhirBlaze.PatientModule.dll" />
+    <BlazorWebAssemblyLazyLoad Include="FhirBlaze.QuestionnaireModule.dll" />
   </ItemGroup>
 </Project>
