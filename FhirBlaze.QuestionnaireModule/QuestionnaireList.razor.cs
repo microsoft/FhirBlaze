@@ -7,9 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Task = System.Threading.Tasks.Task;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FhirBlaze.QuestionnaireModule
 {
+    [Authorize]
     public partial class QuestionnaireList
     {
         [Inject]
