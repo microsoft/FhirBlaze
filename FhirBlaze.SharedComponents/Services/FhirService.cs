@@ -1,6 +1,7 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -52,11 +53,32 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<IList<Patient>> SearchPatient(Patient Patient)
         {
-            //var givenName = Patient.Name[0].Given;
             string givenName = "";
             string familyName = Patient.Name[0].Family;
             string identifier = Patient.Identifier[0].Value;
-            string query = "/Patient?family:contains=" + familyName + "&identifier="+identifier;
+            string query = "";
+            if (!String.IsNullOrEmpty(familyName)) {
+
+                query = "/Patient?family:contains=" + familyName;
+
+
+            }
+
+            if ((!String.IsNullOrEmpty(identifier)) && (!String.IsNullOrEmpty(query)))
+            {
+
+                query = query + "&identifier=" + identifier;
+            }
+            if((!String.IsNullOrEmpty(identifier)) && (String.IsNullOrEmpty(query))) {
+
+                query = "/Patient?identifier=" + identifier;
+
+            }
+
+       
+
+
+            
             string json = await DoGetAsync(query);
             var bundle = _parser.Parse<Bundle>(json);
             var ret = new List<Patient>();

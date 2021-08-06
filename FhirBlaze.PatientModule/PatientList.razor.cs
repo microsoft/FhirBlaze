@@ -63,18 +63,18 @@ namespace FhirBlaze.PatientModule
             try
             {
                 //var testy = await FhirService.SearchPatient();
-                PatientsSearched = await FhirService.SearchPatient(patient);
+                Patients = await FhirService.SearchPatient(patient); //change to patient
                 ProcessingSearch = true;
                 
-                Patients.Add(createdPatient);
-                ProcessingCreate = false;
-                ToggleCreate();
+                //Patients.Add(createdPatient);
+                ProcessingSearch = false;
+                ToggleSearch();
                 ShouldRender();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception");
-                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message); //manage the cancel search
             }
             return createdPatient;
         }
@@ -101,8 +101,8 @@ namespace FhirBlaze.PatientModule
             {
                 DraftPatient = new SimplePatient()
                 {
-                    PatientID = Guid.NewGuid().ToString(),
-                    Birthdate = DateTime.Now.AddDays(DateTime.Now.Second).AddMonths(DateTime.Now.Hour).AddYears(-DateTime.Now.Second)
+                    //PatientID = Guid.NewGuid().ToString(),
+                    //Birthdate = DateTime.Now.AddDays(DateTime.Now.Second).AddMonths(DateTime.Now.Hour).AddYears(-DateTime.Now.Second)
                 };
             }
 
