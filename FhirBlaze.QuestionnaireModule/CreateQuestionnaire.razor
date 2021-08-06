@@ -35,32 +35,10 @@
     private int counter = 0;
     private RenderFragment CreateComponent(Hl7.Fhir.Model.Questionnaire.ItemComponent newItem) => __builder =>
     {
-        <div class="p-3 mt-5" style="background:#eee;">
-            <form>
-                <div class='form-group'>
-                    <label for="questionHeader">Question:</label>
-                </div>
-                <div class='form-group'>
-                    <label for='question'>Text:</label>
-                    <input type='text' class='form-control' id='question' placeholder='Write your question...' @bind-value='@newItem.Text'>
-                </div>
-                <div class='form-group'>
-                    <label for='type'>Type</label>
-                    <select class='form-control' id='type' @bind='@newItem.Type'>
-                        <option>Group</option>
-                        <option>String</option>
-                        <option>Choice</option>
-                    </select>
-                </div>
-                <div class='form-group'>
-                    <label for='linkid'>LinkId:</label>
-                    <input type='text' class='form-control' id='link' placeholder='link' @bind-value='@newItem.LinkId'>
-                </div>
-            </form>
-        </div>
+        <ItemDisplay ItemComponenet='@newItem'></ItemDisplay>
     };
  
-    private void RenderComponent()
+    private void RenderComponent()  
     {
         ItemComponenet = new Hl7.Fhir.Model.Questionnaire.ItemComponent();
         NewQuestionnaireItems.Add(ItemComponenet);
