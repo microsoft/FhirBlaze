@@ -1,0 +1,26 @@
+﻿<Microsoft.AspNetCore.Components.Forms.EditForm Model="Patient" OnValidSubmit="searchPatient" class="form-horizontal">
+    <DataAnnotationsValidator/>
+    <ValidationSummary />
+    <div class="form-group">
+        <label>ID</label>
+        <Microsoft.AspNetCore.Components.Forms.InputText required @bind-Value="Patient.PatientID" />
+        <label>Birthday</label>
+        <Microsoft.AspNetCore.Components.Forms.InputDate required @bind-Value="Patient.Birthdate" />
+        
+   </div>
+  
+
+   <div class="form-group">
+       <label>First</label>
+        <Microsoft.AspNetCore.Components.Forms.InputText required @bind-Value="Patient.FirstName" />
+        <label>Last</label>
+        <Microsoft.AspNetCore.Components.Forms.InputText required @bind-Value="Patient.LastName" />
+    </div>
+    @if (Processing)
+    {
+        <button type="button" class="btn btn-primary-outline" disabled  >Processing</button>
+    }
+    else{
+        <button type="submit" class="btn btn-primary">Save</button>
+    }
+</Microsoft.AspNetCore.Components.Forms.EditForm>

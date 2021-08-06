@@ -8,5 +8,10 @@ namespace FhirBlaze.SharedComponents.Services
         Task<Hl7.Fhir.Model.Patient> CreatePatientsAsync(Hl7.Fhir.Model.Patient Patient);
 
         Task<IList<Hl7.Fhir.Model.Patient>> GetPatientsAsync();
+
+
+        Task<int> GetPatientCountAsync();
+
+        Task<IList<Hl7.Fhir.Model.Patient>> SearchPatient(Hl7.Fhir.Model.Patient Patient);
     }
 }

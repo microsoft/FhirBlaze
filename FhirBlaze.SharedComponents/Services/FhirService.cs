@@ -35,6 +35,38 @@ namespace FhirBlaze.SharedComponents.Services
             return ret;
         }
 
+
+        public async Task<int> GetPatientCountAsync()
+        {
+            string json = await DoGetAsync("/Patient?_summary=count");
+           // var bundle = _parser.Parse<Bundle>(json);
+            var ret =0;
+            //foreach (var item in bundle.Entry)
+            //{
+              //  ret.Add((Patient)item.Resource);
+           // }
+            return ret;
+        }
+
+
+
+        public async Task<IList<Patient>> SearchPatient(Patient Patient)
+        {
+            //var givenName = Patient.Name[0].Given;
+            string givenName = "";
+            string familyName = Patient.Name[0].Family;
+            string identifier = Patient.Identifier[0].Value;
+            string query = "/Patient?family:contains=" + familyName + "&identifier="+identifier;
+            string json = await DoGetAsync(query);
+            var bundle = _parser.Parse<Bundle>(json);
+            var ret = new List<Patient>();
+            foreach (var item in bundle.Entry)
+            {
+              ret.Add((Patient)item.Resource);
+             }
+            return ret;
+        }
+
         public async Task<string> DoPost(string path, string content)
         {
             string json = "{}";
