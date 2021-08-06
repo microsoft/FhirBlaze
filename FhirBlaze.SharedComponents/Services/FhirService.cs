@@ -1,6 +1,7 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
+using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
@@ -42,6 +43,59 @@ namespace FhirBlaze.SharedComponents.Services
             {
                 ret.Add((Questionnaire)item.Resource);
             }
+            return ret;
+        }
+
+
+        public async Task<int> GetPatientCountAsync()
+        {
+            string json = await DoGetAsync("/Patient?_summary=count");
+           // var bundle = _parser.Parse<Bundle>(json);
+            var ret =0;
+            //foreach (var item in bundle.Entry)
+            //{
+              //  ret.Add((Patient)item.Resource);
+           // }
+            return ret;
+        }
+
+
+
+        public async Task<IList<Patient>> SearchPatient(Patient Patient)
+        {
+            string givenName = "";
+            string familyName = Patient.Name[0].Family;
+            string identifier = Patient.Identifier[0].Value;
+            string query = "";
+            if (!String.IsNullOrEmpty(familyName)) {
+
+                query = "/Patient?family:contains=" + familyName;
+
+
+            }
+
+            if ((!String.IsNullOrEmpty(identifier)) && (!String.IsNullOrEmpty(query)))
+            {
+
+                query = query + "&identifier=" + identifier;
+            }
+            if((!String.IsNullOrEmpty(identifier)) && (String.IsNullOrEmpty(query))) {
+
+                query = "/Patient?identifier=" + identifier;
+
+            }
+
+       
+
+
+            
+            string json = await DoGetAsync(query);
+            var bundle = _parser.Parse<Bundle>(json);
+            var ret = new List<Patient>();
+            foreach (var item in bundle.Entry)
+            {
+              ret.Add((Patient)item.Resource);
+             }
             return ret;
         }
 
