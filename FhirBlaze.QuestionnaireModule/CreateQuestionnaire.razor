@@ -1,5 +1,64 @@
-﻿<h3>CreateQuestionnaire</h3>
+﻿@page "/createquestionnaire"
+@using FhirBlaze.SharedComponents
 
+<h3>Create Questionnaire</h3>
+
+<!--div style="float:left;"><button  class="btn btn-primary float-right"--> @* @onclick="()=> AddItem()*@ <!--">+ Item</button></-->
+
+<div>
+@*@foreach (var itemDisplay in ItemDisplays)
+{
+    @itemDisplay;
+}*@
+
+</div>
+
+<button type="button" @onclick="@RenderComponent">
+    + Add Item
+</button>
+ 
+@DynamicFragment
+ 
+ 
+@*@code {
+    [Parameter]
+    public RenderFragment DynamicFragment { get; set; }
+
+    private void RenderComponent()
+    {
+        DynamicFragment = new ItemDisplay();
+    }
+
+}*@
 @code {
-
+    private RenderFragment DynamicFragment;
+ 
+    private RenderFragment CreateComponent() => __builder =>
+    {
+        <div class="p-3" style="background:#eee;">
+            <form>
+                <div class='form-group'>
+                    <label for='question'>Question:</label>
+                    <input type='text' class='form-control' id='question' placeholder='Write your question...'>
+                </div>
+                <div class='form-group'>
+                    <label for='type'>Type</label>
+                    <select class='form-control' id='type'>
+                        <option>Group</option>
+                        <option>String</option>
+                        <option>Choice</option>
+                    </select>
+                </div>
+                <div class='form-group'>
+                    <label for='linkid'>LinkId:</label>
+                    <input type='text' class='form-control' id='link' placeholder='link'>
+                </div>
+            </form>
+        </div>
+    };
+ 
+    private void RenderComponent()
+    {
+        DynamicFragment += CreateComponent();
+    }
 }
