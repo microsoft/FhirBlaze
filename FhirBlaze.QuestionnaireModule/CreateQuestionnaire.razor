@@ -1,47 +1,31 @@
 ﻿@page "/createquestionnaire"
 @using FhirBlaze.SharedComponents
+@using Hl7.Fhir.Model
 
 <h3>Create Questionnaire</h3>
 
 <!--div style="float:left;"><button  class="btn btn-primary float-right"--> @* @onclick="()=> AddItem()*@ <!--">+ Item</button></-->
 
-<div>
-@*@foreach (var itemDisplay in ItemDisplays)
-{
-    @itemDisplay;
-}*@
-
-</div>
 
 <button type="button" @onclick="@RenderComponent">
     + Add Item
 </button>
- 
-@DynamicFragment
- 
- 
-@*@code {
-    [Parameter]
-    public RenderFragment DynamicFragment { get; set; }
 
-    private void RenderComponent()
-    {
-        DynamicFragment = new ItemDisplay();
-    }
-
-}*@
+@foreach(var qItem in NewQuestionnaireItems) {
+    @DynamicFragment
+}
+ 
 @code {
     private RenderFragment DynamicFragment;
-    private int counter = 0;
-    private RenderFragment CreateComponent(Hl7.Fhir.Model.Questionnaire.ItemComponent newItem) => __builder =>
+    private RenderFragment CreateComponent(Questionnaire.ItemComponent newItem) => __builder =>
     {
         <ItemDisplay ItemComponenet='@newItem'></ItemDisplay>
     };
  
     private void RenderComponent()  
     {
-        ItemComponenet = new Hl7.Fhir.Model.Questionnaire.ItemComponent();
+        ItemComponenet = new Questionnaire.ItemComponent();
         NewQuestionnaireItems.Add(ItemComponenet);
-        DynamicFragment += CreateComponent(ItemComponenet);
+        DynamicFragment = CreateComponent(ItemComponenet);
     }
 }

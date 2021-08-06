@@ -12,5 +12,14 @@ namespace FhirBlaze.QuestionnaireModule
     {
         [Parameter]
         public Questionnaire.ItemComponent ItemComponenet { get; set; }
+
+        [Parameter]
+        public bool Edit { get; set; } = false;
+
+        [Parameter]
+        public EventCallback<Questionnaire.ItemComponent> OnValidSubmit { get; set; }
+
+        [Parameter]
+        public EventCallback<Questionnaire.ItemComponent> CancelItemCreation { get; set; }
     }
 }
