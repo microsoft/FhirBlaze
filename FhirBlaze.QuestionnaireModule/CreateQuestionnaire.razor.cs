@@ -13,7 +13,7 @@ namespace FhirBlaze.QuestionnaireModule
     {
         public Questionnaire Questionnaire { get; set; } = new Questionnaire();
 
-        protected Questionnaire.ItemComponent ItemComponenet { get; set; }
+        protected Questionnaire.ItemComponent ItemComponent { get; set; }
 
         protected IList<ItemDisplay> ItemDisplays { get; set; }
 

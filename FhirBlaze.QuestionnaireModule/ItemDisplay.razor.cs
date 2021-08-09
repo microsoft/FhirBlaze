@@ -11,7 +11,7 @@ namespace FhirBlaze.QuestionnaireModule
     public partial class ItemDisplay
     {
         [Parameter]
-        public Questionnaire.ItemComponent ItemComponenet { get; set; }
+        public Questionnaire.ItemComponent ItemComponent { get; set; }
 
         [Parameter]
         public bool Edit { get; set; } = false;
@@ -21,5 +21,13 @@ namespace FhirBlaze.QuestionnaireModule
 
         [Parameter]
         public EventCallback<Questionnaire.ItemComponent> CancelItemCreation { get; set; }
+
+        [Parameter]
+        public EventCallback<string> ItemComponentTextChanged { get; set; }
+
+        [Parameter]
+        public EventCallback<Questionnaire.ItemComponent> ItemComponentChanged { get; set; }
+
+        private async System.Threading.Tasks.Task ModifyItemComponent() => await ItemComponentChanged.InvokeAsync(ItemComponent);
     }
 }

@@ -1,16 +1,16 @@
 ﻿<h3>Item</h3>
 <div class="p-3 mt-5" style="background:#eee;">
-    <EditForm class="form" Model="@ItemComponenet">
+    <EditForm class="form" Model="@ItemComponent">
         <div class='form-group'>
             <label for="questionHeader">Question:</label>
         </div>
         <div class='form-group'>
             <label for='question'>Text:</label>
-            <input type='text' class='form-control' id='question' placeholder='Write your question...' @bind-value='@ItemComponenet.Text'>
+            <input type='text' class='form-control' id='question' placeholder='Write your question...' @bind='ItemComponent.Text' @bind:event="oninput" @onkeyup="ModifyItemComponent" >
         </div>
         <div class='form-group'>
             <label for='type'>Type</label>
-            <select class='form-control' id='type' @bind='@ItemComponenet.Type'>
+            <select class='form-control' id='type' @bind='ItemComponent.Type'>
                 <option>Group</option>
                 <option>String</option>
                 <option>Choice</option>
@@ -18,11 +18,7 @@
         </div>
         <div class='form-group'>
             <label for='linkid'>LinkId:</label>
-            <input type='text' class='form-control' id='link' placeholder='link' @bind-value='@ItemComponenet.LinkId'>
+            <input type='text' class='form-control' id='link' placeholder='link' @bind-value='ItemComponent.LinkId'>
         </div>
     </EditForm>
 </div>
-
-@code {
-
-}
