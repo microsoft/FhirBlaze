@@ -17,6 +17,7 @@ namespace FhirBlaze.QuestionnaireModule
         [Inject]
         public IFhirService FhirService { get; set; }
         protected bool ShowCreate { get; set; } = false;
+        protected bool ShowSearch { get; set; } = false;
         protected bool Loading { get; set; } = true;
         protected bool ProcessingCreate { get; set; } = false;
         public IList<Questionnaire> Questionnaires { get; set; } = new List<Questionnaire>();
@@ -38,6 +39,10 @@ namespace FhirBlaze.QuestionnaireModule
         public void ToggleCreate()
         {
             ShowCreate = !ShowCreate;
+        }
+        public void ToggleSearch()
+        {
+            ShowSearch = !ShowSearch;
         }
     }
 }
