@@ -1,0 +1,43 @@
+﻿@page "/questionnaire"
+@using FhirBlaze.SharedComponents
+@*@inject FhirBlaze.SharedComponents.FhirDataConnection fhirData*@
+
+<h3>Questionnaires List</h3>
+
+<div>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">Questionnaire</a>
+        <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Questionnaire")</button>
+                </li>
+            </ul>
+     </nav>
+    <div class="container">
+            <div class="container">
+                
+        <table>
+            <tr class="my-table-header">
+                <th>Title</th>
+                <th>Description</th>
+            </tr>
+            @foreach (var questionnaire in Questionnaires)
+            {
+                <tr class="my-table-row">
+                    <td>@questionnaire.Title</td>
+                    <td>@questionnaire.Description</td>
+                </tr>
+            }
+        </table>
+        <br />
+            @if (Loading)
+            {
+                <LoadingSpinner />
+            }
+            else
+            {
+              <h3>Found: @Questionnaires.Count Questionnaires! </h3>  
+            }
+                </div>
+        </div>
+</div>
