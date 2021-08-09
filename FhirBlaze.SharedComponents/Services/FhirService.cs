@@ -25,7 +25,7 @@ namespace FhirBlaze.SharedComponents.Services
         }
         public async Task<IList<Patient>> GetPatientsAsync()
         {
-            string json = await DoGetAsync("/Patient");           
+            string json = await DoGetAsync("/Patient?_count=50");           
             var bundle=_parser.Parse<Bundle>(json);
             var ret = new List<Patient>();
             foreach (var item in bundle.Entry)
