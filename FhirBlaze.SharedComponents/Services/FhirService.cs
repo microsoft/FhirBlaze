@@ -53,7 +53,7 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<IList<Patient>> SearchPatient(Patient Patient)
         {
-            string givenName = "";
+            string givenName = ""; //The given name is not working on the mapping
             string familyName = Patient.Name[0].Family;
             string identifier = Patient.Identifier[0].Value;
             string query = "";
