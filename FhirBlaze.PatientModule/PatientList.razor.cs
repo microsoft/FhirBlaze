@@ -22,10 +22,9 @@ namespace FhirBlaze.PatientModule
         protected bool ProcessingCreate { get; set; } = false;
         protected bool ProcessingSearch { get; set; } = false;
         protected SimplePatient DraftPatient {get;set;}
-
+        private Patient selectedPatient = new Patient();
 
         public IList<Patient> Patients { get; set; } = new List<Patient>();
-        public IList<Patient> PatientsSearched { get; set; } = new List<Patient>();
 
         protected override async System.Threading.Tasks.Task OnInitializedAsync()
         {            
@@ -89,10 +88,7 @@ namespace FhirBlaze.PatientModule
                     Birthdate = DateTime.Now.AddDays(DateTime.Now.Second).AddMonths(DateTime.Now.Hour).AddYears(-DateTime.Now.Second)
                 };
             }
-
-
         }
-
 
         public void ToggleSearch()
         {
@@ -104,10 +100,12 @@ namespace FhirBlaze.PatientModule
                     //PatientID = Guid.NewGuid().ToString(),
                     //Birthdate = DateTime.Now.AddDays(DateTime.Now.Second).AddMonths(DateTime.Now.Hour).AddYears(-DateTime.Now.Second)
                 };
-            }
+            }            
+        }
 
-
-            
+        private void PatientSelected(EventArgs e, Patient newPatient)
+        {
+            selectedPatient = newPatient;
         }
     }
 }
