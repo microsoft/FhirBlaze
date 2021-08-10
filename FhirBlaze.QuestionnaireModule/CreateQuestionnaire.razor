@@ -10,16 +10,16 @@
 <button type="button" @onclick="@RenderComponent">
     + Add Item
 </button>
-<button type="button" @onclick="@Submit">Submit</button>
 
-@foreach(var qItem in NewQuestionnaireItems) {
-    @DynamicFragment
-}
+<button type="button" @onclick="@Submit">Submit</button>
+@DynamicFragment
+
  
 @code {
     private RenderFragment DynamicFragment;
     private RenderFragment CreateComponent(Questionnaire.ItemComponent newItem) => __builder =>
     {
+        
         <ItemDisplay @bind-ItemComponent='@newItem' @bind-ItemComponent:event="ItemComponentChanged"></ItemDisplay>
         __builder.OpenElement(1, "div");
         __builder.AddContent(2, newItem.Text);
@@ -30,14 +30,24 @@
     {
         ItemComponent = new Questionnaire.ItemComponent();
         NewQuestionnaireItems.Add(ItemComponent);
-        DynamicFragment = CreateComponent(ItemComponent);
+        DynamicFragment += CreateComponent(ItemComponent);
+       
     }
 
-    private void Submit()
+   @* private RenderFragment CreateGroupComponent(Questionnaire.ItemComponent newItem) => __builder =>
     {
-        foreach(var item in NewQuestionnaireItems)
-        {
-            Console.WriteLine("Item Text: ", item.Text);
-        }
-    }
+        
+        <ItemDisplay @bind-ItemComponent='@newItem' @bind-ItemComponent:event="ItemComponentChanged"></ItemDisplay>
+        __builder.OpenElement(1, "div");
+        __builder.AddContent(2, newItem.Text);
+        __builder.CloseElement();
+    };
+
+    private void RenderGroupComponent()  
+    {
+        ItemComponent = new Questionnaire.ItemComponent();
+        NewQuestionnaireItems.Add(ItemComponent);
+        DynamicFragment += CreateComponent(ItemComponent);
+       
+    }*@
 }

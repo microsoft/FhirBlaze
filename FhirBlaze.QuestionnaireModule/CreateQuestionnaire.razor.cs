@@ -63,9 +63,12 @@ namespace FhirBlaze.QuestionnaireModule
             });
         }
 
-        protected void AddBooleanQuestion()
+        private void Submit()
         {
-
+            foreach (var item in NewQuestionnaireItems)
+            {
+                Console.WriteLine("Item Text: ", item.Text);
+            }
         }
     }
 }
