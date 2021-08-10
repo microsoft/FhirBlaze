@@ -1,6 +1,5 @@
 ﻿@page "/questionnaire"
 @using FhirBlaze.SharedComponents
-@*@inject FhirBlaze.SharedComponents.FhirDataConnection fhirData*@
 
 <h3>Questionnaires List</h3>
 
@@ -10,10 +9,12 @@
         <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Questionnaire")</button>
+                    <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch?"Cancel": "Search Questionnaire")</button>
                 </li>
             </ul>
      </nav>
     <div class="container">
+          
             <div class="container">
                 
         <table>

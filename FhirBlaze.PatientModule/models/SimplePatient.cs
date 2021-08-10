@@ -19,7 +19,9 @@ namespace FhirBlaze.PatientModule.models
             var Patient = new Patient();
             var PatientName = new HumanName();
             PatientName.Use = Hl7.Fhir.Model.HumanName.NameUse.Usual;
-            PatientName.Given.Append(FirstName);
+            var namelist = PatientName.Given.ToList();
+            namelist.Add(FirstName);
+            PatientName.Given = namelist.AsEnumerable();
             PatientName.Family = LastName;
             Patient.Name.Add(PatientName);
             var PatientIdentifier = new Hl7.Fhir.Model.Identifier();
