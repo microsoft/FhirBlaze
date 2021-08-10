@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace FhirBlaze.SharedComponents.Services
 {
-    public class FhirService:IFhirService
+    public class FirelyService:IFhirService
     {
         private FhirClient _fhirClient;
-        public FhirService(FhirClient client)
+        public FirelyService(FhirClient client)
         {
             _fhirClient = client;
         }

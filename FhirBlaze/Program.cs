@@ -1,13 +1,11 @@
 using System;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.WebAssembly;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using FhirBlaze.SharedComponents;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using FhirBlaze.Graph;
-using FhirBlaze.SharedComponents.Services;
 using System.Net.Http;
 
 namespace FhirBlaze
