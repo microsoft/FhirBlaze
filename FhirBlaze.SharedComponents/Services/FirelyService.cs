@@ -62,9 +62,18 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<Patient> CreatePatientsAsync(Patient patient)
         {
-            return await _fhirClient.UpdateAsync<Patient>(patient);
+            return await _fhirClient.UpdateAsync(patient);
         }
 
+        public async Task<Patient> UpdatePatientAsync(string patientId, Patient patient)
+        {
+            if (patientId != patient.Id)
+            {
+                throw new System.Exception("Unknown patient ID");
+            }
+
+            return await CreatePatientsAsync(patient);
+        }
         #endregion
 
         #region Questionnaire
