@@ -1,148 +1,93 @@
 ﻿using Hl7.Fhir.Model;
-using Hl7.Fhir.Serialization;
-using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
-using System;
+using Hl7.Fhir.Rest;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
-using System.Text.Json;
+using System.Linq;
 using System.Threading.Tasks;
-
 
 namespace FhirBlaze.SharedComponents.Services
 {
     public class FhirService:IFhirService
     {
-        public HttpClient _client { get; set; }
-        public FhirJsonSerializer _serializer { get; set; }
-        public FhirJsonParser _parser { get; set; }
-        public FhirService(HttpClient client)
+        private FhirClient _fhirClient;
+        public FhirService(FhirClient client)
         {
-            _client = client;
-            _parser = new FhirJsonParser();
-            _serializer = new FhirJsonSerializer();
-            
+            _fhirClient = client;
         }
+
+        #region Patient
         public async Task<IList<Patient>> GetPatientsAsync()
         {
-            string json = await DoGetAsync("/Patient?_count=50");           
-            var bundle=_parser.Parse<Bundle>(json);
-            var ret = new List<Patient>();
-            foreach (var item in bundle.Entry)
+            var bundle = await _fhirClient.SearchAsync<Patient>(pageSize: 50);
+            var result = new List<Patient>();
+            while (bundle != null)
             {
-                ret.Add((Patient)item.Resource);
+                result.AddRange(bundle.Entry.Select(p => (Patient)p.Resource).ToList());
+                bundle = await _fhirClient.ContinueAsync(bundle);
             }
-            return ret;
-        }
-        public async Task<IList<Questionnaire>> GetQuestionnaireAsync()
-        {
-            string json = await DoGetAsync("/Questionnaire");
-            var bundle = _parser.Parse<Bundle>(json);
-            var ret = new List<Questionnaire>();
-            foreach (var item in bundle.Entry)
-            {
-                ret.Add((Questionnaire)item.Resource);
-            }
-            return ret;
-        }
 
-
+            return result;
+        }
+       
         public async Task<int> GetPatientCountAsync()
         {
-            string json = await DoGetAsync("/Patient?_summary=count");
-           // var bundle = _parser.Parse<Bundle>(json);
-            var ret =0;
-            //foreach (var item in bundle.Entry)
-            //{
-              //  ret.Add((Patient)item.Resource);
-           // }
-            return ret;
+            var bundle = await _fhirClient.SearchAsync<Patient>(summary: SummaryType.Count);
+            return bundle.Total ?? 0;
         }
-
-
 
         public async Task<IList<Patient>> SearchPatient(Patient Patient)
         {
             string givenName = ""; //The given name is not working on the mapping
             string familyName = Patient.Name[0].Family;
             string identifier = Patient.Identifier[0].Value;
-            string query = "";
-            if (!String.IsNullOrEmpty(familyName)) {
+            Bundle bundle;
+            var results = new List<Patient>();
 
-                query = "/Patient?family:contains=" + familyName;
-
-
-            }
-
-            if ((!String.IsNullOrEmpty(identifier)) && (!String.IsNullOrEmpty(query)))
+            if (!string.IsNullOrEmpty(identifier))
             {
+                bundle = await _fhirClient.SearchByIdAsync<Patient>(identifier);
 
-                query = query + "&identifier=" + identifier;
-            }
-            if((!String.IsNullOrEmpty(identifier)) && (String.IsNullOrEmpty(query))) {
-
-                query = "/Patient?identifier=" + identifier;
-
+                if (bundle != null)
+                    return bundle.Entry.Select(p => (Patient)p.Resource).ToList();
             }
 
-       
-
-
-            
-            string json = await DoGetAsync(query);
-            var bundle = _parser.Parse<Bundle>(json);
-            var ret = new List<Patient>();
-            foreach (var item in bundle.Entry)
+            if (!string.IsNullOrEmpty(familyName))
             {
-              ret.Add((Patient)item.Resource);
-             }
-            return ret;
+                bundle = await _fhirClient.SearchAsync<Patient>(criteria: new[] { $"family:contains={familyName}" });
+
+                if (bundle != null)
+                    return bundle.Entry.Select(p => (Patient)p.Resource).ToList();
+            }
+
+            return results;           
         }
 
-        public async Task<string> DoPost(string path, string content)
+        public async Task<Patient> CreatePatientsAsync(Patient patient)
         {
-            string json = "{}";
-            try
-            {
-                var body = new System.Net.Http.StringContent(
-                    content,
-                    Encoding.UTF8,
-                    "application/json"
-                    );
-
-                var r = await _client.PostAsync(path,body);
-                json = await r.Content.ReadAsStringAsync();
-
-            }
-            catch (AccessTokenNotAvailableException exception)
-            {
-                exception.Redirect();
-            }
-            return json;
+            return await _fhirClient.UpdateAsync<Patient>(patient);
         }
 
-        public async Task<string> DoGetAsync(string path)
+        #endregion
+
+        #region Questionnaire
+        public async Task<IList<Questionnaire>> GetQuestionnaireAsync()
         {
-            string json = "{}";
-            try
-            {
-                var r = await _client.GetAsync(path);
-                json= await r.Content.ReadAsStringAsync();
+            var bundle = await _fhirClient.SearchAsync<Questionnaire>(pageSize: 100);
+            var results = new List<Questionnaire>();
 
-            }
-            catch (AccessTokenNotAvailableException exception)
+            while (bundle != null)
             {
-                exception.Redirect();
+                results.AddRange(bundle.Entry.Select(q => (Questionnaire)q.Resource));
+                bundle = await _fhirClient.ContinueAsync(bundle);
             }
-            return json;
+
+            return results;
         }
 
-        public async Task<Patient> CreatePatientsAsync(Patient Patient)
+        public async Task<Questionnaire> CreateQuestionnaireAsync(Questionnaire questionnaire)
         {
-          string pjson= _serializer.SerializeToString(Patient);
-          string json = await DoPost("/Patient", pjson);
-          return _parser.Parse<Patient>(json);
+            return await _fhirClient.UpdateAsync<Questionnaire>(questionnaire);
         }
+        #endregion
 
     }
 }
