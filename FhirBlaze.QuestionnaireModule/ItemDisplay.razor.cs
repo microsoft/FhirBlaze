@@ -29,5 +29,11 @@ namespace FhirBlaze.QuestionnaireModule
         public EventCallback<Questionnaire.ItemComponent> ItemComponentChanged { get; set; }
 
         private async System.Threading.Tasks.Task ModifyItemComponent() => await ItemComponentChanged.InvokeAsync(ItemComponent);
+
+        private void GetOption(ChangeEventArgs e)
+        {
+            ItemComponent.Type = (Hl7.Fhir.Model.Questionnaire.QuestionnaireItemType)(e.Value);
+        }
+
     }
 }

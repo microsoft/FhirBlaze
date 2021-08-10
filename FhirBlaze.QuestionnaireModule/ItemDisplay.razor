@@ -6,14 +6,15 @@
         </div>
         <div class='form-group'>
             <label for='question'>Text:</label>
-            <input type='text' class='form-control' id='question' placeholder='Write your question...' @bind='ItemComponent.Text' @bind:event="oninput" @onkeyup="ModifyItemComponent" >
+            <input type='text' class='form-control' id='question' placeholder='Write your question...' @bind-value='ItemComponent.Text' >
         </div>
         <div class='form-group'>
             <label for='type'>Type</label>
             <select class='form-control' id='type' @bind='ItemComponent.Type'>
-                <option>Group</option>
-                <option>String</option>
-                <option>Choice</option>
+               @foreach(var type in Types)
+                {
+                    <option value=@type.Split(':')[0]>@type.Split(':')[0]</option>
+                }
             </select>
         </div>
         <div class='form-group'>
@@ -22,3 +23,7 @@
         </div>
     </EditForm>
 </div>
+
+@code {
+    List<string> Types = new List<string>() { "String:9", "Choice:12", "Boolean:3" };
+}

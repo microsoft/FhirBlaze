@@ -4,6 +4,8 @@ using Microsoft.Extensions.DependencyInjection;
 using FhirBlaze.SharedComponents.Services;
 using FhirBlaze.SharedComponents;
 using Microsoft.Authentication.WebAssembly.Msal.Models;
+using System.Net.Http;
+using Hl7.Fhir.Rest;
 
 internal static class FhirServiceExtensions
 {
@@ -18,11 +20,25 @@ internal static class FhirServiceExtensions
                 options.ProviderOptions.AdditionalScopesToConsent.Add(fhirData.Scope);
             });
 
-        services.AddHttpClient<IFhirService, FhirService>(s => s.BaseAddress = new Uri(fhirData.FhirServerUri))
-                .AddHttpMessageHandler(sp => sp.GetRequiredService<AuthorizationMessageHandler>()
-                    .ConfigureHandler(
-                        authorizedUrls: new[] { fhirData.FhirServerUri },
-                        scopes: new[] { fhirData.Scope }));
+
+        services.AddScoped<FhirClient>(o =>
+        {
+            var settings = new FhirClientSettings
+            {
+                PreferredFormat = ResourceFormat.Json,
+                PreferredReturn = Prefer.ReturnMinimal
+            };
+            var handler = o.GetRequiredService<AuthorizationMessageHandler>()
+                .ConfigureHandler(
+                    authorizedUrls: new[] { fhirData.FhirServerUri },
+                    scopes: new[] { fhirData.Scope }                    
+                );
+            handler.InnerHandler = new HttpClientHandler();
+
+            return new FhirClient(fhirData.FhirServerUri, settings, handler);
+        });
+
+        services.AddScoped<IFhirService, FhirService>();
 
         return services;
     }
