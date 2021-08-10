@@ -5,9 +5,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace FhirBlaze.PatientModule
 {
@@ -21,12 +20,12 @@ namespace FhirBlaze.PatientModule
         protected bool Loading { get; set; } = true;
         protected bool ProcessingCreate { get; set; } = false;
         protected bool ProcessingSearch { get; set; } = false;
-        protected SimplePatient DraftPatient {get;set;}
-        private Patient selectedPatient = new Patient();
+        protected SimplePatient DraftPatient { get; set; } = new SimplePatient();
+        protected Patient SelectedPatient { get; set; } = new Patient();
 
         public IList<Patient> Patients { get; set; } = new List<Patient>();
 
-        protected override async System.Threading.Tasks.Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {            
             Loading = true;
             await base.OnInitializedAsync();
@@ -37,11 +36,12 @@ namespace FhirBlaze.PatientModule
 
         public async Task<Patient> CreatePatient(Patient patient)
         {
+            ResetSelectedPatient();
             Patient createdPatient = null;
             try
             {
                 ProcessingCreate = true;
-                 createdPatient = await FhirService.CreatePatientsAsync(patient);
+                createdPatient = await FhirService.CreatePatientsAsync(patient);
                 Patients.Add(createdPatient);
                 ProcessingCreate = false;
                 ToggleCreate();
@@ -55,17 +55,14 @@ namespace FhirBlaze.PatientModule
         }
 
 
-        public async Task<Patient> SearchPatient(Patient patient)
+        public async Task SearchPatient(Patient patient)
         {
-
-            Patient createdPatient = null;
+            ResetSelectedPatient();
             try
             {
-                //var testy = await FhirService.SearchPatient();
                 Patients = await FhirService.SearchPatient(patient); //change to patient
                 ProcessingSearch = true;
                 
-                //Patients.Add(createdPatient);
                 ProcessingSearch = false;
                 ToggleSearch();
                 ShouldRender();
@@ -75,15 +72,15 @@ namespace FhirBlaze.PatientModule
                 Console.WriteLine("Exception");
                 Console.WriteLine(e.Message); //manage the cancel search
             }
-            return createdPatient;
         }
 
         public void ToggleCreate()
         {
             ShowCreate = !ShowCreate;
+            ResetSelectedPatient();
             if (ShowCreate)
             {
-                DraftPatient = new SimplePatient() {
+                DraftPatient = new SimplePatient {
                     PatientID = Guid.NewGuid().ToString(),
                     Birthdate = DateTime.Now.AddDays(DateTime.Now.Second).AddMonths(DateTime.Now.Hour).AddYears(-DateTime.Now.Second)
                 };
@@ -93,19 +90,21 @@ namespace FhirBlaze.PatientModule
         public void ToggleSearch()
         {
             ShowSearch = !ShowSearch;
+            ResetSelectedPatient();
             if (ShowSearch)
             {
-                DraftPatient = new SimplePatient()
-                {
-                    //PatientID = Guid.NewGuid().ToString(),
-                    //Birthdate = DateTime.Now.AddDays(DateTime.Now.Second).AddMonths(DateTime.Now.Hour).AddYears(-DateTime.Now.Second)
-                };
-            }            
+                DraftPatient = new SimplePatient();
+            }
+        }
+
+        private void ResetSelectedPatient()
+        {
+            SelectedPatient = null;
         }
 
         private void PatientSelected(EventArgs e, Patient newPatient)
         {
-            selectedPatient = newPatient;
+            SelectedPatient = newPatient;
         }
     }
 }

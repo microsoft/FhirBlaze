@@ -50,21 +50,21 @@
                     </table>
                 </div>
                 <div class="col-sm-4">
-                    @if (selectedPatient.Id != null)
+                    @if (SelectedPatient?.Id != null)
                     { 
                     <div class="card border-primary mb-3">
-                        <h5 class="card-header">@selectedPatient.Name.FirstOrDefault() - (@selectedPatient.Gender)</h5>
+                        <h5 class="card-header">@SelectedPatient.Name.FirstOrDefault() - (@SelectedPatient.Gender)</h5>
                         <div class="card-body">
                             <p class="card-text">
-                                Address: @selectedPatient.Address.FirstOrDefault()
+                                Address: @SelectedPatient.Address.FirstOrDefault()
                                 <br />
-                                Phone: @selectedPatient.Telecom.FirstOrDefault()
+                                Phone: @SelectedPatient.Telecom.FirstOrDefault()
                                 <br />
-                                Date of Birth: @selectedPatient.BirthDate
+                                Date of Birth: @SelectedPatient.BirthDate
                                 <br />
-                                Email: @selectedPatient.Contact.FirstOrDefault()
+                                Email: @SelectedPatient.Contact.FirstOrDefault()
                             </p>
-                            <button type="button" class="btn btn-primary">Active: @selectedPatient.Active</button>
+                            <button type="button" class="btn btn-primary">Active: @SelectedPatient.Active</button>
                         </div>
                     </div>
                     }
