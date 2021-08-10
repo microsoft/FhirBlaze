@@ -40,7 +40,6 @@ namespace FhirBlaze.SharedComponents.Services
             string familyName = Patient.Name[0].Family;
             string identifier = Patient.Identifier[0].Value;
             Bundle bundle;
-            var results = new List<Patient>();
 
             if (!string.IsNullOrEmpty(identifier))
             {
@@ -58,7 +57,7 @@ namespace FhirBlaze.SharedComponents.Services
                     return bundle.Entry.Select(p => (Patient)p.Resource).ToList();
             }
 
-            return results;           
+            return await GetPatientsAsync();           
         }
 
         public async Task<Patient> CreatePatientsAsync(Patient patient)
