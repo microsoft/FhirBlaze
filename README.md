@@ -2,16 +2,15 @@
 Welcome to FHIRBlaze!
 
 ## Overview
-FHIRBlaze is a minimally viable Blazor WebAssembly application demonstrating how interact with HL7 data from a Fast Health Interoperability Resources (FHIR) API.
+FHIRBlaze is a minimally viable Blazor WebAssembly application demonstrating how to interact with HL7 data from a Fast Health Interoperability Resources (FHIR) API.
 
 ## Architecture
-A Blazor WebAssembly (wasm) application using the pattern of Micro Frontends implemented by lazy-loading UI "modules" only when requested by navigation events from the client.
-
+A Blazor WebAssembly (wasm) application using the pattern of micro-frontends implemented by lazy-loading UI "modules" only when requested by navigation events from the client.
 
 
 ## Contributing
 
-This project welcomes contributions and suggestions.  Most contributions require you to agree to a
+This project welcomes contributions and suggestions. Most contributions require you to agree to a
 Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
 the rights to use your contribution. For details, visit https://cla.opensource.microsoft.com.
 
