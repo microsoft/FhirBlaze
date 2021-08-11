@@ -11,6 +11,7 @@
     <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="5.0.8" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="5.0.0" />
     <PackageReference Include="Microsoft.Graph.Beta" Version="4.6.0-preview" />
+    <PackageReference Include="Microsoft.PowerBI.Api" Version="2.13.0" />
     <PackageReference Include="System.Net.Http.Json" Version="5.0.0" />
   </ItemGroup>
 
