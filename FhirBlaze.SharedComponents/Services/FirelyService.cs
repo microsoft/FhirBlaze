@@ -93,7 +93,7 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<Questionnaire> CreateQuestionnaireAsync(Questionnaire questionnaire)
         {
-            return await _fhirClient.UpdateAsync<Questionnaire>(questionnaire);
+            return await _fhirClient.CreateAsync(questionnaire);
         }
         #endregion
 
