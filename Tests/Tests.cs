@@ -24,9 +24,9 @@ public class Tests :
 
     static Patient BuildPatient()
     {
-        return new Patient
+        return new()
         {
-            Name = new List<HumanName>
+            Name = new()
             {
                 new()
                 {
@@ -36,12 +36,12 @@ public class Tests :
             },
             Active = true,
             Gender = AdministrativeGender.Unknown,
-            Telecom = new List<ContactPoint>
+            Telecom = new()
             {
                 new(ContactPoint.ContactPointSystem.Phone, ContactPoint.ContactPointUse.Mobile, "1234")
             },
             BirthDate = "1/1/2020",
-            Address = new List<Address>
+            Address = new()
             {
                 new()
                 {
@@ -49,7 +49,7 @@ public class Tests :
                     Country = "USA"
                 }
             },
-            Contact = new List<Patient.ContactComponent>()
+            Contact = new()
         };
     }
 }
