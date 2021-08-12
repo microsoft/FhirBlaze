@@ -53,12 +53,12 @@
                     @if (SelectedPatient?.Id != null)
                     { 
                         <div class="card-header">
-                            <button @onclick="ToggleUpdate" class="btn btn-primary">@(ShowUpdate?"Cancel": "Update Patient")</button>
+                            <button @onclick="ToggleUpdate" class="btn btn-primary">@(ShowUpdate?"Cancel": "Edit")</button>
                         </div>
 
                         @if (ShowUpdate)
                         {
-                            <PatientUpdate Patient="EditPatient" Processing="@ProcessingSearch" UpdatePatient="@UpdatePatient" />
+                            <PatientUpdate Patient="EditPatient" Processing="@ProcessingSearch" UpdatePatient="UpdatePatient" />
                         }
                         else
                         {

@@ -8,7 +8,7 @@ namespace FhirBlaze.SharedComponents.Services
     {
         Task<Patient> CreatePatientsAsync(Patient patient);
         Task<IList<Patient>> GetPatientsAsync();
-        Task<Patient> UpdatePatientAsync(Patient patient);
+        Task<Patient> UpdatePatientAsync(string patientId, Patient patient);
         Task<int> GetPatientCountAsync();
         Task<IList<Patient>> SearchPatient(Patient patient);
         Task<IList<Questionnaire>> GetQuestionnaireAsync();
