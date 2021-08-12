@@ -42,7 +42,7 @@ namespace FhirBlaze.PatientModule
             try
             {
                 ProcessingCreate = true;
-                 createdPatient = await FhirService.CreatePatientsAsync(patient);
+                createdPatient = await FhirService.CreatePatientsAsync(patient);
                 Patients.Add(createdPatient);
                 ProcessingCreate = false;
                 ToggleCreate();

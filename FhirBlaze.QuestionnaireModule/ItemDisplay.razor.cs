@@ -32,7 +32,8 @@ namespace FhirBlaze.QuestionnaireModule
 
         private void GetOption(ChangeEventArgs e)
         {
-            ItemComponent.Type = (Hl7.Fhir.Model.Questionnaire.QuestionnaireItemType)(e.Value);
+            int type = Int32.Parse(e.Value.ToString());
+            ItemComponent.Type = (Hl7.Fhir.Model.Questionnaire.QuestionnaireItemType)(type);
         }
 
     }
