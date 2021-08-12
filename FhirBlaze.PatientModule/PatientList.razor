@@ -26,43 +26,44 @@
         <br/>
         <div class="container">
             <div class="row">
-                <div class="col-sm">
-                    <table>
-                        <tr class="my-table-header">
+                <div class="col-sm-8">
+                    <table class="table table-striped table-hover">
+                        <thead>
+                        <tr>
                             <th>Name</th>
                             <th>Name Count</th>
                             <th>Address</th>
                             <th>Address Count</th>
                         </tr>
+                        </thead>
+                        <tbody>
                         @foreach (var patient in Patients)
                         {
-                            <tr class="my-table-row" @onclick="@(e => PatientSelected(e, patient))" >
+                            <tr @onclick="@(e => PatientSelected(e, patient))" >
                                 <td>@patient.Name.FirstOrDefault()</td>
                                 <td>@patient.Name.Count()</td>
                                 <td>@patient.Address.FirstOrDefault()</td>
                                 <td>@patient.Address.Count()</td>
                             </tr>
                         }
+                        </tbody>
                     </table>
                 </div>
-                <div class="col-sm">
-                    @if (currentPatient.Id != null)
+                <div class="col-sm-4">
+                    @if (SelectedPatient?.Id != null)
                     { 
-                    <div class="card border-primary mb-3" style="max-width: 18rem;">
-                        <h5 class="card-header">@currentPatient.Name.FirstOrDefault() - (@currentPatient.Gender)</h5>
-                        <div class="card-body">
-                            <p class="card-text">
-                                Address: @currentPatient.Address.FirstOrDefault()
-                                <br />
-                                Phone: @currentPatient.Telecom.FirstOrDefault()
-                                <br />
-                                Date of Birth: @currentPatient.BirthDate
-                                <br />
-                                Email: @currentPatient.Contact.FirstOrDefault()
-                            </p>
-                            <button type="button" class="btn btn-primary">Active: @currentPatient.Active</button>
+                        <div class="card-header">
+                            <button @onclick="ToggleUpdate" class="btn btn-primary">@(ShowUpdate?"Cancel": "Edit")</button>
                         </div>
-                    </div>
+
+                        @if (ShowUpdate)
+                        {
+                            <PatientUpdate Patient="EditPatient" Processing="@ProcessingSearch" UpdatePatient="UpdatePatient" />
+                        }
+                        else
+                        {
+                            <PatientDetail CurrentPatient="@SelectedPatient"/>
+                        }
                     }
                 </div>
             </div>
@@ -73,16 +74,4 @@
         <!--<FhirBlaze.SharedComponents.LoadingSpinner />-->
     </div>
 </div>
-
-@code {
-
-    private Hl7.Fhir.Model.Patient currentPatient = new Hl7.Fhir.Model.Patient();
-    private Hl7.Fhir.Model.HumanName currentPatientName;
-
-    private void PatientSelected(EventArgs e, Hl7.Fhir.Model.Patient newPatient)
-    {
-        currentPatient = newPatient;
-        currentPatientName = newPatient.Name.FirstOrDefault();
-    }
-}
 

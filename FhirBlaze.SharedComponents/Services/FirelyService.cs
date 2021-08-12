@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace FhirBlaze.SharedComponents.Services
 {
-    public class FhirService:IFhirService
+    public class FirelyService:IFhirService
     {
         private FhirClient _fhirClient;
-        public FhirService(FhirClient client)
+        public FirelyService(FhirClient client)
         {
             _fhirClient = client;
         }
@@ -62,9 +62,18 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<Patient> CreatePatientsAsync(Patient patient)
         {
-            return await _fhirClient.UpdateAsync<Patient>(patient);
+            return await _fhirClient.CreateAsync(patient);
         }
 
+        public async Task<Patient> UpdatePatientAsync(string patientId, Patient patient)
+        {
+            if (patientId != patient.Id)
+            {
+                throw new System.Exception("Unknown patient ID");
+            }
+
+            return await _fhirClient.UpdateAsync(patient);
+        }
         #endregion
 
         #region Questionnaire

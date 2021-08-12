@@ -19,8 +19,9 @@
     private RenderFragment DynamicFragment;
     private RenderFragment CreateComponent(Questionnaire.ItemComponent newItem) => __builder =>
     {
-        
-        <ItemDisplay @bind-ItemComponent='@newItem' @bind-ItemComponent:event="ItemComponentChanged"></ItemDisplay>
+        <div>
+            <ItemDisplay @bind-ItemComponent='@newItem' @bind-ItemComponent:event="ItemComponentChanged"></ItemDisplay>
+        </div>
     };
  
     private void RenderComponent()  

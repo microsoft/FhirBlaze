@@ -35,8 +35,6 @@ namespace FhirBlaze.QuestionnaireModule
 
         public async void Submit()
         {
-            //InitializeQuestionnaire();
-            
             Questionnaire.Status = PublicationStatus.Draft;
             
             foreach (var item in NewQuestionnaireItems)

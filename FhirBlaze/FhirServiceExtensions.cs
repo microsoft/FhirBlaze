@@ -38,7 +38,7 @@ internal static class FhirServiceExtensions
             return new FhirClient(fhirData.FhirServerUri, settings, handler);
         });
 
-        services.AddScoped<IFhirService, FhirService>();
+        services.AddScoped<IFhirService, FirelyService>();
 
         return services;
     }

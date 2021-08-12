@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace FhirBlaze.PatientModule
 {
@@ -17,17 +17,19 @@ namespace FhirBlaze.PatientModule
         [Inject]
         IFhirService FhirService { get; set; }
         protected bool ShowCreate { get; set; } = false;
+        protected bool ShowUpdate { get; set; } = false;
         protected bool ShowSearch { get; set; } = false;
         protected bool Loading { get; set; } = true;
         protected bool ProcessingCreate { get; set; } = false;
         protected bool ProcessingSearch { get; set; } = false;
-        protected SimplePatient DraftPatient {get;set;}
-
+        protected bool ProcessingUpdate { get; set; } = false;
+        protected SimplePatient DraftPatient { get; set; } = new SimplePatient();
+        protected SimplePatient EditPatient { get; set; } = new SimplePatient();
+        protected Patient SelectedPatient { get; set; } = new Patient();
 
         public IList<Patient> Patients { get; set; } = new List<Patient>();
-        public IList<Patient> PatientsSearched { get; set; } = new List<Patient>();
 
-        protected override async System.Threading.Tasks.Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {            
             Loading = true;
             await base.OnInitializedAsync();
@@ -38,6 +40,7 @@ namespace FhirBlaze.PatientModule
 
         public async Task<Patient> CreatePatient(Patient patient)
         {
+            ResetSelectedPatient();
             Patient createdPatient = null;
             try
             {
@@ -56,17 +59,14 @@ namespace FhirBlaze.PatientModule
         }
 
 
-        public async Task<Patient> SearchPatient(Patient patient)
+        public async Task SearchPatient(Patient patient)
         {
-
-            Patient createdPatient = null;
+            ResetSelectedPatient();
             try
             {
-                //var testy = await FhirService.SearchPatient();
                 Patients = await FhirService.SearchPatient(patient); //change to patient
                 ProcessingSearch = true;
                 
-                //Patients.Add(createdPatient);
                 ProcessingSearch = false;
                 ToggleSearch();
                 ShouldRender();
@@ -76,38 +76,84 @@ namespace FhirBlaze.PatientModule
                 Console.WriteLine("Exception");
                 Console.WriteLine(e.Message); //manage the cancel search
             }
-            return createdPatient;
+        }
+
+        public async Task<Patient> UpdatePatient(Patient patient)
+        {
+            Patient updatedPatient = patient;
+            try
+            {
+                ProcessingUpdate = true;
+                updatedPatient = await FhirService.UpdatePatientAsync(patient.Id, patient);
+                SelectedPatient = updatedPatient;
+
+                var removePatient = Patients.FirstOrDefault(p => p.Id == updatedPatient.Id);
+                if (removePatient != null)
+                {
+                    Patients.Remove(removePatient);
+                    Patients.Add(updatedPatient);
+                }
+
+                ProcessingUpdate = false;
+                ToggleUpdate();
+                ShouldRender();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception occured editing patient");
+                Console.WriteLine(e.Message);
+            }
+            return updatedPatient;
         }
 
         public void ToggleCreate()
         {
             ShowCreate = !ShowCreate;
+            ResetSelectedPatient();
             if (ShowCreate)
             {
-                DraftPatient = new SimplePatient() {
+                DraftPatient = new SimplePatient {
                     PatientID = Guid.NewGuid().ToString(),
                     Birthdate = DateTime.Now.AddDays(DateTime.Now.Second).AddMonths(DateTime.Now.Hour).AddYears(-DateTime.Now.Second)
                 };
             }
-
-
         }
 
+        public void ToggleUpdate()
+        {   
+            ShowUpdate = !ShowUpdate;
+            if (ShowUpdate)
+            {
+                var name = SelectedPatient.Name.FirstOrDefault();
+
+                EditPatient = new SimplePatient
+                {
+                    PatientID = SelectedPatient.Id,
+                    FirstName = name?.Given.FirstOrDefault(),
+                    LastName = name?.Family,
+                    Birthdate = DateTime.Parse(SelectedPatient.BirthDate)
+                };
+            }
+        }
 
         public void ToggleSearch()
         {
             ShowSearch = !ShowSearch;
+            ResetSelectedPatient();
             if (ShowSearch)
             {
-                DraftPatient = new SimplePatient()
-                {
-                    //PatientID = Guid.NewGuid().ToString(),
-                    //Birthdate = DateTime.Now.AddDays(DateTime.Now.Second).AddMonths(DateTime.Now.Hour).AddYears(-DateTime.Now.Second)
-                };
+                DraftPatient = new SimplePatient();
             }
+        }
 
+        private void ResetSelectedPatient()
+        {
+            SelectedPatient = null;
+        }
 
-            
+        private void PatientSelected(EventArgs e, Patient newPatient)
+        {
+            SelectedPatient = newPatient;
         }
     }
 }
