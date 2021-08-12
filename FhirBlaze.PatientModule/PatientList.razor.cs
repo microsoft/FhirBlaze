@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Task = System.Threading.Tasks.Task;
 
@@ -83,15 +84,24 @@ namespace FhirBlaze.PatientModule
             try
             {
                 ProcessingUpdate = true;
-                updatedPatient = await FhirService.UpdatePatientAsync(patient);
+                updatedPatient = await FhirService.UpdatePatientAsync(patient.Id, patient);
+                SelectedPatient = updatedPatient;
+
+                var removePatient = Patients.FirstOrDefault(p => p.Id == updatedPatient.Id);
+                if (removePatient != null)
+                {
+                    Patients.Remove(removePatient);
+                    Patients.Add(updatedPatient);
+                }
+
                 ProcessingUpdate = false;
                 ToggleUpdate();
+                ShouldRender();
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception occured editing patient");
                 Console.WriteLine(e.Message);
-                throw;
             }
             return updatedPatient;
         }
@@ -111,46 +121,17 @@ namespace FhirBlaze.PatientModule
 
         public void ToggleUpdate()
         {   
-            string patientFirstName = "";
-            string patientLastName = "";
-
             ShowUpdate = !ShowUpdate;
             if (ShowUpdate)
             {
-                /*
-                foreach (var identifier in SelectedPatient.Identifier)
-                {
-                    if (identifier.Value != "")
-                    {
-                        patientIdentifier = identifier.Value;
-                        break;
-                    }
-                }
-                */
-
-                foreach (var name in SelectedPatient.Name)
-                {
-                    foreach (var givenName in name.GivenElement)
-                    {
-                        if (givenName.Value != "")
-                        {
-                            patientFirstName = givenName.Value;
-                            break;
-                        }
-                    }
-
-                    if (patientFirstName != "")
-                    {
-                        patientLastName = name.Family;
-                        break;
-                    }
-                }
+                var name = SelectedPatient.Name.FirstOrDefault();
 
                 EditPatient = new SimplePatient
                 {
                     PatientID = SelectedPatient.Id,
-                    FirstName = patientFirstName,
-                    LastName = patientLastName
+                    FirstName = name?.Given.FirstOrDefault(),
+                    LastName = name?.Family,
+                    Birthdate = DateTime.Parse(SelectedPatient.BirthDate)
                 };
             }
         }

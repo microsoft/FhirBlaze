@@ -1,12 +1,10 @@
-﻿
-@using Microsoft.AspNetCore.Components.Forms
-<EditForm Model="Patient" OnValidSubmit="updatePatient" class="form-horizontal">
+﻿<EditForm Model="Patient" OnValidSubmit="updatePatient" class="form-horizontal">
     <DataAnnotationsValidator/>
     <ValidationSummary />
     <div class="row mb-3">
         <label for="patientId" class="col-sm-2 col-form-label">ID</label>
         <div class="col-sm-10">
-            <InputText id="patientId" @bind-Value="Patient.PatientID" class="form-control" />
+            <InputText id="patientId" @bind-Value="Patient.PatientID" class="form-control"  />
         </div>
    </div>
 
@@ -21,6 +19,12 @@
        <div class="col-sm-6">
            <InputText id="lastName" @bind-Value="Patient.LastName" class="form-control" />
        </div>
+    </div>
+    <div class="row mb-6">
+        <label for="birthDate" class="col-sm-2 col-form-label">Birth Date</label>
+        <div class="col-sm-6">
+            <InputDate id="birthDate" @bind-Value="Patient.Birthdate" class="form-control" />
+        </div>
     </div>
     <div class="row mb-6">
         <div class="col-sm-6">

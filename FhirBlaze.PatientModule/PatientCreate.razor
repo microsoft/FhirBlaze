@@ -3,20 +3,20 @@
     <ValidationSummary />
     <div class="form-group">
         <label>ID</label>
-        <Microsoft.AspNetCore.Components.Forms.InputText required @bind-Value="Patient.PatientID" />
+        <InputText required @bind-Value="Patient.PatientID" />
    </div>
    <div class="form-group">
         <label>Birthday</label>
-        <Microsoft.AspNetCore.Components.Forms.InputDate required @bind-Value="Patient.Birthdate" />
+        <InputDate required @bind-Value="Patient.Birthdate" />
     </div>
     <div class="form-group">
         <label>First</label>
-        <Microsoft.AspNetCore.Components.Forms.InputText required @bind-Value="Patient.FirstName" />
+        <InputText required @bind-Value="Patient.FirstName" />
    </div>
 
    <div class="form-group">
         <label>Last</label>
-        <Microsoft.AspNetCore.Components.Forms.InputText required @bind-Value="Patient.LastName" />
+        <InputText required @bind-Value="Patient.LastName" />
     </div>
     @if (Processing)
     {
