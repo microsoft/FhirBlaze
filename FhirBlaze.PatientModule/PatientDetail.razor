@@ -4,7 +4,6 @@
 	<div class="card border-primary mb-3" style="max-width: 18rem;">
         <h5 class="card-header">
             @CurrentPatient.Name.FirstOrDefault() - (@CurrentPatient.Gender)
-            <button class="btn btn-primary">Edit</button>
         </h5>
         <div class="card-body">
             <p class="card-text">
@@ -17,8 +16,7 @@
                 Email: @CurrentPatient.Contact.FirstOrDefault()
             </p>
             <button type="button" class="btn btn-primary">Active: @CurrentPatient.Active</button>
-        </div>
-                        
+        </div>          
     </div>
 </div>
 
