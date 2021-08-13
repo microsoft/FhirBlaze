@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Bunit;
+﻿using Bunit;
 using FhirBlaze.PatientModule;
 using Hl7.Fhir.Model;
 using VerifyXunit;
