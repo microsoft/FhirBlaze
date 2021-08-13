@@ -19,11 +19,9 @@
     private RenderFragment DynamicFragment;
     private RenderFragment CreateComponent(Questionnaire.ItemComponent newItem) => __builder =>
     {
-        
-        <ItemDisplay @bind-ItemComponent='@newItem' @bind-ItemComponent:event="ItemComponentChanged"></ItemDisplay>
-        __builder.OpenElement(1, "div");
-        __builder.AddContent(2, newItem.Text);
-        __builder.CloseElement();
+        <div>
+            <ItemDisplay @bind-ItemComponent='@newItem' @bind-ItemComponent:event="ItemComponentChanged"></ItemDisplay>
+        </div>
     };
  
     private void RenderComponent()  

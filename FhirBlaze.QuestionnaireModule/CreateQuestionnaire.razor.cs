@@ -1,5 +1,7 @@
-﻿using Hl7.Fhir.Model;
+﻿using FhirBlaze.SharedComponents.Services;
+using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,6 +13,8 @@ namespace FhirBlaze.QuestionnaireModule
     [Authorize]
     public partial class CreateQuestionnaire
     {
+        [Inject]
+        IFhirService FhirService { get; set; }
         public Questionnaire Questionnaire { get; set; } = new Questionnaire();
 
         protected Questionnaire.ItemComponent ItemComponent { get; set; }
@@ -19,56 +23,26 @@ namespace FhirBlaze.QuestionnaireModule
 
         protected IList<Questionnaire.ItemComponent> NewQuestionnaireItems { get; set; } = new List<Questionnaire.ItemComponent>();
 
-        public int BedResponse { get; set; }
-        public int TVResponse { get; set; }
-        public int ACResponse { get; set; }
-        public int BathroomResponse { get; set; }
-
-        protected async void SaveQuestionnaire()
+        protected async void InitializeQuestionnaire()
         {
-
+            var QuestionnaireIdentifier = new Hl7.Fhir.Model.Identifier();
+            QuestionnaireIdentifier.System = "http://hlsemops.microsoft.com";
+            QuestionnaireIdentifier.Value = Guid.NewGuid().ToString();
+            Questionnaire.Identifier = new List<Hl7.Fhir.Model.Identifier>();
+            Questionnaire.Identifier.Add(QuestionnaireIdentifier);
+            Questionnaire.Status = PublicationStatus.Draft;
         }
 
-        protected void AddItem()
+        public async void Submit()
         {
-            ItemDisplays.Add(new ItemDisplay());
-        }
-
-        protected void AddStringItem()
-        {
-            NewQuestionnaireItems.Add(new Questionnaire.ItemComponent()
-            {
-                LinkId = new Guid().ToString(),
-                Type = Questionnaire.QuestionnaireItemType.String,
-                Text = ""
-            });
-        }
-        protected void AddBooleanItem()
-        {
-            NewQuestionnaireItems.Add(new Questionnaire.ItemComponent()
-            {
-                LinkId = new Guid().ToString(),
-                Type = Questionnaire.QuestionnaireItemType.Boolean,
-                Text = ""
-            });
-        }
-
-        protected void AddGroupItem()
-        {
-            NewQuestionnaireItems.Add(new Questionnaire.ItemComponent()
-            {
-                LinkId = new Guid().ToString(),
-                Type = Questionnaire.QuestionnaireItemType.Group,
-                Text = ""
-            });
-        }
-
-        private void Submit()
-        {
+            Questionnaire.Status = PublicationStatus.Draft;
+            
             foreach (var item in NewQuestionnaireItems)
             {
-                Console.WriteLine("Item Text: ", item.Text);
+                Questionnaire.Item.Add(item);
             }
+
+            await FhirService.CreateQuestionnaireAsync(Questionnaire);
         }
     }
 }

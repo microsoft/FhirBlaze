@@ -52,21 +52,18 @@
                 <div class="col-sm-4">
                     @if (SelectedPatient?.Id != null)
                     { 
-                    <div class="card border-primary mb-3">
-                        <h5 class="card-header">@SelectedPatient.Name.FirstOrDefault() - (@SelectedPatient.Gender)</h5>
-                        <div class="card-body">
-                            <p class="card-text">
-                                Address: @SelectedPatient.Address.FirstOrDefault()
-                                <br />
-                                Phone: @SelectedPatient.Telecom.FirstOrDefault()
-                                <br />
-                                Date of Birth: @SelectedPatient.BirthDate
-                                <br />
-                                Email: @SelectedPatient.Contact.FirstOrDefault()
-                            </p>
-                            <button type="button" class="btn btn-primary">Active: @SelectedPatient.Active</button>
+                        <div class="card-header">
+                            <button @onclick="ToggleUpdate" class="btn btn-primary">@(ShowUpdate?"Cancel": "Edit")</button>
                         </div>
-                    </div>
+
+                        @if (ShowUpdate)
+                        {
+                            <PatientUpdate Patient="EditPatient" Processing="@ProcessingSearch" UpdatePatient="UpdatePatient" />
+                        }
+                        else
+                        {
+                            <PatientDetail CurrentPatient="@SelectedPatient"/>
+                        }
                     }
                 </div>
             </div>
