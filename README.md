@@ -20,7 +20,7 @@ Host your own with one of these popular offerings:
 OR, use one of these [publicly available test servers](https://wiki.hl7.org/index.php?title=Publicly_Available_FHIR_Servers_for_testing).
 
 ### Web Host
-There are many options for hosting a Blazor WebAssembly application. This repo contains a Github Action workflow to automatically deploy the site to an Azure State Web Apps. 
+There are many options for hosting a Blazor WebAssembly application. This repo contains a Github Action workflow to automatically deploy the site to Azure Static Web Apps. 
 Follow [this tutorial](https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-blazor) to learn more.
 
 Other options include:
