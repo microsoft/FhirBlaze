@@ -28,6 +28,9 @@ Other options include:
 * Azure Blob Storage static web
 * [and more...](https://docs.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly?view=aspnetcore-5.0)
 
+### Next Steps
+[Fork this repo](https://github.com/microsoft/fhirblaze/fork) to modify or add your own functionality.
+
 ## Contributing
 
 This project welcomes contributions and suggestions. Most contributions require you to agree to a
