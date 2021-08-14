@@ -7,6 +7,29 @@ FHIRBlaze is a minimally viable Blazor WebAssembly application demonstrating how
 ## Architecture
 A Blazor WebAssembly (wasm) application using the pattern of micro-frontends implemented by lazy-loading UI "modules" only when requested by navigation events from the client.
 
+## Get Started
+Here's what you'll need to run this application in your own environment.
+
+### FHIR API (R4)
+You will need access to a FHIR API that meets the HL7 R4 spec requirements. 
+Host your own with one of these popular offerings:
+* [Azure API for FHIR](https://docs.microsoft.com/en-us/azure/healthcare-apis/fhir/fhir-portal-quickstart)
+* [Azure FHIR Server (OSS)](https://github.com/microsoft/fhir-server/blob/main/docs/QuickstartDeployPortal.md)
+* [Firely Server](https://fire.ly/products/firely-server/)
+
+OR, use one of these [publicly available test servers](https://wiki.hl7.org/index.php?title=Publicly_Available_FHIR_Servers_for_testing).
+
+### Web Host
+There are many options for hosting a Blazor WebAssembly application. This repo contains a Github Action workflow to automatically deploy the site to Azure Static Web Apps. 
+Follow [this tutorial](https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-blazor) to learn more.
+
+Other options include:
+* Azure App Service
+* Azure Blob Storage static web
+* [and more...](https://docs.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly?view=aspnetcore-5.0)
+
+### Next Steps
+[Fork this repo](https://github.com/microsoft/fhirblaze/fork) to modify or add your own functionality.
 
 ## Contributing
 
