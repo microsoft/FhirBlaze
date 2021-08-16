@@ -1,0 +1,53 @@
+﻿{
+  Instance: {
+    CurrentPatient: {
+      ActiveElement: {
+        Value: true
+      },
+      Name: [
+        {
+          FamilyElement: {
+            Value: Smith
+          },
+          GivenElement: [
+            {
+              Value: John
+            }
+          ]
+        }
+      ],
+      Telecom: [
+        {
+          SystemElement: {
+            Value: Phone
+          },
+          ValueElement: {
+            Value: 1234
+          },
+          UseElement: {
+            Value: Mobile
+          }
+        }
+      ],
+      GenderElement: {
+        Value: Unknown
+      },
+      BirthDateElement: {
+        Value: 1/1/2020
+      },
+      Address: [
+        {
+          CityElement: {
+            Value: Seatle
+          },
+          CountryElement: {
+            Value: USA
+          }
+        }
+      ]
+    }
+  },
+  RenderCount: 1,
+  NodeCount: 11,
+  Bytes: 601
+}
