@@ -1,4 +1,7 @@
-﻿
+﻿@using FhirBlaze.SharedComponents.SMART
+@using Newtonsoft.Json
+@inject NavigationManager UriHelper
+@inject SmartLauncher Launcher
 <div class="container">
 	<h3>PatientDetail</h3>
 	<div class="card border-primary mb-3" style="max-width: 18rem;">
@@ -16,6 +19,7 @@
                 Email: @CurrentPatient.Contact.FirstOrDefault()
             </p>
             <button type="button" class="btn btn-primary">Active: @CurrentPatient.Active</button>
+            <button type="button" class="btn btn-primary" @onclick="LaunchClick">Chestist</button>
         </div>          
     </div>
 </div>
@@ -25,4 +29,14 @@
 
     [Parameter]
     public Hl7.Fhir.Model.Patient CurrentPatient { get; set; }
+
+    public void LaunchClick()
+    {
+        var ctx = new
+        {
+            patient = CurrentPatient.Id
+        };
+        var href = Launcher.GetLaunchUrl(JsonConvert.SerializeObject(ctx));
+        UriHelper.NavigateTo(href);
+    }
 }
