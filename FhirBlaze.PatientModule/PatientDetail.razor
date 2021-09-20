@@ -19,7 +19,8 @@
                 Email: @CurrentPatient.Contact.FirstOrDefault()
             </p>
             <button type="button" class="btn btn-primary">Active: @CurrentPatient.Active</button>
-            <button type="button" class="btn btn-primary" @onclick="LaunchClick">Chestist</button>
+            <a class="btn btn-primary" target="_blank" href="@ChestistLaunchUrl">Chestist</a>
+            @*<button type="button" class="btn btn-primary" @onclick="LaunchClick">Chestist</button>*@
         </div>          
     </div>
 </div>
@@ -29,6 +30,17 @@
 
     [Parameter]
     public Hl7.Fhir.Model.Patient CurrentPatient { get; set; }
+
+    public string ChestistLaunchUrl { get; set; }
+
+    protected override void OnInitialized()
+    {
+        var ctx = new
+        {
+            patient = CurrentPatient.Id
+        };
+        ChestistLaunchUrl = Launcher.GetLaunchUrl(JsonConvert.SerializeObject(ctx));
+    }
 
     public void LaunchClick()
     {
