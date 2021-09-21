@@ -1,0 +1,22 @@
+﻿@using FhirBlaze.SharedComponents.SMART
+@using Newtonsoft.Json
+@inject NavigationManager UriHelper
+@inject SmartLauncher Launcher
+  <a target="_new" type="button" class="btn btn-primary" href=@LaunchLink>Chestist</a>
+@code {
+
+    [Parameter]
+    public Hl7.Fhir.Model.Patient CurrentPatient { get; set; }
+    private string LaunchLink { get; set; }
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        var ctx = new
+        {
+            patient = CurrentPatient.Id
+        };
+        LaunchLink = Launcher.GetLaunchUrl(JsonConvert.SerializeObject(ctx));
+
+    }
+    
+}

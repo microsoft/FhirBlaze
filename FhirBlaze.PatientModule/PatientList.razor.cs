@@ -154,6 +154,7 @@ namespace FhirBlaze.PatientModule
         private void PatientSelected(EventArgs e, Patient newPatient)
         {
             SelectedPatient = newPatient;
+            ToggleUpdate();
         }
     }
 }
