@@ -1,7 +1,7 @@
 ﻿@page "/patient"
 @using FhirBlaze.SharedComponents
 
-<div class="container">
+
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">Patients</a>
         <ul class="navbar-nav mr-auto">
@@ -11,8 +11,7 @@
             </li>
         </ul>
     </nav>
-    <div class="container">
-                @if (ShowCreate)
+       @if (ShowCreate)
                 {
                     <PatientCreate Patient="DraftPatient" Processing="@ProcessingCreate" CreatePatient="CreatePatient" />
                    
@@ -22,56 +21,48 @@
                 {
                      <PatientSearch Patient="DraftPatient" Processing="@ProcessingSearch" SearchPatient="SearchPatient" />
                 }
+                @if (ShowUpdate)
+                {
+                    <PatientUpdate Patient="EditPatient" Processing="@ProcessingSearch" UpdatePatient="UpdatePatient" />
+                    <button class="btn btn-secondary" @onclick=@ToggleUpdate>Cancel!</button>
+                    <!-- 
+                    <PatientDetail CurrentPatient="@SelectedPatient"/>
+                    -->
+                }
+    <div class="container">
+             
 
         <br/>
         <div class="container">
-            <div class="row">
-                <div class="col-sm-8">
+            
                     <table class="table table-striped table-hover">
                         <thead>
                         <tr>
                             <th>Name</th>
-                            <th>Name Count</th>
-                            <th>Address</th>
-                            <th>Address Count</th>
+                            <th>DOB</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach (var patient in Patients)
                         {
-                            <tr @onclick="@(e => PatientSelected(e, patient))" >
+                            <tr  >
                                 <td>@patient.Name.FirstOrDefault()</td>
-                                <td>@patient.Name.Count()</td>
-                                <td>@patient.Address.FirstOrDefault()</td>
-                                <td>@patient.Address.Count()</td>
+                                <td>@patient.BirthDate</td>
+                                <td>
+                                    <button @onclick="@(e => PatientSelected(e, patient))">Edit</button>
+                                    <ChestistLauncher CurrentPatient=@patient/>
+                                    </td>
                             </tr>
                         }
                         </tbody>
                     </table>
-                </div>
-                <div class="col-sm-4">
-                    @if (SelectedPatient?.Id != null)
-                    { 
-                        <div class="card-header">
-                            <button @onclick="ToggleUpdate" class="btn btn-primary">@(ShowUpdate?"Cancel": "Edit")</button>
-                        </div>
-
-                        @if (ShowUpdate)
-                        {
-                            <PatientUpdate Patient="EditPatient" Processing="@ProcessingSearch" UpdatePatient="UpdatePatient" />
-                        }
-                        else
-                        {
-                            <PatientDetail CurrentPatient="@SelectedPatient"/>
-                        }
-                    }
-                </div>
+                
             </div>
-        </div>
+        
         <br />
         <h3>Found: @Patients.Count patients!</h3>
 
         <!--<FhirBlaze.SharedComponents.LoadingSpinner />-->
     </div>
-</div>
+
 
