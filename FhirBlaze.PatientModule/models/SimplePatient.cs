@@ -33,5 +33,22 @@ namespace FhirBlaze.PatientModule.models
             Patient.Id = PatientID;
             return Patient;
         }
+
+        public Patient updateHL7FHIRPatient(Patient updatePatient)
+        {
+            var PatientName = new HumanName();
+            PatientName.Use = HumanName.NameUse.Usual;
+            var namelist = new[] { FirstName };
+            PatientName.Given = namelist;
+            PatientName.Family = LastName;
+            updatePatient.Name.RemoveAt(0);
+            updatePatient.Name.Add(PatientName);
+            updatePatient.BirthDate = Birthdate.ToString("yyyy-MM-dd");
+            var PatientIdentifier = new Identifier();
+            PatientIdentifier.System = "http://hlsemops.microsoft.com";
+            PatientIdentifier.Value = PatientID;
+            updatePatient.Id = PatientID;
+            return updatePatient;
+        }
     }
 }

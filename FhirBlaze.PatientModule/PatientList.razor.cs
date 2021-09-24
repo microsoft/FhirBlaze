@@ -78,22 +78,21 @@ namespace FhirBlaze.PatientModule
             }
         }
 
-        public async Task<Patient> UpdatePatient(Patient patient)
+        public async Task<Patient> UpdatePatient(SimplePatient patient)
         {
-            Patient updatedPatient = patient;
+            Patient updatedPatient = patient.updateHL7FHIRPatient(SelectedPatient);
+            
             try
             {
                 ProcessingUpdate = true;
-                updatedPatient = await FhirService.UpdatePatientAsync(patient.Id, patient);
-                SelectedPatient = updatedPatient;
-
-                var removePatient = Patients.FirstOrDefault(p => p.Id == updatedPatient.Id);
+                updatedPatient = await FhirService.UpdatePatientAsync(updatedPatient.Id, updatedPatient);
+                var removePatient = Patients.FirstOrDefault(p => p.Id == SelectedPatient.Id);
                 if (removePatient != null)
                 {
                     Patients.Remove(removePatient);
                     Patients.Add(updatedPatient);
                 }
-
+                SelectedPatient = updatedPatient;
                 ProcessingUpdate = false;
                 ToggleUpdate();
                 ShouldRender();
