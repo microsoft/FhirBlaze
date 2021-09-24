@@ -43,7 +43,7 @@
 @code
 {
     [Parameter]
-    public EventCallback<Hl7.Fhir.Model.Patient> UpdatePatient { get; set; }
+    public EventCallback<models.SimplePatient> UpdatePatient { get; set; }
 
     [Parameter]
     public bool Processing { get; set; }
@@ -56,7 +56,7 @@
         try
         {
             Console.WriteLine(Patient.PatientID);
-            await UpdatePatient.InvokeAsync(Patient.ToHl7Patient());
+            await UpdatePatient.InvokeAsync( Patient);
         }
         catch (Exception)
         {
