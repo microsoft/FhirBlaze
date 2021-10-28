@@ -14,6 +14,8 @@ namespace FhirBlaze.SharedComponents.Services
             _fhirClient = client;
         }
 
+
+
         #region Patient
         public async Task<IList<Patient>> GetPatientsAsync()
         {
@@ -94,6 +96,11 @@ namespace FhirBlaze.SharedComponents.Services
         public async Task<Questionnaire> CreateQuestionnaireAsync(Questionnaire questionnaire)
         {
             return await _fhirClient.CreateAsync<Questionnaire>(questionnaire);
+        }
+
+        public Task<QuestionnaireResponse> SaveQuestionnaireResponseAsync(QuestionnaireResponse qResponse)
+        {
+            throw new System.NotImplementedException();
         }
         #endregion
 
