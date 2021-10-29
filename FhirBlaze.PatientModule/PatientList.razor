@@ -1,6 +1,7 @@
 ﻿@page "/patient"
 @using FhirBlaze.SharedComponents
 
+@inject IModalService modal
 
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">Patients</a>
@@ -31,7 +32,7 @@
                 }
     <div class="container">
              
-
+        
         <br/>
         <div class="container">
             
@@ -49,10 +50,10 @@
                                 <td>@patient.Name.FirstOrDefault()</td>
                                 <td>@patient.BirthDate</td>
                                 <td>
-                                    <button @onclick="@(e => PatientSelected(e, patient))">Edit</button>
+                                    <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
                                     <ChestistLauncher CurrentPatient=@patient/>
-                                    <Questionnaire CurrentPatient=@patient />
-                                    </td>
+                                    <button @onclick="@(()=> modal.Show<Questionnaire>("Modal Popup Example"))" class="btn btn-primary">View</button>
+                                </td>
                             </tr>
                         }
                         </tbody>

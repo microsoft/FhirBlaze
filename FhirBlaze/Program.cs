@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using FhirBlaze.Graph;
 using System.Net.Http;
 using FhirBlaze.SharedComponents.SMART;
+using Blazored.Modal;
 
 namespace FhirBlaze
 {
@@ -47,6 +48,8 @@ namespace FhirBlaze
                 builder.Configuration.Bind("FhirConnection", fhir);
                 return fhir;
             });
+
+            builder.Services.AddBlazoredModal();
 
             builder.Services.AddScoped<SmartLauncher>(o => 
             {
