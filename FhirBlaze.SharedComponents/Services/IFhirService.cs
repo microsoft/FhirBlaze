@@ -6,13 +6,20 @@ namespace FhirBlaze.SharedComponents.Services
 {
     public interface IFhirService
     {
-        Task<QuestionnaireResponse> SaveQuestionnaireResponseAsync(QuestionnaireResponse qResponse);
+        #region Patient
         Task<Patient> CreatePatientsAsync(Patient patient);
         Task<IList<Patient>> GetPatientsAsync();
         Task<Patient> UpdatePatientAsync(string patientId, Patient patient);
         Task<int> GetPatientCountAsync();
         Task<IList<Patient>> SearchPatient(Patient patient);
-        Task<IList<Questionnaire>> GetQuestionnaireAsync();
+        #endregion
+
+        #region Questionnaire
+        Task<QuestionnaireResponse> SaveQuestionnaireResponseAsync(QuestionnaireResponse qResponse);
+        Task<IList<Questionnaire>> GetQuestionnairesAsync();
+        Task<Questionnaire> GetQuestionnaireByIdAsync(string id);
         Task<Questionnaire> CreateQuestionnaireAsync(Questionnaire questionnaire);
+
+        #endregion
     }
 }
