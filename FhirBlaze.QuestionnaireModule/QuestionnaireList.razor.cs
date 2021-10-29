@@ -15,7 +15,9 @@ namespace FhirBlaze.QuestionnaireModule
     public partial class QuestionnaireList
     {
         [Inject]
-        public IFhirService FhirService { get; set; }
+        public IFhirService FhirService { get; set; }   
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
         protected bool ShowCreate { get; set; } = false;
         protected bool ShowSearch { get; set; } = false;
         protected bool Loading { get; set; } = true;
@@ -43,6 +45,11 @@ namespace FhirBlaze.QuestionnaireModule
         public void ToggleSearch()
         {
             ShowSearch = !ShowSearch;
+        }
+
+        public void OnRespondClick(string id)
+        {
+            NavigationManager.NavigateTo($"/questionnaire/{id}");
         }
     }
 }

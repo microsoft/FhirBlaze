@@ -23,12 +23,14 @@
                     <tr class="my-table-header">
                         <th>Title</th>
                         <th>Date</th>
+                        <th>&nbsp;</th>
                     </tr>
                     @foreach (var questionnaire in Questionnaires)
                     {
                         <tr class="my-table-row">
                             <td>@questionnaire.Title</td>
-                            <td>@questionnaire.Date</td>
+                            <td>@questionnaire.Date</td>                            
+                            <td><button @onclick="() => OnRespondClick(questionnaire.Id)" class="btn btn-primary">Respond</button></td>
                         </tr>
                     }
                 </table>
