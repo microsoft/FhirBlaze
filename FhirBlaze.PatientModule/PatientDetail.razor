@@ -21,6 +21,7 @@
             <button type="button" class="btn btn-primary">Active: @CurrentPatient.Active</button>
             <a class="btn btn-primary" target="_blank" href="@ChestistLaunchUrl">Chestist</a>
             @*<button type="button" class="btn btn-primary" @onclick="LaunchClick">Chestist</button>*@
+            <button type="button" class="btn btn-primary" @onclick="LaunchQuestionnaire">Take Survey</button>
         </div>          
     </div>
 </div>
@@ -50,5 +51,10 @@
         };
         var href = Launcher.GetLaunchUrl(JsonConvert.SerializeObject(ctx));
         UriHelper.NavigateTo(href);
+    }
+
+    public void LaunchQuestionnaire()
+    {
+
     }
 }

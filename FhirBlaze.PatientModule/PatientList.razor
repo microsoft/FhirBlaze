@@ -51,6 +51,7 @@
                                 <td>
                                     <button @onclick="@(e => PatientSelected(e, patient))">Edit</button>
                                     <ChestistLauncher CurrentPatient=@patient/>
+                                    <Questionnaire CurrentPatient=@patient />
                                     </td>
                             </tr>
                         }
