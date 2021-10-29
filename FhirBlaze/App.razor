@@ -6,6 +6,7 @@
 @inject ILogger<App> Logger
 
 <CascadingAuthenticationState>
+<CascadingBlazoredModal> 
     <Router AppAssembly="@typeof(Program).Assembly" AdditionalAssemblies="@lazyLoadedAssemblies" OnNavigateAsync="@OnNavigateAsync">
         <Found Context="routeData">
                 <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(MainLayout)">
@@ -29,6 +30,7 @@
             </LayoutView>
         </NotFound>
     </Router>
+</CascadingBlazoredModal> 
 </CascadingAuthenticationState>
 
 
