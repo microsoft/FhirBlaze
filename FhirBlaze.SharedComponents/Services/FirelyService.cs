@@ -79,7 +79,7 @@ namespace FhirBlaze.SharedComponents.Services
         #endregion
 
         #region Questionnaire
-        public async Task<IList<Questionnaire>> GetQuestionnaireAsync()
+        public async Task<IList<Questionnaire>> GetQuestionnairesAsync()
         {
             var bundle = await _fhirClient.SearchAsync<Questionnaire>(pageSize: 100);
             var results = new List<Questionnaire>();
@@ -91,6 +91,15 @@ namespace FhirBlaze.SharedComponents.Services
             }
 
             return results;
+        }
+
+        public async Task<Questionnaire> GetQuestionnaireByIdAsync(string id)
+        {
+            var result = await _fhirClient.ReadAsync<Questionnaire>($"Questionnaire/{id}");
+            if (result == null)
+                throw new System.Exception($"{id} was not found.");
+
+            return result;
         }
 
         public async Task<Questionnaire> CreateQuestionnaireAsync(Questionnaire questionnaire)
