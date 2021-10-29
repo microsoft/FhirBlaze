@@ -1,5 +1,42 @@
 ﻿@page "/questionnaire/{id}"
-<h3>RenderQuestionnaire</h3>
+@using Hl7.Fhir.Model
 
-Hello RenderQuestionnaire
-Id: @Id
+<h3>Questionnaire: @Questionnaire.Id</h3>
+
+<form>
+@foreach (var item in Questionnaire.Item)
+{
+    <div id=@item.LinkId>
+        <h2>@item.Text</h2>
+
+        @foreach (var question in item.Item)
+        {
+            <div class="form-group">
+                <label for="@question.LinkId">@question.Text</label>
+                @switch (question.Type)
+                {
+                    case Questionnaire.QuestionnaireItemType.String:
+                        <input class="form-control" type="text" id="@question.LinkId"/>
+                        break;
+                    case Questionnaire.QuestionnaireItemType.Choice:
+                        <select class="form-control" id="@question.LinkId">
+                            @foreach (var o in question.AnswerOption)
+                            {                             
+                                var option = o.Value as Coding;                             
+                                <option value="@option.Code">@option.Display</option>
+                            }
+                        </select>
+                        break;
+                    case Questionnaire.QuestionnaireItemType.Text:
+                        <textarea class="form-control" id="@question.LinkId" rows="5" cols="50" />
+                        break;
+                    default:
+                        <div>Not implemented</div>
+                        break;
+                }
+            </div>
+        }
+    </div>
+}
+<button type="submit" class="btn btn-primary">Submit</button>
+</form>

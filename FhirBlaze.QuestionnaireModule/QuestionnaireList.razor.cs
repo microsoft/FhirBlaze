@@ -29,11 +29,10 @@ namespace FhirBlaze.QuestionnaireModule
 
         }
 
-        protected override async System.Threading.Tasks.Task OnInitializedAsync()
+        protected override async Task OnInitializedAsync()
         {
             Loading = true;
-            await base.OnInitializedAsync();
-            Questionnaires = await FhirService.GetQuestionnaireAsync();
+            Questionnaires = await FhirService.GetQuestionnairesAsync();
             Loading = false;
             ShouldRender();
         }
