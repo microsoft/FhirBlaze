@@ -6,7 +6,7 @@ namespace FhirBlaze.SharedComponents.Services
 {
     public interface IFhirService
     {
-        Task<QuestionnaireResponse> SaveQuestionnaireResponseAsync(QuestionnaireResponse qResponse)
+        Task<QuestionnaireResponse> SaveQuestionnaireResponseAsync(QuestionnaireResponse qResponse);
         Task<Patient> CreatePatientsAsync(Patient patient);
         Task<IList<Patient>> GetPatientsAsync();
         Task<Patient> UpdatePatientAsync(string patientId, Patient patient);
