@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FhirBlaze.QuestionnaireModule\FhirBlaze.QuestionnaireModule.csproj" />
     <ProjectReference Include="..\FhirBlaze.SharedComponents\FhirBlaze.SharedComponents.csproj" />
   </ItemGroup>
 

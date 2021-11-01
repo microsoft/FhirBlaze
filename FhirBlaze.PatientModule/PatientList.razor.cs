@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Components.Authorization;
 using Task = System.Threading.Tasks.Task;
 
 namespace FhirBlaze.PatientModule
@@ -26,7 +27,7 @@ namespace FhirBlaze.PatientModule
         protected SimplePatient DraftPatient { get; set; } = new SimplePatient();
         protected SimplePatient EditPatient { get; set; } = new SimplePatient();
         protected Patient SelectedPatient { get; set; } = new Patient();
-
+        [CascadingParameter] public Task<AuthenticationState> AuthTask { get; set; }
         public IList<Patient> Patients { get; set; } = new List<Patient>();
 
         protected override async Task OnInitializedAsync()
