@@ -107,10 +107,33 @@ namespace FhirBlaze.SharedComponents.Services
             return await _fhirClient.CreateAsync<Questionnaire>(questionnaire);
         }
 
-        public Task<QuestionnaireResponse> SaveQuestionnaireResponseAsync(QuestionnaireResponse qResponse)
+        public async Task<QuestionnaireResponse> SaveQuestionnaireResponseAsync(QuestionnaireResponse qResponse)
         {
             throw new System.NotImplementedException();
         }
+
+        public async Task<QuestionnaireResponse> GetQuestionnaireResponseByIdAsync(string id)
+        {
+            var result = await _fhirClient.ReadAsync<QuestionnaireResponse>($"QuestionnaireResponse/{id}");
+            if (result == null)
+                throw new System.Exception($"{id} was not found.");
+
+            return result;
+        }
+
+        public async Task<IList<QuestionnaireResponse>> GetQuestionnaireResponsesByQuestionnaireIdAsync(string questionnaireId)
+        {
+            var bundle = await _fhirClient.SearchAsync<QuestionnaireResponse>(pageSize: 100);
+            var result = new List<QuestionnaireResponse>();
+            while (bundle != null)
+            {
+                result.AddRange(bundle.Entry.Select(qr => (QuestionnaireResponse)qr.Resource).ToList());
+                bundle = await _fhirClient.ContinueAsync(bundle);
+            }
+
+            return result;
+        }
+
         #endregion
 
     }

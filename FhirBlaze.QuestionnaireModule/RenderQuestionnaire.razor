@@ -40,3 +40,24 @@
 }
 <button type="submit" class="btn btn-primary">Submit</button>
 </form>
+<hr/>
+<div>
+    <h3>Responses (@QuestionnaireResponses.Count)</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <td>Date</td>
+                <td>Subject</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var r in QuestionnaireResponses)
+            {
+                <tr>
+                    <td>@r.Authored</td>
+                    <td>@r.Subject.Reference</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
