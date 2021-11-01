@@ -1,0 +1,796 @@
+{
+	"info": {
+		"_postman_id": "66146c57-12a8-4ad8-85d0-88da0e444418",
+		"name": "HLS Hack",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Patients",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json; charset=utf-8"
+					}
+				],
+				"url": {
+					"raw": "{{fhirurl}}/Patient/",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Patient",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create Questionaire",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"resourceType\": \"Questionnaire\",\r\n    \"id\": \"ff2855cc-e03c-46b8-8e89-352a7d0f5d42\",\r\n    \"status\": \"active\",\r\n    \"date\": \"2021-10-26T19:19:35.669Z\",\r\n    \"item\": [\r\n        {\r\n            \"linkId\": \"8fc13543-037e-4864-902b-f61bfb272d4a\",\r\n            \"text\": \"Root\",\r\n            \"type\": \"group\",\r\n            \"item\": [\r\n                {\r\n                    \"linkId\": \"6457ffe6-e64e-4a1e-9e78-a743f203498e\",\r\n                    \"text\": \"How long was your stay (in days)\",\r\n                    \"type\": \"string\"\r\n                },\r\n                {\r\n                    \"linkId\": \"38376622-0f8a-4c02-bd6b-0d1f6cf1a3b0\",\r\n                    \"text\": \"How was your stay?\",\r\n                    \"type\": \"choice\",\r\n                    \"required\": true,\r\n                    \"repeats\": false,\r\n                    \"answerOption\":[\r\n                        {\"valueCoding\": { \"code\": \"1\",\"display\": \"Very Dissatisfied\"}},\r\n                        {\"valueCoding\": { \"code\": \"2\",\"display\": \"Dissatisfied\"}},\r\n                        {\"valueCoding\": { \"code\": \"3\",\"display\": \"Meh\"}},\r\n                        { \"valueCoding\": { \"code\": \"4\",\"display\": \"Satisifed\"}},\r\n                        {\"valueCoding\": { \"code\": \"5\",\"display\": \"Very Satisifed\"}}\r\n                        \r\n                    ]\r\n                    \r\n                     },\r\n                     {\r\n                        \"linkId\": \"7447602c-25e6-4858-83ed-9b82d7971b7f\",\r\n                        \"text\": \"Any other comments\",\r\n                        \"type\": \"text\",\r\n                        \"required\": true\r\n                    }\r\n                \r\n            ]\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Questionnaire",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Questionnaire"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Create QuestionaireResponse",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "{{clientSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "clientId",
+							"value": "{{clientId}}",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{TOKENURL}}",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "{{AUTHURL}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "challengeAlgorithm",
+							"value": "S256",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "{{SCOPE}}",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "{{URL}}",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code_with_pkce",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"resourceType\": \"QuestionnaireResponse\",\r\n\t\"questionnaire\": \"http://sqlonfhir-r4.azurewebsites.net/fhir/Questionnaire/ff2855cc-e03c-46b8-8e89-352a7d0f5d42\",\r\n\t\"status\": \"completed\",\r\n\t\"authored\": \"2021-10-29T18:33:28.996Z\",\r\n    \"author\":\"5eb7cad5-813c-4782-bb7d-3cfcf0345e1f\",\r\n\t\"item\": [\r\n\t\t{\r\n\t\t\t\"linkId\": \"8fc13543-037e-4864-902b-f61bfb272d4a\",\r\n\t\t\t\"item\": [\r\n\t\t\t\t{\r\n\t\t\t\t\t\"linkId\": \"6457ffe6-e64e-4a1e-9e78-a743f203498e\",\r\n\t\t\t\t\t\"answer\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"valueString\": \"133\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"text\": \"How long was your stay (in days)\"\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"linkId\": \"38376622-0f8a-4c02-bd6b-0d1f6cf1a3b0\",\r\n\t\t\t\t\t\"answer\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"valueCoding\": {\r\n\t\t\t\t\t\t\t\t\"code\": \"1\",\r\n\t\t\t\t\t\t\t\t\"display\": \"Very Dissatisfied\",\r\n\t\t\t\t\t\t\t\t\"system\": \"{1}\"\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"text\": \"How was your stay?\"\r\n\t\t\t\t},\r\n\t\t\t\t{\r\n\t\t\t\t\t\"linkId\": \"7447602c-25e6-4858-83ed-9b82d7971b7f\",\r\n\t\t\t\t\t\"answer\": [\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\"valueString\": \"Some random comments\"\r\n\t\t\t\t\t\t}\r\n\t\t\t\t\t],\r\n\t\t\t\t\t\"text\": \"Any other comments\"\r\n\t\t\t\t}\r\n\t\t\t],\r\n\t\t\t\"text\": \"Root\"\r\n\t\t}\r\n\t]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Questionnaire",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Questionnaire"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get QuestionaireResponse",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "{{clientSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "clientId",
+							"value": "{{clientId}}",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{TOKENURL}}",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "{{AUTHURL}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "challengeAlgorithm",
+							"value": "S256",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "{{SCOPE}}",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "{{URL}}",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code_with_pkce",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"resourceType\": \"Questionnaire\",\r\n    \"id\": \"ff2855cc-e03c-46b8-8e89-352a7d0f5d42\",\r\n    \"status\": \"active\",\r\n    \"date\": \"2021-10-26T19:19:35.669Z\",\r\n    \"item\": [\r\n        {\r\n            \"linkId\": \"8fc13543-037e-4864-902b-f61bfb272d4a\",\r\n            \"text\": \"Root\",\r\n            \"type\": \"group\",\r\n            \"item\": [\r\n                {\r\n                    \"linkId\": \"6457ffe6-e64e-4a1e-9e78-a743f203498e\",\r\n                    \"text\": \"How long was your stay (in days)\",\r\n                    \"type\": \"string\"\r\n                },\r\n                {\r\n                    \"linkId\": \"38376622-0f8a-4c02-bd6b-0d1f6cf1a3b0\",\r\n                    \"text\": \"How was your stay?\",\r\n                    \"type\": \"choice\",\r\n                    \"required\": true,\r\n                    \"repeats\": false,\r\n                    \"answerOption\":[\r\n                        {\"valueCoding\": { \"code\": \"1\",\"display\": \"Very Dissatisfied\"}},\r\n                        {\"valueCoding\": { \"code\": \"2\",\"display\": \"Dissatisfied\"}},\r\n                        {\"valueCoding\": { \"code\": \"3\",\"display\": \"Meh\"}},\r\n                        { \"valueCoding\": { \"code\": \"4\",\"display\": \"Satisifed\"}},\r\n                        {\"valueCoding\": { \"code\": \"5\",\"display\": \"Very Satisifed\"}}\r\n                        \r\n                    ]\r\n                    \r\n                     },\r\n                     {\r\n                        \"linkId\": \"7447602c-25e6-4858-83ed-9b82d7971b7f\",\r\n                        \"text\": \"Any other comments\",\r\n                        \"type\": \"text\",\r\n                        \"required\": true\r\n                    }\r\n                \r\n            ]\r\n        }\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{fhirurl}}/QuestionnaireResponse566aae40-5915-4c16-bed9-3fc104f8dda7",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"QuestionnaireResponse566aae40-5915-4c16-bed9-3fc104f8dda7"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Questionaire",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "client_authentication",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "clientSecret",
+							"value": "{{clientSecret}}",
+							"type": "string"
+						},
+						{
+							"key": "useBrowser",
+							"value": true,
+							"type": "boolean"
+						},
+						{
+							"key": "clientId",
+							"value": "{{clientId}}",
+							"type": "string"
+						},
+						{
+							"key": "accessTokenUrl",
+							"value": "{{TOKENURL}}",
+							"type": "string"
+						},
+						{
+							"key": "authUrl",
+							"value": "{{AUTHURL}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenName",
+							"value": "TOKEN",
+							"type": "string"
+						},
+						{
+							"key": "challengeAlgorithm",
+							"value": "S256",
+							"type": "string"
+						},
+						{
+							"key": "scope",
+							"value": "{{SCOPE}}",
+							"type": "string"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "{{URL}}",
+							"type": "string"
+						},
+						{
+							"key": "grant_type",
+							"value": "authorization_code_with_pkce",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Questionnaire/885dbc0c-8d34-4c08-b182-e55d7a14d39a",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Questionnaire",
+						"885dbc0c-8d34-4c08-b182-e55d7a14d39a"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Consent INFAO",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+json; charset=utf-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"resourceType\": \"Consent\",\r\n  \"status\": \"active\",\r\n  \"scope\": {\r\n    \"coding\": [\r\n      {\r\n        \"system\": \"http://terminology.hl7.org/CodeSystem/consentscope\",\r\n        \"code\": \"patient-privacy\"\r\n      }\r\n    ]\r\n  },\r\n  \"category\": [\r\n    {\r\n      \"coding\": [\r\n        {\r\n          \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\",\r\n          \"code\": \"INFAO\"\r\n        }\r\n      ]\r\n    }\r\n  ],\r\n  \"patient\": {\r\n    \"reference\": \"Patient/2c803e65-2552-44c7-9ed2-4088333e04f7\"\r\n  },\r\n  \"dateTime\": \"2020-11-08\",\r\n  \"organization\": [\r\n    {\r\n      \"reference\": \"Organization/9bb2bf01-18b7-3506-aa07-42debc6fbc80\"\r\n    }\r\n  ],\r\n  \"sourceAttachment\": {\r\n        \"contentType\": \"application/pdf\",\r\n        \"title\": \"Test Attachment\",\r\n        \"url\": \"https://some.fhir.url/Document/1111-2222-33334444-5555-6666\"\r\n    },\r\n  \"policyRule\": {\r\n    \"coding\": [\r\n      {\r\n        \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\",\r\n        \"code\": \"OPTOUT\"\r\n      }\r\n    ]\r\n  },\r\n  \"provision\": {\r\n    \"period\": {\r\n      \"start\": \"2020-11-08\",\r\n      \"end\": \"2021-11-08\"\r\n    },  \r\n    \"actor\": [\r\n      {\r\n        \"role\": {\r\n          \"coding\": [\r\n            {\r\n              \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\",\r\n              \"code\": \"CST\"\r\n            }\r\n          ]\r\n        },\r\n        \"reference\": {\r\n          \"reference\": \"Practitioner/00000174-0823-dc8d-0000-00000000e876\"\r\n        }\r\n      },\r\n      {\r\n        \"role\": {\r\n          \"coding\": [\r\n            {\r\n              \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\",\r\n              \"code\": \"PRCP\"\r\n            }\r\n          ]\r\n        },\r\n        \"reference\": {\r\n          \"reference\": \"Organization/9bb2bf01-18b7-3506-aa07-42debc6fbc80\"\r\n        }\r\n      }\r\n    ],\r\n    \"action\": [\r\n      {\r\n        \"coding\": [\r\n          {\r\n            \"system\": \"http://terminology.hl7.org/CodeSystem/consentaction\",\r\n            \"code\": \"access\"\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Consent",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Consent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Consent INFAO",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+json; charset=utf-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"resourceType\": \"Consent\",\r\n    \"id\": \"2501c216-ab84-4f12-9b69-69212f5f5638\",\r\n    \"meta\": {\r\n        \"security\": [\r\n            {\r\n                \"system\": \"https://microsoft.com/fhir/oid\",\r\n                \"code\": \"3050084d-dba9-4c35-8666-3e22c2764a4b\"\r\n            }\r\n        ]\r\n    },\r\n    \"status\": \"active\",\r\n    \"scope\": {\r\n        \"coding\": [\r\n            {\r\n                \"system\": \"http://terminology.hl7.org/CodeSystem/consentscope\",\r\n                \"code\": \"patient-privacy\"\r\n            }\r\n        ]\r\n    },\r\n    \"category\": [\r\n        {\r\n            \"coding\": [\r\n                {\r\n                    \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\",\r\n                    \"code\": \"INFAO\"\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"patient\": {\r\n        \"reference\": \"Patient/25d4f7c6-37c5-42c6-bf3a-7fbe124928d3\",\r\n        \"display\": \"Alberto639\"\r\n    },\r\n    \"dateTime\": \"2020-11-08\",\r\n    \"organization\": [\r\n        {\r\n            \"reference\": \"Organization/6103d742-31b1-3e24-9552-034b3b85ae3d\"\r\n        }\r\n    ],\r\n    \"sourceAttachment\": {\r\n        \"contentType\": \"application/pdf\",\r\n        \"title\": \"Test Attachment\",\r\n        \"url\": \"https://some.fhir.url/Document/1111-2222-33334444-5555-6666\"\r\n    },\r\n    \"policyRule\": {\r\n        \"coding\": [\r\n            {\r\n                \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\",\r\n                \"code\": \"OPTOUT\"\r\n            }\r\n        ]\r\n    },\r\n    \"provision\": {\r\n        \"period\": {\r\n            \"start\": \"2020-11-08\",\r\n            \"end\": \"2021-11-08\"\r\n        },\r\n        \"actor\": [\r\n            {\r\n                \"role\": {\r\n                    \"coding\": [\r\n                        {\r\n                            \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\",\r\n                            \"code\": \"CST\"\r\n                        }\r\n                    ]\r\n                },\r\n                \"reference\": {\r\n                    \"reference\": \"Practitioner/00000174-0823-dc8d-0000-00000000a898\"\r\n                }\r\n            },\r\n            {\r\n                \"role\": {\r\n                    \"coding\": [\r\n                        {\r\n                            \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\",\r\n                            \"code\": \"PRCP\"\r\n                        }\r\n                    ]\r\n                },\r\n                \"reference\": {\r\n                    \"reference\": \"Organization/6103d742-31b1-3e24-9552-034b3b85ae3d\"\r\n                }\r\n            }\r\n        ],\r\n        \"action\": [\r\n            {\r\n                \"coding\": [\r\n                    {\r\n                        \"system\": \"http://terminology.hl7.org/CodeSystem/consentaction\",\r\n                        \"code\": \"access\"\r\n                    }\r\n                ]\r\n            }\r\n        ]\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Consent?_id=2501c216-ab84-4f12-9b69-69212f5f5638",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Consent"
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "2501c216-ab84-4f12-9b69-69212f5f5638"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Consent INFAO Copy",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+json; charset=utf-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"resourceType\": \"Consent\",\r\n    \"id\": \"2501c216-ab84-4f12-9b69-69212f5f5638\",\r\n    \"meta\": {\r\n        \"security\": [\r\n            {\r\n                \"system\": \"https://microsoft.com/fhir/oid\",\r\n                \"code\": \"3050084d-dba9-4c35-8666-3e22c2764a4b\"\r\n            }\r\n        ]\r\n    },\r\n    \"status\": \"active\",\r\n    \"scope\": {\r\n        \"coding\": [\r\n            {\r\n                \"system\": \"http://terminology.hl7.org/CodeSystem/consentscope\",\r\n                \"code\": \"patient-privacy\"\r\n            }\r\n        ]\r\n    },\r\n    \"category\": [\r\n        {\r\n            \"coding\": [\r\n                {\r\n                    \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\",\r\n                    \"code\": \"INFAO\"\r\n                }\r\n            ]\r\n        }\r\n    ],\r\n    \"patient\": {\r\n        \"reference\": \"Patient/25d4f7c6-37c5-42c6-bf3a-7fbe124928d3\",\r\n        \"display\": \"Alberto639\"\r\n    },\r\n    \"dateTime\": \"2020-11-08\",\r\n    \"organization\": [\r\n        {\r\n            \"reference\": \"Organization/6103d742-31b1-3e24-9552-034b3b85ae3d\"\r\n        }\r\n    ],\r\n    \"sourceAttachment\": {\r\n        \"contentType\": \"application/pdf\",\r\n        \"title\": \"Test Attachment\",\r\n        \"url\": \"https://some.fhir.url/Document/1111-2222-33334444-5555-6666\"\r\n    },\r\n    \"policyRule\": {\r\n        \"coding\": [\r\n            {\r\n                \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\",\r\n                \"code\": \"OPTOUT\"\r\n            }\r\n        ]\r\n    },\r\n    \"provision\": {\r\n        \"period\": {\r\n            \"start\": \"2020-11-08\",\r\n            \"end\": \"2021-11-08\"\r\n        },\r\n        \"actor\": [\r\n            {\r\n                \"role\": {\r\n                    \"coding\": [\r\n                        {\r\n                            \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\",\r\n                            \"code\": \"CST\"\r\n                        }\r\n                    ]\r\n                },\r\n                \"reference\": {\r\n                    \"reference\": \"Practitioner/00000174-0823-dc8d-0000-00000000a898\"\r\n                }\r\n            },\r\n            {\r\n                \"role\": {\r\n                    \"coding\": [\r\n                        {\r\n                            \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\",\r\n                            \"code\": \"PRCP\"\r\n                        }\r\n                    ]\r\n                },\r\n                \"reference\": {\r\n                    \"reference\": \"Organization/6103d742-31b1-3e24-9552-034b3b85ae3d\"\r\n                }\r\n            }\r\n        ],\r\n        \"action\": [\r\n            {\r\n                \"coding\": [\r\n                    {\r\n                        \"system\": \"http://terminology.hl7.org/CodeSystem/consentaction\",\r\n                        \"code\": \"access\"\r\n                    }\r\n                ]\r\n            }\r\n        ]\r\n    }\r\n}"
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Consent?_id=2501c216-ab84-4f12-9b69-69212f5f5638",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Consent"
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "2501c216-ab84-4f12-9b69-69212f5f5638"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "POST Consent NPP",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/fhir+json; charset=utf-8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"resourceType\": \"Consent\",\r\n  \"status\": \"active\",\r\n  \"scope\": {\r\n    \"coding\": [\r\n      {\r\n        \"system\": \"http://terminology.hl7.org/CodeSystem/consentscope\",\r\n        \"code\": \"patient-privacy\"\r\n      }\r\n    ]\r\n  },\r\n  \"category\": [\r\n    {\r\n      \"coding\": [\r\n        {\r\n          \"system\": \"http://terminology.hl7.org/CodeSystem/consentcategorycodes\",\r\n          \"code\": \"npp\"\r\n        }\r\n      ]\r\n    }\r\n  ],\r\n  \"patient\": {\r\n    \"reference\": \"Patient/f5e7ee94-bfc6-465e-a64d-f0c90e3d50f5\"\r\n  },\r\n  \"dateTime\": \"2020-01-01\",\r\n  \"performer\": [\r\n    {\r\n      \"reference\": \"Patient/f5e7ee94-bfc6-465e-a64d-f0c90e3d50f5\"\r\n    }\r\n  ],\r\n  \"organization\": [\r\n    {\r\n      \"reference\": \"Organization/6103d742-31b1-3e24-9552-034b3b85ae3d\"\r\n    }\r\n  ],\r\n  \"policyRule\": {\r\n    \"coding\": [\r\n      {\r\n        \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\",\r\n        \"code\": \"OPTIN\"\r\n      }\r\n    ]\r\n  },\r\n  \"provision\": {\r\n    \"period\": {\r\n      \"start\": \"2020-01-01\",\r\n      \"end\": \"2021-01-01\"\r\n    },\r\n    \"actor\": [\r\n      {\r\n        \"role\": {\r\n          \"coding\": [\r\n            {\r\n              \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\",\r\n              \"code\": \"PRCP\"\r\n            }\r\n          ]\r\n        },\r\n        \"reference\": {\r\n          \"reference\": \"Practitioner/00000174-0823-dc8d-0000-00000000a898\"\r\n        }\r\n      }\r\n    ],\r\n    \"provision\": [\r\n      {\r\n        \"type\": \"permit\",\r\n        \"actor\": [\r\n          {\r\n            \"role\": {\r\n              \"coding\": [\r\n                {\r\n                  \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\",\r\n                  \"code\": \"AUT\"\r\n                }\r\n              ]\r\n            },\r\n            \"reference\": {\r\n              \"reference\": \"Practitioner/xcda-author\"\r\n            }\r\n          }\r\n        ],\r\n        \"class\": [\r\n          {\r\n            \"system\": \"urn:ietf:bcp:13\",\r\n            \"code\": \"application/hl7-cda+xml\"\r\n          }\r\n        ],\r\n        \"code\": [\r\n          {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"http://loinc.org\",\r\n                \"code\": \"34133-9\"\r\n              }\r\n            ]\r\n          },\r\n          {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"http://loinc.org\",\r\n                \"code\": \"18842-5\"\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Consent",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Consent"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Consent Filter ID",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json; charset=utf-8"
+					}
+				],
+				"url": {
+					"raw": "{{fhirurl}}/Patient/",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Patient",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Consent NPP - Security Status Patient Period",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json; charset=utf-8"
+					}
+				],
+				"url": {
+					"raw": "{{fhirurl}}/Consent?_security=88d9f1ea-0ced-4747-86e6-8f4849234c9e&status=active&patient=Patient/f5e7ee94-bfc6-465e-a64d-f0c90e3d50f5&period=ge2020-11-09",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Consent"
+					],
+					"query": [
+						{
+							"key": "_security",
+							"value": "88d9f1ea-0ced-4747-86e6-8f4849234c9e"
+						},
+						{
+							"key": "status",
+							"value": "active"
+						},
+						{
+							"key": "patient",
+							"value": "Patient/f5e7ee94-bfc6-465e-a64d-f0c90e3d50f5"
+						},
+						{
+							"key": "period",
+							"value": "ge2020-11-09"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "PUT Consent Toggle Active",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json; charset=utf-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"resourceType\": \"Consent\",\r\n    \"id\": \"c9cd7636-3e50-48b3-a681-746ca147617c\",\r\n    \"meta\": {\r\n        \"security\": [\r\n            {\r\n                \"system\": \"https://microsoft.com/fhir/oid\",\r\n                \"code\": \"88d9f1ea-0ced-4747-86e6-8f4849234c9e\"\r\n            }\r\n        ]\r\n    },  \r\n  \"status\": \"active\",\r\n  \"scope\": {\r\n    \"coding\": [\r\n      {\r\n        \"system\": \"http://terminology.hl7.org/CodeSystem/consentscope\",\r\n        \"code\": \"patient-privacy\"\r\n      }\r\n    ]\r\n  },\r\n  \"category\": [\r\n    {\r\n      \"coding\": [\r\n        {\r\n          \"system\": \"http://terminology.hl7.org/CodeSystem/consentcategorycodes\",\r\n          \"code\": \"npp\"\r\n        }\r\n      ]\r\n    }\r\n  ],\r\n  \"patient\": {\r\n    \"reference\": \"Patient/f5e7ee94-bfc6-465e-a64d-f0c90e3d50f5\"\r\n  },\r\n  \"dateTime\": \"2020-01-01\",\r\n  \"performer\": [\r\n    {\r\n      \"reference\": \"Patient/f5e7ee94-bfc6-465e-a64d-f0c90e3d50f5\"\r\n    }\r\n  ],\r\n  \"organization\": [\r\n    {\r\n      \"reference\": \"Organization/6103d742-31b1-3e24-9552-034b3b85ae3d\"\r\n    }\r\n  ],\r\n  \"policyRule\": {\r\n    \"coding\": [\r\n      {\r\n        \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ActCode\",\r\n        \"code\": \"OPTIN\"\r\n      }\r\n    ]\r\n  },\r\n  \"provision\": {\r\n    \"period\": {\r\n      \"start\": \"2020-01-01\",\r\n      \"end\": \"2021-01-01\"\r\n    },\r\n    \"actor\": [\r\n      {\r\n        \"role\": {\r\n          \"coding\": [\r\n            {\r\n              \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\",\r\n              \"code\": \"PRCP\"\r\n            }\r\n          ]\r\n        },\r\n        \"reference\": {\r\n          \"reference\": \"Practitioner/00000174-0823-dc8d-0000-00000000a898\"\r\n        }\r\n      }\r\n    ],\r\n    \"provision\": [\r\n      {\r\n        \"type\": \"permit\",\r\n        \"actor\": [\r\n          {\r\n            \"role\": {\r\n              \"coding\": [\r\n                {\r\n                  \"system\": \"http://terminology.hl7.org/CodeSystem/v3-ParticipationType\",\r\n                  \"code\": \"AUT\"\r\n                }\r\n              ]\r\n            },\r\n            \"reference\": {\r\n              \"reference\": \"Practitioner/xcda-author\"\r\n            }\r\n          }\r\n        ],\r\n        \"class\": [\r\n          {\r\n            \"system\": \"urn:ietf:bcp:13\",\r\n            \"code\": \"application/hl7-cda+xml\"\r\n          }\r\n        ],\r\n        \"code\": [\r\n          {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"http://loinc.org\",\r\n                \"code\": \"34133-9\"\r\n              }\r\n            ]\r\n          },\r\n          {\r\n            \"coding\": [\r\n              {\r\n                \"system\": \"http://loinc.org\",\r\n                \"code\": \"18842-5\"\r\n              }\r\n            ]\r\n          }\r\n        ]\r\n      }\r\n    ]\r\n  }\r\n}"
+				},
+				"url": {
+					"raw": "{{fhirurl}}/Consent?_id=c9cd7636-3e50-48b3-a681-746ca147617c",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Consent"
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "c9cd7636-3e50-48b3-a681-746ca147617c"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Consent Toggled Consent",
+			"request": {
+				"auth": {
+					"type": "oauth2",
+					"oauth2": [
+						{
+							"key": "accessToken",
+							"value": "{{bearerToken}}",
+							"type": "string"
+						},
+						{
+							"key": "tokenType",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "application/fhir+json; charset=utf-8"
+					}
+				],
+				"url": {
+					"raw": "{{fhirurl}}/Consent?_id=2501c216-ab84-4f12-9b69-69212f5f5638",
+					"host": [
+						"{{fhirurl}}"
+					],
+					"path": [
+						"Consent"
+					],
+					"query": [
+						{
+							"key": "_id",
+							"value": "2501c216-ab84-4f12-9b69-69212f5f5638"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "grant_type",
+				"value": "authorization_code_with_pkce",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "TOKEN",
+				"type": "string"
+			},
+			{
+				"key": "challengeAlgorithm",
+				"value": "S256",
+				"type": "string"
+			},
+			{
+				"key": "useBrowser",
+				"value": true,
+				"type": "boolean"
+			},
+			{
+				"key": "scope",
+				"value": "{{SCOPE}}",
+				"type": "string"
+			},
+			{
+				"key": "redirect_uri",
+				"value": "{{URL}}",
+				"type": "string"
+			},
+			{
+				"key": "clientSecret",
+				"value": "{{clientSecret}}",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "{{clientId}}",
+				"type": "string"
+			},
+			{
+				"key": "authUrl",
+				"value": "{{AUTHURL}}",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "{{TOKENURL}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
