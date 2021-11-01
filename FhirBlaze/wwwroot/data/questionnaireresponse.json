@@ -1,0 +1,48 @@
+{
+	"resourceType": "QuestionnaireResponse",
+	"questionnaire": "https://chestist-fhir-api.azurehealthcareapis.com/Questionnaire/885dbc0c-8d34-4c08-b182-e55d7a14d39a",
+	"status": "completed",
+	"authored": "2021-10-29T18:33:28.996Z",
+	"subject": {
+		"reference": "Patient/5eb7cad5-813c-4782-bb7d-3cfcf0345e1f"
+	},
+	"item": [
+		{
+			"linkId": "8fc13543-037e-4864-902b-f61bfb272d4a",
+			"item": [
+				{
+					"linkId": "6457ffe6-e64e-4a1e-9e78-a743f203498e",
+					"answer": [
+						{
+							"valueString": "133"
+						}
+					],
+					"text": "How long was your stay (in days)"
+				},
+				{
+					"linkId": "38376622-0f8a-4c02-bd6b-0d1f6cf1a3b0",
+					"answer": [
+						{
+							"valueCoding": {
+								"code": "1",
+								"display": "Very Dissatisfied",
+								"system": "{1}"
+							}
+						}
+					],
+					"text": "How was your stay?"
+				},
+				{
+					"linkId": "7447602c-25e6-4858-83ed-9b82d7971b7f",
+					"answer": [
+						{
+							"valueString": "Some random comments"
+						}
+					],
+					"text": "Any other comments"
+				}
+			],
+			"text": "Root"
+		}
+	]
+}
