@@ -131,7 +131,7 @@ namespace FhirBlaze.SharedComponents.Services
                 bundle = await _fhirClient.ContinueAsync(bundle);
             }
 
-            return result;
+            return result.Where(r => r.Questionnaire.Contains(questionnaireId)).ToList();
         }
 
         #endregion
