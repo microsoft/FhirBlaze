@@ -1,7 +1,32 @@
 ﻿@page "/questionnaire/{id}"
 @using Hl7.Fhir.Model
-
+@using Microsoft.AspNetCore.Components.Forms
 <h3>Id: @Questionnaire.Id</h3>
+
+<EditForm Model=@QResponse>
+    @foreach (var item in QResponse.Item)
+    {
+
+        <h3>@item.Text</h3>
+        @foreach (var ans in item.Answer)
+        {
+            @switch (@ans.Value.GetType().Name)
+            {
+                case "FhirString":
+                 <h3>String:@ans.Value.ToString()</h3> 
+                break;
+                case "Coding":
+                 <h3>Code: @((Coding)ans.Value).Display</h3>       
+                break;
+                default:
+                    <h6>@ans.Value.GetType().Name</h6>
+                    break;
+            }
+           
+            
+        }
+    }        
+</EditForm>
 
 <form>
 @foreach (var item in Questionnaire.Item)
