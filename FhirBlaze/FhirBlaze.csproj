@@ -23,8 +23,4 @@
     <ProjectReference Include="..\FhirBlaze.SharedComponents\FhirBlaze.SharedComponents.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <BlazorWebAssemblyLazyLoad Include="FhirBlaze.PatientModule.dll" />
-    <BlazorWebAssemblyLazyLoad Include="FhirBlaze.QuestionnaireModule.dll" />
-  </ItemGroup>
 </Project>
