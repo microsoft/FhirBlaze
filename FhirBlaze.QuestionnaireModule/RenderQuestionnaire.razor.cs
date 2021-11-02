@@ -19,6 +19,8 @@ namespace FhirBlaze.QuestionnaireModule
         public HttpClient Http { get; set; }
         [Parameter]
         public string Id { get; set; }
+        [Parameter]
+        public bool IsPreview { get; set; } = false;
         public Questionnaire Questionnaire { get; set; } = new Questionnaire();
         public IList<QuestionnaireResponse> QuestionnaireResponses { get; set; } = new List<QuestionnaireResponse>();
 
