@@ -1,13 +1,15 @@
 ﻿@page "/questionnaire/{id}"
 @using Hl7.Fhir.Model
 
-<h3>Id: @Questionnaire.Id</h3>
+
+<h4>@Questionnaire.Title</h4>
+<h8>(@Questionnaire.Id)</h8>
 
 <form>
 @foreach (var item in Questionnaire.Item)
 {
     <div id=@item.LinkId>
-        <h2>@item.Text</h2>
+        <h6><b>@item.Text</b></h6>
 
         @foreach (var question in item.Item)
         {
