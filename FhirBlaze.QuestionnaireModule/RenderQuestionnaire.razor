@@ -1,22 +1,41 @@
 ﻿@page "/questionnaire/{id}"
 @using Hl7.Fhir.Model
 @using Microsoft.AspNetCore.Components.Forms
-<h3>Id: @Questionnaire.Id</h3>
 
-<EditForm Model=@QResponse>
+@if(!QLoaded){
+    <h4>Loading</h4>
+}else{
+    <h4>@Questionnaire.Description</h4>
+    <h5>(ID: @Questionnaire.Id)</h5>
+}
+@if (!QRLoaded)
+{
+    <h1>Loading QR response</h1>
+}else{
+
+
+<EditForm Model=@QResponse OnSubmit=@SubmitQuestionnaireAsync>
     @foreach (var item in QResponse.Item)
     {
-
-        <h3>@item.Text</h3>
-        @foreach (var ans in item.Answer)
-        {
-            @switch (@ans.Value.GetType().Name)
+    <label class="form-control">G: @item.Text</label>
+    @foreach (var ans in item.Answer)
+    {
+            @switch (QuestionTypesDictionary[item.LinkId])
             {
-                case "FhirString":
-                 <h3>String:@ans.Value.ToString()</h3> 
+                case Questionnaire.QuestionnaireItemType.String:
+                 <InputText class="form-control" @bind-Value=(((FhirString)ans.Value).Value) />
                 break;
-                case "Coding":
-                 <h3>Code: @((Coding)ans.Value).Display</h3>       
+                case Questionnaire.QuestionnaireItemType.Text:
+                 <InputTextArea class="form-control" @bind-Value=(((FhirString)ans.Value).Value) />
+                break;
+                case Questionnaire.QuestionnaireItemType.Choice:
+                    <InputSelect @bind-Value=(((Coding)ans.Value).Code) class="form-control" >
+                        @foreach (var option in AnswerOptionsDictionary[item.LinkId])
+                            {                             
+                                
+                                <option value="@option.Code">@option.Display</option>
+                            }
+                 </InputSelect>
                 break;
                 default:
                     <h6>@ans.Value.GetType().Name</h6>
@@ -25,46 +44,53 @@
            
             
         }
-    }        
-</EditForm>
-
-<form>
-@foreach (var item in Questionnaire.Item)
-{
-    <div id=@item.LinkId>
-        <h2>@item.Text</h2>
-
-        @foreach (var question in item.Item)
+    }  
+   @if (!IsPreview)
         {
-            <div class="form-group">
-                <label for="@question.LinkId">@question.Text</label>
-                @switch (question.Type)
+            <button type="submit" class="btn btn-primary">Submit</button>
+        }
+</EditForm>
+}
+
+<h4>Regular form</h4>
+@if (!QLoaded)
+{
+    <form>
+        @foreach (var item in Questionnaire.Item)
+        {
+            <div id=@item.LinkId>
+                <h2>@item.Text</h2>
+
+                @foreach (var question in item.Item)
                 {
-                    case Questionnaire.QuestionnaireItemType.String:
-                        <input class="form-control" type="text" id="@question.LinkId"/>
-                        break;
-                    case Questionnaire.QuestionnaireItemType.Choice:
-                        <select class="form-control" id="@question.LinkId">
-                            @foreach (var o in question.AnswerOption)
-                            {                             
-                                var option = o.Value as Coding;                             
-                                <option value="@option.Code">@option.Display</option>
-                            }
-                        </select>
-                        break;
-                    case Questionnaire.QuestionnaireItemType.Text:
-                        <textarea class="form-control" id="@question.LinkId" rows="5" cols="50" />
-                        break;
-                    default:
-                        <div>Not implemented</div>
-                        break;
+                    <div class="form-group">
+                        <label for="@question.LinkId">@question.Text</label>
+                        @switch (question.Type)
+                        {
+                            case Questionnaire.QuestionnaireItemType.String:
+                                <input class="form-control" type="text" id="@question.LinkId"/>
+                                break;
+                            case Questionnaire.QuestionnaireItemType.Choice:
+                                <select class="form-control" id="@question.LinkId">
+                                    @foreach (var o in question.AnswerOption)
+                                    {
+                                        var option = o.Value as Coding;
+                                        <option value="@option.Code">@option.Display</option>
+                                    }
+                                </select>
+                                break;
+                            case Questionnaire.QuestionnaireItemType.Text:
+                                <textarea class="form-control" id="@question.LinkId" rows="5" cols="50" />
+                                break;
+                            default:
+                                <div>Not implemented</div>
+                                break;
+                        }
+                    </div>
                 }
             </div>
         }
-    </div>
+       
+    </form>
 }
-    @if (!IsPreview)
-    {
-        <button type="submit" class="btn btn-primary">Submit</button>
-    }
-</form>
+ 

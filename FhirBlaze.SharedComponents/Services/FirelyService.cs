@@ -109,7 +109,7 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<QuestionnaireResponse> SaveQuestionnaireResponseAsync(QuestionnaireResponse qResponse)
         {
-            throw new System.NotImplementedException();
+            return await _fhirClient.CreateAsync<QuestionnaireResponse>(qResponse);
         }
 
         public async Task<QuestionnaireResponse> GetQuestionnaireResponseByIdAsync(string id)

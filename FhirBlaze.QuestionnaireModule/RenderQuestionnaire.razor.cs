@@ -9,50 +9,89 @@ using System.Net.Http.Json;
 using System.Text;
 using Task = System.Threading.Tasks.Task;
 using Microsoft.AspNetCore.Components.Forms;
+using System.Text.Json;
+using System.Threading.Tasks;
+
 namespace FhirBlaze.QuestionnaireModule
 {
     public partial class RenderQuestionnaire
     {
         [Inject]
-        public IFhirService FhirService { get; set; } 
+        public IFhirService FhirService { get; set; }
         [Inject]
         public HttpClient Http { get; set; }
         [Parameter]
         public string Id { get; set; }
         [Parameter]
+        public string PatientId { get; set; }
+        [Parameter]
         public bool IsPreview { get; set; } = false;
+        public bool QRLoaded { get; set; } = false;
+        public bool QLoaded { get; set; } = false;
         public Questionnaire Questionnaire { get; set; } = new Questionnaire();
         public QuestionnaireResponse QResponse { get; set; } = new QuestionnaireResponse();
         public IList<QuestionnaireResponse> QuestionnaireResponses { get; set; } = new List<QuestionnaireResponse>();
-
-        /*
-         * Currently we render a "Questionnaire" object
-         * Instead we shouldd create a QuestionnaireResponse Object and 
-         * Render it as a EditForm
-         * 
-         * Next step: For a given Q create a QR
-         * Next Step : Render the QR as an editform
-         * Next step persist that new QR
-         * https://www.claudiobernasconi.ch/2021/04/29/introduction-to-blazor-form-handling-and-input-validation/
-         */
-        public void SubmitQuestionnaire(EditContext ec)
+        public Dictionary<String, List<Coding>> AnswerOptionsDictionary { get; set; } = new Dictionary<string, List<Coding>>();
+        public Dictionary<String, Questionnaire.QuestionnaireItemType> QuestionTypesDictionary { get; set; } = new Dictionary<string, Questionnaire.QuestionnaireItemType>();     
+       
+        public async Task<bool>  SubmitQuestionnaireAsync(EditContext ec)
         {
-            Console.WriteLine("submit");
+            bool submitted = false;
+            foreach(var item in QResponse.Item)
+            {
+                var qType = QuestionTypesDictionary[item.LinkId];
+                if (qType.Equals(Questionnaire.QuestionnaireItemType.Choice))
+                {
+                    var setAnswer=(Coding) item.Answer.First().Value;
+                    //update the display to match with code
+                    foreach (var a in AnswerOptionsDictionary[item.LinkId])
+                    {
+                        if (a.Code == setAnswer.Code)
+                        {
+                            setAnswer.Display = a.Display;
+                            item.Answer[0].Value = setAnswer;
+                        }
+                    }
+                }  
+            }
+            if (!string.IsNullOrEmpty(PatientId)){
+                var pat = new ResourceReference();
+                pat.Reference=PatientId;
+                pat.Type = "Patient";
+                pat.Display = "Name placeholder";
+                QResponse.Status = QuestionnaireResponse.QuestionnaireResponseStatus.Completed;
+                QResponse.Authored = null;
+                QResponse.Author = pat;
+                var qr=await FhirService.SaveQuestionnaireResponseAsync(QResponse);
+                Console.WriteLine($"Saved!  ID: {qr.Id}");
+                submitted = true;
+                
+            }
+            return submitted;
         }
+       
         protected override async Task OnInitializedAsync()
         {
             try
             {
                 Questionnaire = await FhirService.GetQuestionnaireByIdAsync(Id);
-                QResponse = GenerateQR(Questionnaire);
-                QuestionnaireResponses = await FhirService.GetQuestionnaireResponsesByQuestionnaireIdAsync(Id);               
+                QLoaded = true;
+                StateHasChanged();
+                if (!IsPreview)
+                {
+                    QResponse = GenerateQR(Questionnaire);
+                    QRLoaded = true;
+                    StateHasChanged();
+                }
+                QuestionnaireResponses = await FhirService.GetQuestionnaireResponsesByQuestionnaireIdAsync(Id);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.WriteLine(e.ToString());
                 // do error handling things here
-            }                       
+            }
+            
 
-            ShouldRender();
         }
 
         protected QuestionnaireResponse GenerateQR(Questionnaire Q)
@@ -61,21 +100,9 @@ namespace FhirBlaze.QuestionnaireModule
             qr.Status = QuestionnaireResponse.QuestionnaireResponseStatus.InProgress;
             qr.Authored = DateTime.Now.ToString();
             qr.Item = GetItems(Questionnaire.Item);
-            /*
-             * Debug code below....
-             */
-            foreach (var item in qr.Item)
-            {
-                foreach (var ans in item.Answer)
-                {
-                    var s=ans.Value.ToString();
-                    var t = ans.Value.GetType().Name;
-                    var text = item.Text;
-                    Console.WriteLine("breakpoint");
-                }
-            }
             return qr;
         }
+
         protected QuestionnaireResponse.ItemComponent GetItem(Questionnaire.ItemComponent qItem)
         {
             var Item = new QuestionnaireResponse.ItemComponent();
@@ -83,6 +110,7 @@ namespace FhirBlaze.QuestionnaireModule
             Item.LinkId = qItem.LinkId;
             var ansList = new List<QuestionnaireResponse.AnswerComponent>();
             var ans = new QuestionnaireResponse.AnswerComponent();
+            QuestionTypesDictionary.Add(qItem.LinkId, (Questionnaire.QuestionnaireItemType)qItem.Type);
             switch (qItem.Type)
             {
                 case Questionnaire.QuestionnaireItemType.String:
@@ -90,7 +118,6 @@ namespace FhirBlaze.QuestionnaireModule
                     ansList.Add(ans);
                     break;
                 case Questionnaire.QuestionnaireItemType.Text:
-                    //should be string []
                     ans.Value = new FhirString("No answer text");
                     ansList.Add(ans);
                     break;
@@ -101,6 +128,13 @@ namespace FhirBlaze.QuestionnaireModule
                 case Questionnaire.QuestionnaireItemType.Choice:
                     var c = new Coding();
                     var defaultCoding =(Coding) qItem.AnswerOption.First().Value;
+                    List<Coding> ansOptions = new List<Coding>();
+                    foreach (var option in  qItem.AnswerOption)
+                    {
+                       ansOptions.Add((Coding)option.Value);  
+                    }
+                    AnswerOptionsDictionary.Add(qItem.LinkId, ansOptions);
+                   
                     c.Code = defaultCoding.Code;
                     c.Display = defaultCoding.Display;
                     ans.Value = c;
