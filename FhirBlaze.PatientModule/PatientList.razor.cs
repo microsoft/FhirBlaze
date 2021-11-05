@@ -24,6 +24,8 @@ namespace FhirBlaze.PatientModule
         protected bool ProcessingCreate { get; set; } = false;
         protected bool ProcessingSearch { get; set; } = false;
         protected bool ProcessingUpdate { get; set; } = false;
+        protected bool ShowQuestionnaireList { get; set; } = false;
+        protected string QuestionnaireId { get; set; } = null;
         protected SimplePatient DraftPatient { get; set; } = new SimplePatient();
         protected SimplePatient EditPatient { get; set; } = new SimplePatient();
         protected Patient SelectedPatient { get; set; } = new Patient();
@@ -155,6 +157,12 @@ namespace FhirBlaze.PatientModule
         {
             SelectedPatient = newPatient;
             ToggleUpdate();
+        }
+
+        public void ToggleQList(string qID)
+        {
+            QuestionnaireId = qID;
+            ShowQuestionnaireList = !ShowQuestionnaireList;
         }
     }
 }

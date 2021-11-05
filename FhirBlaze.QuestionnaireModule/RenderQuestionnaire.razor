@@ -1,65 +1,90 @@
 ﻿@page "/questionnaire/{id}"
 @using Hl7.Fhir.Model
+@using Microsoft.AspNetCore.Components.Forms
+@using static Hl7.Fhir.Model.QuestionnaireResponse
 
 
-<h4>@Questionnaire.Title</h4>
-<h8>(@Questionnaire.Id)</h8>
-
-<form>
-@foreach (var item in Questionnaire.Item)
-{
-    <div id=@item.LinkId>
-        <h6><b>@item.Text</b></h6>
-
-        @foreach (var question in item.Item)
-        {
-            <div class="form-group">
-                <label for="@question.LinkId">@question.Text</label>
-                @switch (question.Type)
-                {
-                    case Questionnaire.QuestionnaireItemType.String:
-                        <input class="form-control" type="text" id="@question.LinkId"/>
-                        break;
-                    case Questionnaire.QuestionnaireItemType.Choice:
-                        <select class="form-control" id="@question.LinkId">
-                            @foreach (var o in question.AnswerOption)
-                            {                             
-                                var option = o.Value as Coding;                             
-                                <option value="@option.Code">@option.Display</option>
-                            }
-                        </select>
-                        break;
-                    case Questionnaire.QuestionnaireItemType.Text:
-                        <textarea class="form-control" id="@question.LinkId" rows="5" cols="50" />
-                        break;
-                    default:
-                        <div>Not implemented</div>
-                        break;
-                }
-            </div>
-        }
-    </div>
+@if(!QLoaded){
+    <h4>Loading</h4>
+}else{
+    <h4>@Questionnaire.Description</h4>
+    <h5>(ID: @Questionnaire.Id)</h5>
 }
-<button type="submit" class="btn btn-primary">Submit</button>
-</form>
-<hr/>
-<div>
-    <h3>Responses (@QuestionnaireResponses.Count)</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <td>Date</td>
-                <td>Subject</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var r in QuestionnaireResponses)
+@if (!QRLoaded)
+{
+    <h1>Loading QR response</h1>
+}else{
+   
+    <EditForm Model=@QResponse OnSubmit=@SubmitQuestionnaireAsync>
+       @DynamicFragment
+       @if (!IsPreview){
+                <button type="submit" class="btn btn-primary">Submit</button>
+       }
+    </EditForm>
+}
+
+@code{
+    private RenderFragment DynamicFragment;
+    private RenderFragment GetChildItems(List<ItemComponent> items) => __builder =>
+    {
+        @foreach (var item in items)
+        {
+           
+            @if (item.Item.Count>0 )
             {
-                <tr>
-                    <td>@r.Authored</td>
-                    <td>@r.Subject.Reference</td>
-                </tr>
+                @GetTitle(item.Text);
+                @GetChildItems(item.Item);
             }
-        </tbody>
-    </table>
-</div>
+            else
+            {
+                 @GetAnswerDisplay(item);
+            }
+            <br/>
+        }
+
+    };
+
+    private RenderFragment GetTitle(string title) => __builder =>
+    {
+        <label class="form-control">@title</label>
+    };
+
+    private RenderFragment GetBAnswerDisplay(ItemComponent item) => __builder =>
+    {
+        <label>Hi there</label>
+        <label>@item.Text</label>
+    };
+    private RenderFragment GetAnswerDisplay(ItemComponent item) => __builder =>
+    {
+        @GetTitle(item.Text);
+        @foreach(var ans in item.Answer)
+        {
+            @switch(QuestionTypesDictionary[item.LinkId])
+            {
+                case Questionnaire.QuestionnaireItemType.String:
+                    <InputText class="form-control" @bind-Value=(((FhirString)ans.Value).Value) />
+                    break;
+                case Questionnaire.QuestionnaireItemType.Text:
+                    <InputTextArea class="form-control" @bind-Value=(((FhirString)ans.Value).Value) />
+                    break;
+                case Questionnaire.QuestionnaireItemType.Choice:
+                    <InputSelect @bind-Value=(((Coding)ans.Value).Code) class="form-control" >
+                        @foreach(var option in AnswerOptionsDictionary[item.LinkId])
+                        {
+                            <option value="@option.Code">@option.Display</option>
+                        }
+                    </InputSelect>
+                    break;
+                default:
+                    <h6>@ans.Value.GetType().Name</h6>
+                    break;
+            }
+        }
+    };
+ 
+    private void RenderComponent(List<ItemComponent> items)
+    {
+        DynamicFragment += GetChildItems(items);       
+    }
+
+}

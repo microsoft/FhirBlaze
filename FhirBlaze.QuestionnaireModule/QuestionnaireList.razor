@@ -30,7 +30,11 @@
                         <tr class="my-table-row">
                             <td>@questionnaire.Title</td>
                             <td>@questionnaire.Date</td>                            
-                            <td><button @onclick="() => OnRespondClick(questionnaire.Id)" class="btn btn-primary">Preview</button></td>
+                            <td>
+                                <button @onclick="() => OnRespondClick(questionnaire.Id)" class="btn btn-primary">Preview</button>
+                                <button @onclick="() => OnSelectClick.InvokeAsync(questionnaire.Id)" class="btn btn-secondary">Set</button>
+                                   
+                            </td>
                         </tr>
                     }
                 </table>
