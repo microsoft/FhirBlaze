@@ -77,13 +77,12 @@ namespace FhirBlaze.QuestionnaireModule
                 Questionnaire = await FhirService.GetQuestionnaireByIdAsync(Id);
                 QLoaded = true;
                 StateHasChanged();
-                if (!IsPreview)
-                {
-                    QResponse = GenerateQR(Questionnaire);
-                    QRLoaded = true;
-                    StateHasChanged();
-                }
-                QuestionnaireResponses = await FhirService.GetQuestionnaireResponsesByQuestionnaireIdAsync(Id);
+                QResponse = GenerateQR(Questionnaire);
+                Console.WriteLine(JsonSerializer.Serialize(QResponse));
+                QRLoaded = true;
+                RenderComponent(QResponse.Item);
+                StateHasChanged();
+                //QuestionnaireResponses = await FhirService.GetQuestionnaireResponsesByQuestionnaireIdAsync(Id);
             }
             catch (Exception e)
             {
@@ -99,18 +98,26 @@ namespace FhirBlaze.QuestionnaireModule
             QuestionnaireResponse qr = new QuestionnaireResponse();
             qr.Status = QuestionnaireResponse.QuestionnaireResponseStatus.InProgress;
             qr.Authored = DateTime.Now.ToString();
-            qr.Item = GetItems(Questionnaire.Item);
+            qr.Item =  new List<QuestionnaireResponse.ItemComponent>();
+            foreach (var item in Questionnaire.Item)
+            {
+                var newitem = GetItem(item);
+                qr.Item.Add(newitem);                
+            }
             return qr;
         }
+
+       
 
         protected QuestionnaireResponse.ItemComponent GetItem(Questionnaire.ItemComponent qItem)
         {
             var Item = new QuestionnaireResponse.ItemComponent();
             Item.Text = qItem.Text;
             Item.LinkId = qItem.LinkId;
+            QuestionTypesDictionary.Add(qItem.LinkId, (Questionnaire.QuestionnaireItemType)qItem.Type);
             var ansList = new List<QuestionnaireResponse.AnswerComponent>();
             var ans = new QuestionnaireResponse.AnswerComponent();
-            QuestionTypesDictionary.Add(qItem.LinkId, (Questionnaire.QuestionnaireItemType)qItem.Type);
+            
             switch (qItem.Type)
             {
                 case Questionnaire.QuestionnaireItemType.String:
@@ -140,15 +147,22 @@ namespace FhirBlaze.QuestionnaireModule
                     ans.Value = c;
                     ansList.Add(ans);
                     break;
+                case Questionnaire.QuestionnaireItemType.Group:
+                    
+                    Item.Item = GetItems(qItem.Item);
+                    break;
                 default:
                     break;
 
                  
             }
-            
-            Item.Answer = ansList;
+            if (ansList.Count > 0)
+            {
+                Item.Answer = ansList;
+            }
             return Item;
         }
+      
         protected List<QuestionnaireResponse.ItemComponent> GetItems(List<Questionnaire.ItemComponent> qItems)
         {
             var Items = new List<QuestionnaireResponse.ItemComponent>();
