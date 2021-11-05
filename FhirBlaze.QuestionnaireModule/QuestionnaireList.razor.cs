@@ -23,6 +23,8 @@ namespace FhirBlaze.QuestionnaireModule
         protected bool Loading { get; set; } = true;
         protected bool ProcessingCreate { get; set; } = false;
         public IList<Questionnaire> Questionnaires { get; set; } = new List<Questionnaire>();
+        [Parameter]
+        public EventCallback<string> OnSelectClick { get; set; }
 
         private void CreateQuestionnaire(Questionnaire questionnaire)
         {

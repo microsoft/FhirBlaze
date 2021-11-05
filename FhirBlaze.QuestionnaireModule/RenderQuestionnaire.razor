@@ -68,7 +68,6 @@
                     <InputTextArea class="form-control" @bind-Value=(((FhirString)ans.Value).Value) />
                     break;
                 case Questionnaire.QuestionnaireItemType.Choice:
-                    <div>It's a code</div>
                     <InputSelect @bind-Value=(((Coding)ans.Value).Code) class="form-control" >
                         @foreach(var option in AnswerOptionsDictionary[item.LinkId])
                         {

@@ -8,9 +8,14 @@
             <li class="nav-item active">
                 <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
                 <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch?"Cancel": "Search Patient")</button>
+                Questionnaire: <button @onclick="()=>ToggleQList(null)" class="btn btn-primary">@((string.IsNullOrEmpty(QuestionnaireId))?"Select": "Change")</button>   
             </li>
         </ul>
     </nav>
+        @if (ShowQuestionnaireList)
+        {
+            <QuestionnaireList OnSelectClick="ToggleQList" />
+        }
        @if (ShowCreate)
                 {
                     <PatientCreate Patient="DraftPatient" Processing="@ProcessingCreate" CreatePatient="CreatePatient" />
@@ -51,7 +56,7 @@
                                 <td>
                                     <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
                                     <ChestistLauncher CurrentPatient=@patient/>
-                                    <button @onclick="@((e)=> ShowQuestionnaire("885dbc0c-8d34-4c08-b182-e55d7a14d39a",patient.Id))" class="btn btn-primary">View</button>
+                                    <button @onclick="@((e)=> ShowQuestionnaire(patient.Id))" class="btn btn-primary">View</button>
                                 </td>
                             </tr>
                         }
@@ -70,10 +75,10 @@
 @code {
     [CascadingParameter] public IModalService Modal { get; set; }
 
-    void ShowQuestionnaire(string questionnaireId,string patientId)
+    void ShowQuestionnaire(string patientId)
     {
         var parameters = new ModalParameters();
-        parameters.Add(nameof(RenderQuestionnaire.Id), questionnaireId);
+        parameters.Add(nameof(RenderQuestionnaire.Id), QuestionnaireId);
         parameters.Add(nameof(RenderQuestionnaire.PatientId), patientId);
         Modal.Show<RenderQuestionnaire>("Questionnaire", parameters);
     }

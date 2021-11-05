@@ -60,7 +60,6 @@ namespace FhirBlaze.QuestionnaireModule
                 pat.Type = "Patient";
                 pat.Display = "Name placeholder";
                 QResponse.Status = QuestionnaireResponse.QuestionnaireResponseStatus.Completed;
-                QResponse.Authored = null;
                 QResponse.Author = pat;
                 var qr=await FhirService.SaveQuestionnaireResponseAsync(QResponse);
                 Console.WriteLine($"Saved!  ID: {qr.Id}");
@@ -78,7 +77,6 @@ namespace FhirBlaze.QuestionnaireModule
                 QLoaded = true;
                 StateHasChanged();
                 QResponse = GenerateQR(Questionnaire);
-                Console.WriteLine(JsonSerializer.Serialize(QResponse));
                 QRLoaded = true;
                 RenderComponent(QResponse.Item);
                 StateHasChanged();
@@ -97,17 +95,48 @@ namespace FhirBlaze.QuestionnaireModule
         {
             QuestionnaireResponse qr = new QuestionnaireResponse();
             qr.Status = QuestionnaireResponse.QuestionnaireResponseStatus.InProgress;
-            qr.Authored = DateTime.Now.ToString();
+            qr.Authored = DateTime.Now.ToString("yyyy-MM-dd");
             qr.Item =  new List<QuestionnaireResponse.ItemComponent>();
             foreach (var item in Questionnaire.Item)
-            {
-                var newitem = GetItem(item);
-                qr.Item.Add(newitem);                
+            { 
+                qr.Item.Add(GetItem(item));                
             }
             return qr;
         }
 
        
+        protected QuestionnaireResponse.AnswerComponent PresetAnswer(Questionnaire.ItemComponent qItem)
+        {
+            var ans = new QuestionnaireResponse.AnswerComponent();
+            switch (qItem.Type)
+            {
+                case Questionnaire.QuestionnaireItemType.String:
+                    ans.Value = new FhirString("No answer");
+                    break;
+                case Questionnaire.QuestionnaireItemType.Text:
+                    ans.Value = new FhirString("No answer text");
+                    break;
+                case Questionnaire.QuestionnaireItemType.Decimal:
+                    ans.Value = new FhirDecimal(1);
+                    break;
+                case Questionnaire.QuestionnaireItemType.Choice:
+                    var c = new Coding();
+                    var defaultCoding = (Coding)qItem.AnswerOption.First().Value;
+                    List<Coding> ansOptions = new List<Coding>();
+                    foreach (var option in qItem.AnswerOption)
+                    {
+                        ansOptions.Add((Coding)option.Value);
+                    }
+                    AnswerOptionsDictionary.Add(qItem.LinkId, ansOptions);
+                    c.Code = defaultCoding.Code;
+                    c.Display = defaultCoding.Display;
+                    ans.Value = c;
+                    break;
+                default:
+                    break;
+            }
+           return ans;
+        }
 
         protected QuestionnaireResponse.ItemComponent GetItem(Questionnaire.ItemComponent qItem)
         {
@@ -116,45 +145,15 @@ namespace FhirBlaze.QuestionnaireModule
             Item.LinkId = qItem.LinkId;
             QuestionTypesDictionary.Add(qItem.LinkId, (Questionnaire.QuestionnaireItemType)qItem.Type);
             var ansList = new List<QuestionnaireResponse.AnswerComponent>();
-            var ans = new QuestionnaireResponse.AnswerComponent();
-            
             switch (qItem.Type)
             {
-                case Questionnaire.QuestionnaireItemType.String:
-                    ans.Value = new FhirString("No answer");
-                    ansList.Add(ans);
-                    break;
-                case Questionnaire.QuestionnaireItemType.Text:
-                    ans.Value = new FhirString("No answer text");
-                    ansList.Add(ans);
-                    break;
-                case Questionnaire.QuestionnaireItemType.Decimal:
-                    ans.Value = new FhirDecimal(1);
-                    ansList.Add(ans);
-                    break;
-                case Questionnaire.QuestionnaireItemType.Choice:
-                    var c = new Coding();
-                    var defaultCoding =(Coding) qItem.AnswerOption.First().Value;
-                    List<Coding> ansOptions = new List<Coding>();
-                    foreach (var option in  qItem.AnswerOption)
-                    {
-                       ansOptions.Add((Coding)option.Value);  
-                    }
-                    AnswerOptionsDictionary.Add(qItem.LinkId, ansOptions);
-                   
-                    c.Code = defaultCoding.Code;
-                    c.Display = defaultCoding.Display;
-                    ans.Value = c;
-                    ansList.Add(ans);
-                    break;
                 case Questionnaire.QuestionnaireItemType.Group:
                     
                     Item.Item = GetItems(qItem.Item);
                     break;
                 default:
-                    break;
-
-                 
+                    ansList.Add(PresetAnswer(qItem));
+                    break;                 
             }
             if (ansList.Count > 0)
             {
