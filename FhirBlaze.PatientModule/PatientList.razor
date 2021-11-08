@@ -74,12 +74,18 @@
 
 @code {
     [CascadingParameter] public IModalService Modal { get; set; }
+    
 
     void ShowQuestionnaire(string patientId)
     {
         var parameters = new ModalParameters();
+        var options = new ModalOptions 
+        {
+            Class = "blazored-modal",
+            ContentScrollable = true
+        };
         parameters.Add(nameof(RenderQuestionnaire.Id), QuestionnaireId);
         parameters.Add(nameof(RenderQuestionnaire.PatientId), patientId);
-        Modal.Show<RenderQuestionnaire>("Questionnaire", parameters);
+        Modal.Show<RenderQuestionnaire>("Questionnaire", parameters, options);
     }
 }
