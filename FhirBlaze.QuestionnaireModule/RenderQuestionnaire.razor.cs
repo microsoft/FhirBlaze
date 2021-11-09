@@ -1,4 +1,4 @@
-﻿using FhirBlaze.SharedComponents.Services;
+﻿ using FhirBlaze.SharedComponents.Services;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Components;
 using System;
@@ -33,9 +33,11 @@ namespace FhirBlaze.QuestionnaireModule
         public IList<QuestionnaireResponse> QuestionnaireResponses { get; set; } = new List<QuestionnaireResponse>();
         public Dictionary<String, List<Coding>> AnswerOptionsDictionary { get; set; } = new Dictionary<string, List<Coding>>();
         public Dictionary<String, Questionnaire.QuestionnaireItemType> QuestionTypesDictionary { get; set; } = new Dictionary<string, Questionnaire.QuestionnaireItemType>();     
+        public string SubmittedMessage { get; set; }
        
         public async Task<bool>  SubmitQuestionnaireAsync(EditContext ec)
         {
+            IsSubmitted = true;
             bool submitted = false;
             foreach(var item in QResponse.Item)
             {
@@ -63,6 +65,7 @@ namespace FhirBlaze.QuestionnaireModule
                 QResponse.Author = pat;
                 var qr=await FhirService.SaveQuestionnaireResponseAsync(QResponse);
                 Console.WriteLine($"Saved!  ID: {qr.Id}");
+                SubmittedMessage = "Questionnaire Saved! You may close the dialog";
                 submitted = true;
                 
             }

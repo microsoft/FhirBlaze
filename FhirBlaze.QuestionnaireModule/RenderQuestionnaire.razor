@@ -18,13 +18,15 @@
     <EditForm Model=@QResponse OnSubmit=@SubmitQuestionnaireAsync>
        @DynamicFragment
        @if (!IsPreview){
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary" Disabled=@IsSubmitted>Submit</button> <label>@SubmittedMessage</label>
        }
     </EditForm>
 }
 
 @code{
     private RenderFragment DynamicFragment;
+    private bool IsSubmitted = false;
+
     private RenderFragment GetChildItems(List<ItemComponent> items) => __builder =>
     {
         @foreach (var item in items)
