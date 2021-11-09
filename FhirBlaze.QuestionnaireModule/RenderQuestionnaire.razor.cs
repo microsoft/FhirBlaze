@@ -114,10 +114,10 @@ namespace FhirBlaze.QuestionnaireModule
             switch (qItem.Type)
             {
                 case Questionnaire.QuestionnaireItemType.String:
-                    ans.Value = new FhirString("No answer");
+                    ans.Value = new FhirString("");
                     break;
                 case Questionnaire.QuestionnaireItemType.Text:
-                    ans.Value = new FhirString("No answer text");
+                    ans.Value = new FhirString("");
                     break;
                 case Questionnaire.QuestionnaireItemType.Decimal:
                     ans.Value = new FhirDecimal(1);
