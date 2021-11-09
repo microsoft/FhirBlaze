@@ -48,7 +48,7 @@
 
     private RenderFragment GetTitle(string title) => __builder =>
     {
-        <label class="form-control">@title</label>
+        <label>@title</label>
     };
 
     private RenderFragment GetBAnswerDisplay(ItemComponent item) => __builder =>
@@ -64,10 +64,10 @@
             @switch(QuestionTypesDictionary[item.LinkId])
             {
                 case Questionnaire.QuestionnaireItemType.String:
-                    <InputText class="form-control" @bind-Value=(((FhirString)ans.Value).Value) />
+                    <InputText class="form-control" @bind-Value=(((FhirString)ans.Value).Value) placeholder="Type your answer"  />
                     break;
                 case Questionnaire.QuestionnaireItemType.Text:
-                    <InputTextArea class="form-control" @bind-Value=(((FhirString)ans.Value).Value) />
+                    <InputTextArea class="form-control" @bind-Value=(((FhirString)ans.Value).Value) placeholder="Type your answer" />
                     break;
                 case Questionnaire.QuestionnaireItemType.Choice:
                     <InputSelect @bind-Value=(((Coding)ans.Value).Code) class="form-control" >
