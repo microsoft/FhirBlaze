@@ -1,0 +1,44 @@
+﻿@using Hl7.Fhir.Model
+@using Microsoft.AspNetCore.Components.Forms
+<EditForm Model=FhirPatient OnValidSubmit=SavePatient class="form-horizontal">
+  <div class="form-group">
+    <label>Birthday</label>
+    <InputText required @bind-Value=@FhirPatient.BirthDate  />
+  </div>
+  
+    @foreach (var id in FhirPatient.Identifier)
+    {
+        <div class="form-group">
+            <label>Patient ID </label>
+            <InputText required @bind-Value=@id.Value/>
+        </div>
+    }
+    <button type="button" @onclick=AddID class="btn btn-primary">Add ID</button>
+    @foreach(var PatientName in FhirPatient.Name)
+    {
+         <div class="form-group">
+          @foreach  (var gName in PatientName.GivenElement){
+             <label>Given Name</label>
+             <InputText required @bind-Value=@(((FhirString)gName).Value) />     
+          }
+               
+               
+           
+            
+        </div>
+         <div class="form-group">
+            <label>Family Name</label>
+            <InputText required @bind-Value=@PatientName.Family />
+        </div>
+    }
+    <button type="button" @onclick=AddName class="btn btn-primary">Add Name</button>
+    <br/>
+    @if (Processing)
+    {
+        <button type="button" class="btn btn-secondary" disabled>Saving....</button>
+    }else{
+        
+        <button type="submit" class="btn btn-primary">Save</button>
+    }
+</EditForm>
+

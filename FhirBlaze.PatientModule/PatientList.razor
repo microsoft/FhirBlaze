@@ -18,8 +18,8 @@
         }
        @if (ShowCreate)
                 {
-                    <PatientCreate Patient="DraftPatient" Processing="@ProcessingCreate" CreatePatient="CreatePatient" />
-                   
+                   <PatientForm PersistPatient="CreatePatient" />
+                   <button class="btn btn-secondary" @onclick=@ToggleCreate>Cancel!</button>
                 }
 
                 @if (ShowSearch)
@@ -27,12 +27,9 @@
                      <PatientSearch Patient="DraftPatient" Processing="@ProcessingSearch" SearchPatient="SearchPatient" />
                 }
                 @if (ShowUpdate)
-                {
-                    <PatientUpdate Patient="EditPatient" Processing="@ProcessingSearch" UpdatePatient="UpdatePatient" />
+                {   
+                    <PatientForm FhirPatient=@SelectedPatient PersistPatient="UpdatePatient" />
                     <button class="btn btn-secondary" @onclick=@ToggleUpdate>Cancel!</button>
-                    <!-- 
-                    <PatientDetail CurrentPatient="@SelectedPatient"/>
-                    -->
                 }
     <div class="container">
              
