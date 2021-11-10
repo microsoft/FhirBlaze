@@ -23,6 +23,8 @@ namespace FhirBlaze.QuestionnaireModule
         [Parameter]
         public string Id { get; set; }
         [Parameter]
+        public string PatientName { get; set; }
+        [Parameter]
         public string PatientId { get; set; }
         [Parameter]
         public bool IsPreview { get; set; } = false;
@@ -58,9 +60,9 @@ namespace FhirBlaze.QuestionnaireModule
             }
             if (!string.IsNullOrEmpty(PatientId)){
                 var pat = new ResourceReference();
-                pat.Reference=PatientId;
+                pat.Reference = PatientId;
                 pat.Type = "Patient";
-                pat.Display = "Name placeholder";
+                pat.Display = PatientName;
                 QResponse.Status = QuestionnaireResponse.QuestionnaireResponseStatus.Completed;
                 QResponse.Author = pat;
                 var qr=await FhirService.SaveQuestionnaireResponseAsync(QResponse);
