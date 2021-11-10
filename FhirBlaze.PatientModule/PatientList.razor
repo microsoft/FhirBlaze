@@ -53,7 +53,7 @@
                                 <td>
                                     <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
                                     <ChestistLauncher CurrentPatient=@patient/>
-                                    <button @onclick="@((e)=> ShowQuestionnaire(patient.Id))" class="btn btn-primary">View</button>
+                                    <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name))" class="btn btn-primary">View</button>
                                 </td>
                             </tr>
                         }
@@ -73,7 +73,7 @@
     [CascadingParameter] public IModalService Modal { get; set; }
     
 
-    void ShowQuestionnaire(string patientId)
+    void ShowQuestionnaire(string patientId, string patientName)
     {
         var parameters = new ModalParameters();
         var options = new ModalOptions 
@@ -83,6 +83,7 @@
         };
         parameters.Add(nameof(RenderQuestionnaire.Id), QuestionnaireId);
         parameters.Add(nameof(RenderQuestionnaire.PatientId), patientId);
+        parameters.Add(nameof(RenderQuestionnaire.PatientName), patientName);
         Modal.Show<RenderQuestionnaire>("Questionnaire", parameters, options);
     }
 }

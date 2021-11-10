@@ -7,6 +7,7 @@
 
 <AuthorizeView>
     <Authorized>
+        Hello, @context.User.Identity.Name!
         <a class="text-decoration-none" data-toggle="dropdown" href="#" role="button">
             <img src="@(context.User.GetUserGraphPhoto() ?? "/img/default-profile-photo.jpg")" class="nav-profile-photo rounded-circle align-self-center mr-2" height="48" width="48"/>
         </a>
