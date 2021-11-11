@@ -19,8 +19,8 @@
         }
        @if (ShowCreate)
                 {
-                    <PatientCreate Patient="DraftPatient" Processing="@ProcessingCreate" CreatePatient="CreatePatient" />
-                   
+                   <PatientForm PersistPatient="CreatePatient" />
+                   <button class="btn btn-secondary" @onclick=@ToggleCreate>Cancel!</button>
                 }
 
                 @if (ShowSearch)
@@ -28,12 +28,9 @@
                      <PatientSearch Patient="DraftPatient" Processing="@ProcessingSearch" SearchPatient="SearchPatient" />
                 }
                 @if (ShowUpdate)
-                {
-                    <PatientUpdate Patient="EditPatient" Processing="@ProcessingSearch" UpdatePatient="UpdatePatient" />
+                {   
+                    <PatientForm FhirPatient=@SelectedPatient PersistPatient="UpdatePatient" />
                     <button class="btn btn-secondary" @onclick=@ToggleUpdate>Cancel!</button>
-                    <!-- 
-                    <PatientDetail CurrentPatient="@SelectedPatient"/>
-                    -->
                 }
     <div class="container">
              
@@ -57,8 +54,8 @@
                                 <td>
                                     <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
                                     <ChestistLauncher CurrentPatient=@patient/>
-                                    <button @onclick="@((e)=> ShowQuestionnaire(@patient.Id, @patient.Name.FirstOrDefault().ToString()))" class="btn btn-primary">View</button>
-                                </td>
+                                    <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name.FirstOrDefault()))" class="btn btn-primary">View</button>
+
                             </tr>
                         }
                         </tbody>
@@ -75,9 +72,9 @@
 
 @code {
     [CascadingParameter] public IModalService Modal { get; set; }
-    
 
-    void ShowQuestionnaire(string patientId, string patientName)
+
+    void ShowQuestionnaire(string patientId, HumanName patientName)
     {
         var parameters = new ModalParameters();
         var options = new ModalOptions 
@@ -85,9 +82,10 @@
             Class = "blazored-modal",
             ContentScrollable = true
         };
+        var formattedName = $"{patientName.Given.First()} {patientName.Family}";
         parameters.Add(nameof(RenderQuestionnaire.Id), QuestionnaireId);
         parameters.Add(nameof(RenderQuestionnaire.PatientId), patientId);
-        parameters.Add(nameof(RenderQuestionnaire.PatientName), patientName.ToString());
+        parameters.Add(nameof(RenderQuestionnaire.PatientName), formattedName);
         Modal.Show<RenderQuestionnaire>("Questionnaire", parameters, options);
     }
 }

@@ -21,13 +21,13 @@ namespace FhirBlaze.PatientModule
         protected bool ShowUpdate { get; set; } = false;
         protected bool ShowSearch { get; set; } = false;
         protected bool Loading { get; set; } = true;
-        protected bool ProcessingCreate { get; set; } = false;
+        
         protected bool ProcessingSearch { get; set; } = false;
-        protected bool ProcessingUpdate { get; set; } = false;
+        
         protected bool ShowQuestionnaireList { get; set; } = false;
         protected string QuestionnaireId { get; set; } = null;
         protected SimplePatient DraftPatient { get; set; } = new SimplePatient();
-        protected SimplePatient EditPatient { get; set; } = new SimplePatient();
+        
         protected Patient SelectedPatient { get; set; } = new Patient();
         [CascadingParameter] public Task<AuthenticationState> AuthTask { get; set; }
         public IList<Patient> Patients { get; set; } = new List<Patient>();
@@ -47,10 +47,8 @@ namespace FhirBlaze.PatientModule
             Patient createdPatient = null;
             try
             {
-                ProcessingCreate = true;
                 createdPatient = await FhirService.CreatePatientsAsync(patient);
                 Patients.Add(createdPatient);
-                ProcessingCreate = false;
                 ToggleCreate();
                 ShouldRender();
             }catch (Exception e)
@@ -81,13 +79,12 @@ namespace FhirBlaze.PatientModule
             }
         }
 
-        public async Task<Patient> UpdatePatient(SimplePatient patient)
+        public async Task<Patient> UpdatePatient(Patient updatedPatient)
         {
-            Patient updatedPatient = patient.updateHL7FHIRPatient(SelectedPatient);
+            
             
             try
             {
-                ProcessingUpdate = true;
                 updatedPatient = await FhirService.UpdatePatientAsync(updatedPatient.Id, updatedPatient);
                 var removePatient = Patients.FirstOrDefault(p => p.Id == SelectedPatient.Id);
                 if (removePatient != null)
@@ -96,7 +93,6 @@ namespace FhirBlaze.PatientModule
                     Patients.Add(updatedPatient);
                 }
                 SelectedPatient = updatedPatient;
-                ProcessingUpdate = false;
                 ToggleUpdate();
                 ShouldRender();
             }
@@ -112,30 +108,11 @@ namespace FhirBlaze.PatientModule
         {
             ShowCreate = !ShowCreate;
             ResetSelectedPatient();
-            if (ShowCreate)
-            {
-                DraftPatient = new SimplePatient {
-                    PatientID = Guid.NewGuid().ToString(),
-                    Birthdate = DateTime.Now.AddDays(DateTime.Now.Second).AddMonths(DateTime.Now.Hour).AddYears(-DateTime.Now.Second)
-                };
-            }
         }
 
         public void ToggleUpdate()
         {   
-            ShowUpdate = !ShowUpdate;
-            if (ShowUpdate)
-            {
-                var name = SelectedPatient.Name.FirstOrDefault();
-
-                EditPatient = new SimplePatient
-                {
-                    PatientID = SelectedPatient.Id,
-                    FirstName = name?.Given.FirstOrDefault(),
-                    LastName = name?.Family,
-                    Birthdate = DateTime.Parse(SelectedPatient.BirthDate)
-                };
-            }
+            ShowUpdate = !ShowUpdate; 
         }
 
         public void ToggleSearch()
