@@ -1,6 +1,7 @@
 ﻿@page "/patient"
 @using FhirBlaze.QuestionnaireModule
 @using FhirBlaze.SharedComponents
+@using Hl7.Fhir.Model
 
     <nav class="navbar navbar-light bg-light">
         <a class="navbar-brand" href="#">Patients</a>
@@ -53,7 +54,7 @@
                                 <td>
                                     <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
                                     <ChestistLauncher CurrentPatient=@patient/>
-                                    <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name))" class="btn btn-primary">View</button>
+                                    <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name.FirstOrDefault()))" class="btn btn-primary">View</button>
                                 </td>
                             </tr>
                         }
@@ -71,9 +72,9 @@
 
 @code {
     [CascadingParameter] public IModalService Modal { get; set; }
-    
 
-    void ShowQuestionnaire(string patientId, string patientName)
+
+    void ShowQuestionnaire(string patientId, HumanName patientName)
     {
         var parameters = new ModalParameters();
         var options = new ModalOptions 
@@ -81,9 +82,10 @@
             Class = "blazored-modal",
             ContentScrollable = true
         };
+        var formattedName = $"{patientName.Given.First()} {patientName.Family}";
         parameters.Add(nameof(RenderQuestionnaire.Id), QuestionnaireId);
         parameters.Add(nameof(RenderQuestionnaire.PatientId), patientId);
-        parameters.Add(nameof(RenderQuestionnaire.PatientName), patientName);
+        parameters.Add(nameof(RenderQuestionnaire.PatientName), formattedName);
         Modal.Show<RenderQuestionnaire>("Questionnaire", parameters, options);
     }
 }
