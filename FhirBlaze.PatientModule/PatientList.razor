@@ -55,7 +55,7 @@
                                     <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
                                     <ChestistLauncher CurrentPatient=@patient/>
                                     <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name.FirstOrDefault()))" class="btn btn-primary">View</button>
-                                </td>
+
                             </tr>
                         }
                         </tbody>
