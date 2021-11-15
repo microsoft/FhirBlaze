@@ -101,6 +101,7 @@ namespace FhirBlaze.QuestionnaireModule
             QuestionnaireResponse qr = new QuestionnaireResponse();
             qr.Status = QuestionnaireResponse.QuestionnaireResponseStatus.InProgress;
             qr.Authored = DateTime.Now.ToString("yyyy-MM-dd");
+            qr.Questionnaire = "Questionnaire/" + Q.Id;
             qr.Item =  new List<QuestionnaireResponse.ItemComponent>();
             foreach (var item in Questionnaire.Item)
             { 
