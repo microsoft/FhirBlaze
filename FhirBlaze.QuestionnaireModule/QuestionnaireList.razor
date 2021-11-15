@@ -1,5 +1,6 @@
 ﻿@page "/questionnaire"
 @using FhirBlaze.SharedComponents
+@inject NavigationManager Navigation
 
 <h3>Questionnaires List</h3>
 
@@ -32,8 +33,10 @@
                             <td>@questionnaire.Date</td>                            
                             <td>
                                 <button @onclick="() => OnRespondClick(questionnaire.Id)" class="btn btn-primary">Preview</button>
-                                <button @onclick="() => OnSelectClick.InvokeAsync(questionnaire.Id)" class="btn btn-secondary">Set</button>
-                                   
+                                @if (!Navigation.Uri.Contains("/questionnaire"))
+                                    {
+                                        <button @onclick="() => OnSelectClick.InvokeAsync(questionnaire.Id)" class="btn btn-secondary">Set</button>
+                                    }
                             </td>
                         </tr>
                     }
