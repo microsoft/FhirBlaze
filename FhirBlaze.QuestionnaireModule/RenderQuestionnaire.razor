@@ -51,11 +51,6 @@
         <label>@title</label>
     };
 
-    private RenderFragment GetBAnswerDisplay(ItemComponent item) => __builder =>
-    {
-        <label>Hi there</label>
-        <label>@item.Text</label>
-    };
     private RenderFragment GetAnswerDisplay(ItemComponent item) => __builder =>
     {
         @GetTitle(item.Text);
