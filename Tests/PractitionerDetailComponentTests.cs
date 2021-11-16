@@ -11,18 +11,18 @@ namespace PractitionerModule
         {
             var component = new PractitionerDetailComponent()
             {
-                SelectedPractitioner = new Practitioner()
+                Practitioner = new Practitioner()
             };
             component.AddHumanName();
 
             Assert.Collection<HumanName>(
-                component.SelectedPractitioner.Name,
+                component.Practitioner.Name,
                 item => new HumanName());
 
             component.AddHumanName();
 
             Assert.Collection<HumanName>(
-                component.SelectedPractitioner.Name,
+                component.Practitioner.Name,
                 item => new HumanName(), 
                 item => new HumanName());
         }

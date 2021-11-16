@@ -1,6 +1,6 @@
 ﻿@namespace FhirBlaze.PractitionerModule.Components
 
-<EditForm Model="@SelectedPractitioner" OnValidSubmit="@SavePractitioner">
+<EditForm Model="@Practitioner" OnValidSubmit="@SavePractitioner">
 	<DataAnnotationsValidator />
 	<ValidationSummary />
 
@@ -8,11 +8,11 @@
         <div class="row">
 	        <div class="form-group">
 		        <label class="col-sm-2 control-label" for="Id">Id</label>
-		        <InputText id="Id" disabled @bind-Value="SelectedPractitioner.Id" class="col-sm-4" style="width: 150px;" />
+		        <InputText id="Id" disabled @bind-Value="Practitioner.Id" class="col-sm-4" style="width: 150px;" />
 	        </div>
 	        <div class="form-group">
 		        <label class="col-sm-2 control-label">Identifier(s)</label>
-		        @foreach(var item in this.SelectedPractitioner.Identifier)
+		        @foreach(var item in this.Practitioner.Identifier)
 		        {
                     <div class="col-sm-4">
     			        <input type="text" @bind="item.Value" />
@@ -48,17 +48,17 @@
         <div class="row">
             <div class="col-sm-11">Name(s)</div>
             <div class="col-sm-1">
-                <button class="btn btn-primary" @onclick="AddHumanName"><span class="oi oi-plus" /></button>
+                <button type="button" class="btn btn-primary" @onclick="AddHumanName"><span class="oi oi-plus" /></button>
             </div>
         </div>
         <div class="row">
-            @foreach(var name in this.SelectedPractitioner.Name)
+            @foreach(var name in this.Practitioner.Name)
             {
                 <div class="col-sm-11">
                     <HumanNameComponent HumanName="name" />
                 </div>
                 <div class="col-sm-1">
-                    <button class="btn btn-primary" @onclick="(() => RemoveHumanName(name))">
+                    <button type="button" class="btn btn-primary" @onclick="(() => RemoveHumanName(name))">
                         <span class="oi oi-trash" />
                     </button>
                 </div>
@@ -70,17 +70,17 @@
         <div class="row">
             <div class="col-sm-11">Address(es)</div>
             <div class="col-sm-1">
-                <button class="btn btn-primary" @onclick="AddAddress"><span class="oi oi-plus" /></button>
+                <button type="button" class="btn btn-primary" @onclick="AddAddress"><span class="oi oi-plus" /></button>
             </div>
         </div>
         <div class="row">
-            @foreach(var address in this.SelectedPractitioner.Address)
+            @foreach(var address in this.Practitioner.Address)
             {
                 <div class="col-sm-11">
                     <AddressComponent Address="address" />
                 </div>
                 <div class="col-sm-1">
-                    <button class="btn btn-primary" @onclick="(() => RemoveAddress(address))">
+                    <button type="button" class="btn btn-primary" @onclick="(() => RemoveAddress(address))">
                         <span class="oi oi-trash" />
                     </button>
                 </div>
@@ -92,17 +92,17 @@
         <div class="row">
             <div class="col-sm-11">Telecom(s)</div>
             <div class="col-sm-1">
-                <button class="btn btn-primary" @onclick="AddTelecom"><span class="oi oi-plus" /></button>
+                <button type="button" class="btn btn-primary" @onclick="AddTelecom"><span class="oi oi-plus" /></button>
             </div>
         </div>
         <div class="row">
-            @foreach(var telecom in this.SelectedPractitioner.Telecom)
+            @foreach(var telecom in this.Practitioner.Telecom)
             {
                 <div class="col-sm-11">
                     <ContactPointComponent ContactPoint="telecom" />
                 </div>
                 <div class="col-sm-1">
-                    <button class="btn btn-primary" @onclick="(() => RemoveTelecom(telecom))">
+                    <button type="button" class="btn btn-primary" @onclick="(() => RemoveTelecom(telecom))">
                         <span class="oi oi-trash" />
                     </button>
                 </div>
