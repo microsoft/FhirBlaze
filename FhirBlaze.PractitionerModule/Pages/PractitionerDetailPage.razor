@@ -1,0 +1,10 @@
+﻿@page "/practitioner"
+@page "/practitioner/{Id}"
+
+@using FhirBlaze.PractitionerModule.Components
+
+@namespace FhirBlaze.PractitionerModule.Pages
+
+<CascadingValue Value="SelectedPractitioner">
+	<PractitionerDetailComponent IsEditable="true" OnPractitionerSaved="SavePractitioner" />
+</CascadingValue>

@@ -1,0 +1,25 @@
+﻿@page "/practitioners"
+@using FhirBlaze.PractitionerModule.Components
+
+@namespace FhirBlaze.PractitionerModule.Pages
+
+<nav class="navbar navbar-light bg-light">
+    <a class="navbar-brand" href="#">Practitioners</a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <button @onclick="AddPractitionerClicked" class="btn btn-primary">Add Practitioner</button>
+            <button @onclick="(() => ShowSearch = !ShowSearch)" class="btn btn-primary">
+                @(ShowSearch ? "Close Search" : "Open Search")
+            </button>
+        </li>
+    </ul>
+</nav>
+
+@if (ShowSearch)
+{
+    <PractitionerSearchComponent SearchClicked="SearchPractitioner" />
+}
+
+<CascadingValue Value="Practitioners">
+    <PractitionerListComponent OnPractitionerSelected="PractitionerSelected" />
+</CascadingValue>

@@ -1,0 +1,19 @@
+﻿<div class="form-horizontal">
+   <div class="row mb-3">
+       <label for="practitionerId" class="col-sm-2 col-form-label">Identifier</label>
+       <div class="col-sm-10">
+           <input type="text" id="practitionerId" @bind="@(SearchParameters["identifier"])" class="form-control" />
+           </div>
+   </div>
+   <div class="row mb-3">
+       <label for="firstName" class="col-sm-2 col-form-label">Given Name</label>
+       <div class="col-sm-4">
+           <input type="text" id="firstName" @bind="@(SearchParameters["given"])" class="form-control" />
+       </div>
+       <label for="lastName" class="col-sm-2 col-form-label">Family Name</label>
+       <div class="col-sm-4">
+           <input type="text" id="lastName" @bind="@(SearchParameters["family"])" class="form-control" />
+       </div>
+    </div>
+    <button type="submit" class="btn btn-primary" @onclick="SearchPractitioner">Search</button>
+</div>

@@ -23,8 +23,9 @@
 
 @code {
     private IList<Assembly> AdditionalAssemblies = new[]
-            {
+    {
         typeof(FhirBlaze.PatientModule.PatientList).Assembly,
+        typeof(FhirBlaze.PractitionerModule.Pages.PractitionerListPage).Assembly, 
         typeof(FhirBlaze.QuestionnaireModule.QuestionnaireList).Assembly
     };
 }

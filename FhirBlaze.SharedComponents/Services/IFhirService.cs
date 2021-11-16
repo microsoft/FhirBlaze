@@ -1,11 +1,13 @@
-﻿using System.Collections.Generic;
+﻿using Hl7.Fhir.Model;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using Hl7.Fhir.Model;
 
 namespace FhirBlaze.SharedComponents.Services
 {
     public interface IFhirService
     {
+        Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Hl7.Fhir.Model.Resource, new();
+
         #region Patient
         Task<Patient> CreatePatientsAsync(Patient patient);
         Task<IList<Patient>> GetPatientsAsync();
@@ -22,6 +24,18 @@ namespace FhirBlaze.SharedComponents.Services
         Task<QuestionnaireResponse> GetQuestionnaireResponseByIdAsync(string id);
         Task<IList<QuestionnaireResponse>> GetQuestionnaireResponsesByQuestionnaireIdAsync(string questionnaireId);
 
+        #endregion
+
+        #region Practitioners
+        Task<IList<Practitioner>> GetPractitionersAsync();
+
+        Task<int> GetPractitionerCountAsync();
+
+        Task<IList<Practitioner>> SearchPractitioner(IDictionary<string, string> searchParameters);
+
+        Task<Practitioner> CreatePractitionersAsync(Practitioner practitioner);
+
+        Task<Practitioner> UpdatePractitionerAsync(string practitionerId, Practitioner practitioner);
         #endregion
     }
 }

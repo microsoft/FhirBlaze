@@ -1,0 +1,95 @@
+﻿<div class="border border-primary rounded-left">
+	<div class="row">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="Use">Use</label>
+			<select id="Use" @bind="this.Use" class="col-sm-4">
+				<option value="Home">Home</option>
+				<option value="Work">Work</option>
+				<option value="Temp">Temp</option>
+				<option value="Old">Old</option>
+				<option value="Billing">Billing</option>
+			</select>
+		</div>
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="Type">Type</label>
+			<select id="Type" @bind="this.Type" class="col-sm-4">
+				<option value="Postal">Postal</option>
+				<option value="Physical">Physical</option>
+				<option value="Both">Both</option>
+			</select>
+		</div>
+	</div>
+	
+	<div class="row">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="Text">Text</label>
+			<div class="col-sm-10">
+				<input id="Text" type="text" @bind="Address.Text" placeholder="Text representation of the address" />
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="Line">Line</label>
+			<div class="col-sm-10">
+				<input id="Line" type="text" @bind="Line" />
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="City">City</label>
+			<div class="col-sm-2">
+				<input id="City" type="text" @bind="Address.City" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="District">District</label>
+			<div class="col-sm-2">
+				<input id="District" type="text" @bind="Address.District" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="State">State</label>
+			<div class="col-sm-2">
+				<input id="State" type="text" @bind="Address.State" />
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="PostalCode">Postal Code</label>
+			<div class="col-sm-2">
+				<input id="PostalCode" type="text" @bind="Address.PostalCode" />
+			</div>
+		</div>
+
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="Country">Country</label>
+			<div class="col-sm-2">
+				<input id="Country" type="text" @bind="Address.Country" />
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="PeriodStart">Period Start</label>
+			<div class="col-sm-2">
+				<input id="PeriodStart" type="datetime-local" @bind="PeriodStart" />
+			</div>
+		</div>
+	
+		<div class="form-group">
+			<label class="control-label col-sm-2" for="PeriodEnd">Period End</label>
+			<div class="col-sm-2">
+				<input id="PeriodEnd" type="datetime-local" @bind="PeriodEnd" />
+			</div>
+		</div>
+	</div>
+</div>

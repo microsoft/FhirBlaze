@@ -1,20 +1,22 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace FhirBlaze.SharedComponents.Services
 {
-    public class FirelyService:IFhirService
+    public class FirelyService : IFhirService
     {
+        private readonly int _defaultPageSize = 50;
+
         private FhirClient _fhirClient;
+
         public FirelyService(FhirClient client)
         {
             _fhirClient = client;
         }
-
-
 
         #region Patient
         public async Task<IList<Patient>> GetPatientsAsync()
@@ -136,5 +138,81 @@ namespace FhirBlaze.SharedComponents.Services
 
         #endregion
 
+        #region Practitioners
+        public async Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Hl7.Fhir.Model.Resource, new()
+        {
+            var result = await _fhirClient.SearchByIdAsync<TResource>(resourceId, pageSize: _defaultPageSize);
+
+            TResource r = result.Entry.Select(e => (TResource)e.Resource).First();
+
+            return r;
+        }
+
+        public async Task<IList<Practitioner>> GetPractitionersAsync()
+        {
+            var bundle = await _fhirClient.SearchAsync<Practitioner>(pageSize: 50);
+            var result = new List<Practitioner>();
+            while (bundle != null)
+            {
+                result.AddRange(bundle.Entry.Select(p => (Practitioner)p.Resource).ToList());
+                bundle = await _fhirClient.ContinueAsync(bundle);
+            }
+
+            return result;
+        }
+
+        public async Task<int> GetPractitionerCountAsync()
+        {
+            var bundle = await _fhirClient.SearchAsync<Practitioner>(summary: SummaryType.Count);
+            return bundle.Total ?? 0;
+        }
+
+        public async Task<IList<Practitioner>> SearchPractitioner(IDictionary<string, string> searchParameters)
+        {
+            string identifier = searchParameters["identifier"];
+
+            var searchResults = new List<Practitioner>();
+
+            if (!string.IsNullOrEmpty(identifier))
+            {
+                Bundle bundle = await _fhirClient.SearchByIdAsync<Practitioner>(identifier);
+
+                if (bundle != null)
+                    searchResults = bundle.Entry.Select(p => (Practitioner)p.Resource).ToList();
+            }
+            else
+            {
+                IList<string> filterStrings = new List<string>();
+                foreach (var parameter in searchParameters)
+                {
+                    if (!string.IsNullOrEmpty(parameter.Value))
+                    {
+                        filterStrings.Add($"{parameter.Key}:contains={parameter.Value}");
+                    }
+                }
+                Bundle bundle = await _fhirClient.SearchAsync<Practitioner>(criteria: filterStrings.ToArray<string>());
+
+                if (bundle != null)
+                    searchResults = bundle.Entry.Select(p => (Practitioner)p.Resource).ToList();
+            }
+
+            return searchResults;
+        }
+
+        public async Task<Practitioner> CreatePractitionersAsync(Practitioner practitioner)
+        {
+            return await _fhirClient.CreateAsync(practitioner);
+        }
+
+        public async Task<Practitioner> UpdatePractitionerAsync(string practitionerId, Practitioner practitioner)
+        {
+            if (practitionerId != practitioner.Id)
+            {
+                throw new Exception("Unknown practitioner ID");
+            }
+
+            return await _fhirClient.UpdateAsync(practitioner);
+        }
+        #endregion
     }
 }

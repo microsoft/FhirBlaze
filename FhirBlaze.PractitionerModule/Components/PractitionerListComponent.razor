@@ -1,0 +1,31 @@
+﻿@namespace FhirBlaze.PractitionerModule.Components
+
+<div class="container">
+    <br/>
+    <div class="container">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>DOB</th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var practitioner in this.Practitioners)
+            {
+                <tr>
+                    <td>@practitioner.Name.FirstOrDefault()</td>
+                    <td>@practitioner.BirthDate</td>
+                    <td>
+                        <button @onclick="(() => PractitionerSelected(practitioner))" class="btn btn-primary">
+                            Edit
+                        </button>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+    <br />
+    <h3>Found: @(Practitioners.Count) practitioners!</h3>
+</div>

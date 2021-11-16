@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FhirBlaze.QuestionnaireModu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{0CCD3BF6-CA29-4997-AD85-A42FAFAF452E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FhirBlaze.PractitionerModule", "FhirBlaze.PractitionerModule\FhirBlaze.PractitionerModule.csproj", "{C48D11F5-F4C3-495D-AD69-7C570E080AA8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{0CCD3BF6-CA29-4997-AD85-A42FAFAF452E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0CCD3BF6-CA29-4997-AD85-A42FAFAF452E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0CCD3BF6-CA29-4997-AD85-A42FAFAF452E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C48D11F5-F4C3-495D-AD69-7C570E080AA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C48D11F5-F4C3-495D-AD69-7C570E080AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C48D11F5-F4C3-495D-AD69-7C570E080AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C48D11F5-F4C3-495D-AD69-7C570E080AA8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
