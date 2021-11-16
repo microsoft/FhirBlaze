@@ -56,55 +56,5 @@ namespace FhirBlaze.PractitionerModule.Components
 				this.Address.Line = value.Split(',');
 			}
 		}
-
-		private DateTime PeriodStart
-		{
-			get
-			{
-				if (this.Address != null &&
-					this.Address.Period != null &&
-					!string.IsNullOrWhiteSpace(this.Address.Period.Start))
-				{
-					return DateTime.Parse(this.Address.Period.Start);
-				}
-				else
-				{
-					return DateTime.MinValue;
-				}
-			}
-			set
-			{
-				if (this.Address.Period == null)
-				{
-					this.Address.Period = new Period();
-				}
-				this.Address.Period.Start = value.ToString("yyyy-MM-dd");
-			}
-		}
-
-		private DateTime PeriodEnd
-		{
-			get
-			{
-				if (this.Address != null &&
-					this.Address.Period != null &&
-					!string.IsNullOrWhiteSpace(this.Address.Period.End))
-				{
-					return DateTime.Parse(this.Address.Period.End);
-				}
-				else
-				{
-					return DateTime.MinValue;
-				}
-			}
-			set
-			{
-				if (this.Address.Period == null)
-				{
-					this.Address.Period = new Period();
-				}
-				this.Address.Period.End = value.ToString("yyyy-MM-dd");
-			}
-		}
 	}
 }

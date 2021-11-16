@@ -35,52 +35,5 @@ namespace FhirBlaze.PractitionerModule.Components
 				this.HumanName.Suffix = value.Split(',');
 			}
 		}
-
-		private DateTime PeriodStart
-		{
-			get
-			{
-				if (this.HumanName != null && 
-					this.HumanName.Period != null && 
-					!string.IsNullOrWhiteSpace(this.HumanName.Period.Start))
-				{
-					return DateTime.Parse(this.HumanName.Period.Start);
-                }
-                else
-				{
-					return DateTime.MinValue;
-				}
-			}
-			set
-			{
-				if (this.HumanName.Period == null)
-                {
-					this.HumanName.Period = new Period();
-                }
-				this.HumanName.Period.Start = value.ToString("yyyy-MM-dd");
-			}
-		}
-
-		private DateTime PeriodEnd
-		{
-			get
-			{
-				if (this.HumanName != null && 
-					this.HumanName.Period != null && 
-					!string.IsNullOrWhiteSpace(this.HumanName.Period.End))
-				{
-					return DateTime.Parse(this.HumanName.Period.End);
-				}
-				else
-				{
-					if (this.HumanName.Period == null)
-					{
-						this.HumanName.Period = new Period();
-					}
-					return DateTime.MinValue;
-				}
-			}
-			set => this.HumanName.Period.End = value.ToString("yyyy-MM-dd");
-		}
 	}
 }

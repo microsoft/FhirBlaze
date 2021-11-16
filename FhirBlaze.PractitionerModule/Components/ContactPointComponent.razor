@@ -43,18 +43,8 @@
 	</div>
 	
 	<div class="row">
-		<div class="form-group">
-			<label for="PeriodStart" class="form-label col-sm-2">Period Start</label>
-			<div class="col-sm-4">
-				<input id="PeriodStart" type="datetime-local" @bind="PeriodStart" />
-			</div>
-		</div>
-
-		<div class="form-group">
-			<label for="PeriodEnd" class="form-label col-sm-2">Period End</label>
-			<div class="col-sm-4">
-				<input id="PeriodEnd" type="datetime-local" @bind="PeriodEnd" />
-			</div>
+		<div class="col-sm-12">
+			<PeriodComponent Period="ContactPoint.Period" />
 		</div>
 	</div>
 </div>
