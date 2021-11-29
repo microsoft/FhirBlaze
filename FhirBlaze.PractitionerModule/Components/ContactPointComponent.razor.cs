@@ -47,55 +47,5 @@ namespace FhirBlaze.PractitionerModule.Components
 				this.ContactPoint.System = Enum.Parse<ContactPointSystem>(value, true);
             }
         }
-
-		private DateTime PeriodStart
-		{
-			get
-			{
-				if (this.ContactPoint != null &&
-					this.ContactPoint.Period != null &&
-					!string.IsNullOrWhiteSpace(this.ContactPoint.Period.Start))
-				{
-					return DateTime.Parse(this.ContactPoint.Period.Start);
-				}
-				else
-				{
-					return DateTime.MinValue;
-				}
-			}
-			set
-			{
-				if (this.ContactPoint.Period == null)
-				{
-					this.ContactPoint.Period = new Period();
-				}
-				this.ContactPoint.Period.Start = value.ToString("yyyy-MM-dd");
-			}
-		}
-
-		private DateTime PeriodEnd
-		{
-			get
-			{
-				if (this.ContactPoint != null &&
-					this.ContactPoint.Period != null &&
-					!string.IsNullOrWhiteSpace(this.ContactPoint.Period.End))
-				{
-					return DateTime.Parse(this.ContactPoint.Period.End);
-				}
-				else
-				{
-					return DateTime.MinValue;
-				}
-			}
-			set
-			{
-				if (this.ContactPoint.Period == null)
-                {
-					this.ContactPoint.Period = new Period();
-                }
-				this.ContactPoint.Period.End = value.ToString("yyyy-MM-dd");
-			}
-		}
 	}
 }

@@ -17,13 +17,13 @@ namespace FhirBlaze.PractitionerModule.Components
         public bool IsEditable { get; set; } = true;
 
         [CascadingParameter]
-        public Practitioner SelectedPractitioner { get; set; }
+        public Practitioner Practitioner { get; set; }
 
         public bool Active
         {
             get 
             {
-                if (this.SelectedPractitioner.Active == null || this.SelectedPractitioner.Active == false)
+                if (this.Practitioner.Active == null || this.Practitioner.Active == false)
                 {
                     return false;
                 }
@@ -34,7 +34,7 @@ namespace FhirBlaze.PractitionerModule.Components
             }
             set
             { 
-                SelectedPractitioner.Active = value; 
+                Practitioner.Active = value; 
             }
         }
 
@@ -42,9 +42,9 @@ namespace FhirBlaze.PractitionerModule.Components
         {
             get
             {
-                if (this.SelectedPractitioner!= null && this.SelectedPractitioner.Gender != null)
+                if (this.Practitioner!= null && this.Practitioner.Gender != null)
                 {
-                    return this.SelectedPractitioner.Gender.Value.ToString();
+                    return this.Practitioner.Gender.Value.ToString();
                 }
                 else
                 {
@@ -53,7 +53,7 @@ namespace FhirBlaze.PractitionerModule.Components
             }
             set
             {
-                this.SelectedPractitioner.Gender = Enum.Parse<AdministrativeGender>(value, true);
+                this.Practitioner.Gender = Enum.Parse<AdministrativeGender>(value, true);
             }
         }
 
@@ -61,64 +61,64 @@ namespace FhirBlaze.PractitionerModule.Components
         {
             get
             {
-                if (this.SelectedPractitioner != null &&
-                    !string.IsNullOrWhiteSpace(this.SelectedPractitioner.BirthDate))
+                if (this.Practitioner != null &&
+                    !string.IsNullOrWhiteSpace(this.Practitioner.BirthDate))
                 {
-                    return DateTime.Parse(this.SelectedPractitioner.BirthDate);
+                    return DateTime.Parse(this.Practitioner.BirthDate);
                 }
                 else
                 {
                     return DateTime.MinValue;
                 }
             }
-            set => this.SelectedPractitioner.BirthDate = value.ToString("yyyy-MM-dd");
+            set => this.Practitioner.BirthDate = value.ToString("yyyy-MM-dd");
         }
 
         protected async void SavePractitioner()
         {
-            await OnPractitionerSaved.InvokeAsync(this.SelectedPractitioner);
+            await OnPractitionerSaved.InvokeAsync(this.Practitioner);
         }
 
         public void AddHumanName()
         {
-            if (this.SelectedPractitioner.Name == null)
+            if (this.Practitioner.Name == null)
             {
-                this.SelectedPractitioner.Name = new List<HumanName>();
+                this.Practitioner.Name = new List<HumanName>();
             }
-            this.SelectedPractitioner.Name.Add(new HumanName() { });
+            this.Practitioner.Name.Add(new HumanName() { });
         }
 
         private void RemoveHumanName(HumanName name)
         {
-            this.SelectedPractitioner.Name.Remove(name);
+            this.Practitioner.Name.Remove(name);
         }
 
         private void AddAddress()
         {
-            if(this.SelectedPractitioner.Address == null)
+            if(this.Practitioner.Address == null)
             {
-                this.SelectedPractitioner.Address = new List<Address>();
+                this.Practitioner.Address = new List<Address>();
             }
-            this.SelectedPractitioner.Address.Add(new Address());
+            this.Practitioner.Address.Add(new Address());
         }
 
         private void RemoveAddress(Address address)
         {
-            this.SelectedPractitioner.Address.Remove(address);
+            this.Practitioner.Address.Remove(address);
         }
 
         private void AddTelecom()
         {
-            if (this.SelectedPractitioner.Telecom == null)
+            if (this.Practitioner.Telecom == null)
             {
-                this.SelectedPractitioner.Telecom = new List<ContactPoint>();
+                this.Practitioner.Telecom = new List<ContactPoint>();
             }
-            this.SelectedPractitioner.Telecom.Add(new ContactPoint());
+            this.Practitioner.Telecom.Add(new ContactPoint());
         }
 
         private void RemoveTelecom(ContactPoint telecom)
         {
-            this.SelectedPractitioner.Telecom.Remove(telecom);
+            this.Practitioner.Telecom.Remove(telecom);
         }
     }
 }
