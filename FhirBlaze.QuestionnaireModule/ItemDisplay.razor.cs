@@ -2,9 +2,11 @@
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Hl7.Fhir.Model.Questionnaire;
 
 namespace FhirBlaze.QuestionnaireModule
 {
@@ -12,28 +14,53 @@ namespace FhirBlaze.QuestionnaireModule
     {
         [Parameter]
         public Questionnaire.ItemComponent ItemComponent { get; set; }
+        private string Header { get; set; }
+        private string TextDesc { get; set; }
 
-        [Parameter]
-        public bool Edit { get; set; } = false;
-
-        [Parameter]
-        public EventCallback<Questionnaire.ItemComponent> OnValidSubmit { get; set; }
-
-        [Parameter]
-        public EventCallback<Questionnaire.ItemComponent> CancelItemCreation { get; set; }
-
-        [Parameter]
-        public EventCallback<string> ItemComponentTextChanged { get; set; }
-
-        [Parameter]
-        public EventCallback<Questionnaire.ItemComponent> ItemComponentChanged { get; set; }
-
-        private async System.Threading.Tasks.Task ModifyItemComponent() => await ItemComponentChanged.InvokeAsync(ItemComponent);
-
-        private void GetOption(ChangeEventArgs e)
+        protected override void OnInitialized()
         {
-            int type = Int32.Parse(e.Value.ToString());
-            ItemComponent.Type = (Hl7.Fhir.Model.Questionnaire.QuestionnaireItemType)(type);
+            if (ItemComponent.Type.Equals(Questionnaire.QuestionnaireItemType.Group))
+            {
+                Header = "Group";
+                TextDesc = "Group Description";                     
+            }
+            else
+            {
+                Header = $"{ItemComponent.Type.ToString()} Question";
+                TextDesc = "Question Text";
+            }
+            base.OnInitialized();
+        }
+        protected void AddItem(QuestionnaireItemType type)
+        {
+            var nItem = new Questionnaire.ItemComponent();
+            nItem.Type = type;
+            switch (type)
+            {
+                case Questionnaire.QuestionnaireItemType.Group:
+                    nItem.Text = "New Group";
+                    break;
+                case Questionnaire.QuestionnaireItemType.String:
+                    nItem.Text = "String Question";
+                    break;
+                default:
+                    break;
+            }
+            ItemComponent.Item.Add(nItem);
+        }
+        protected void RemoveItem(Questionnaire.ItemComponent Item)
+        {
+            ItemComponent.Item.Remove(Item);
+        }
+
+        protected void AddAnswer()
+        {
+            var nCode = new Coding();
+            nCode.Display = "Display";
+            nCode.Code = "Value";
+            var a = new Questionnaire.AnswerOptionComponent();
+            a.Value=nCode;
+            ItemComponent.AnswerOption.Add(a);
         }
 
     }

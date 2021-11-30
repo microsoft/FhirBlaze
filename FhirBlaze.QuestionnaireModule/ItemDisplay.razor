@@ -1,31 +1,66 @@
-﻿<h3>Item</h3>
-<div class="p-3 mt-5" style="background:#eee;">
-    <div class="form" Model="@ItemComponent">
-        <div class='form-group'>
-            <label for="questionHeader">Question:</label>
-        </div>
-        <div class='form-group'>
-            <label for='question'>Text:</label>
-            <input type='text' class='form-control' id='question' placeholder='Write your question...' @bind-value='ItemComponent.Text' >
-        </div>
-        <div class='form-group'>
-            <label for='type'>Type</label>
-            <select class='form-control' id='type' @onchange='@GetOption'>
-               @foreach(var type in Types)
-                {
-                    <option value=@type.Split(':')[1]>@type.Split(':')[0]</option>
-                }
-            </select>
-            <h5>Selected value is: @selectedString.Split(':')[0]</h5>
-        </div>
-        <div class='form-group'>
-            <label for='linkid'>LinkId:</label>
-            <input type='text' class='form-control' id='link' placeholder='link' @bind-value='ItemComponent.LinkId'>
-        </div>
-    </div>
-</div>
+﻿@using Hl7.Fhir.Model
 
-@code {
-    List<string> Types = new List<string>() { "String:9", "Boolean:3" };
-    string selectedString = "String:9";
-}
+     <h5 class="card-title">@Header</h5>  
+     
+     <div class="card-body">
+   
+        <div class='form-group row'>
+             <label class="col-sm-2 col-form-label" >@TextDesc </label>
+             <div class="col-sm-10">
+                <input type='text' class='form-control' id='question' placeholder='Write your question...' @bind-value='ItemComponent.Text' >
+              </div>
+        </div>
+        
+        <div class='form-group row'>
+            <label class="col-sm-2 col-form-label" for='linkid'>LinkId:</label>
+            <div class="col-sm-10">
+                <input type='text' class='form-control' id='link' placeholder='link' @bind-value='ItemComponent.LinkId'>
+            </div>
+        </div>
+        @switch (ItemComponent.Type)
+        {
+            case Questionnaire.QuestionnaireItemType.Group:
+                foreach(var groupitem in ItemComponent.Item)
+                {
+                    <div class="card">
+                    <ItemDisplay ItemComponent=groupitem/>
+                     <div class="card-footer">
+                         <button type="button" @onclick="()=>ItemComponent.Item.Remove(groupitem)" class="btn btn-danger">- @groupitem.Type.ToString()</button>
+                      </div>
+                </div>
+            }
+            break;
+        case Questionnaire.QuestionnaireItemType.Choice:
+            int ansnum= 1;
+            @foreach (var opt in ItemComponent.AnswerOption)
+            {
+                <div class="card">
+                    <div class="card-header">Answer #@ansnum</div>
+                    <div class="card-body"> <AnswerCoding Coding=(Coding)opt.Value /></div>
+                    <div class="card-footer"><button type="button" class="btn btn-warning" @onclick="()=>ItemComponent.AnswerOption.Remove(opt)" > - Answer @ansnum</button></div>
+                </div>
+                ansnum++;
+            }
+                <br/>
+                <button type="button" @onclick=AddAnswer >Add Choice</button>
+                break;
+            default:
+                break;
+    }
+    @if (ItemComponent.Type.Equals(Questionnaire.QuestionnaireItemType.Group))
+    {
+      <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         + Question
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item"  @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.String)">String</a>
+        <a class="dropdown-item"  @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.Text)">Text</a>
+        <a class="dropdown-item"  @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.Choice)">Choice</a>
+        <a class="dropdown-item" @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.Group)">Group</a>
+      </div>
+  </div>   
+    }
+
+   
+  </div>

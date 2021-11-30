@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static Hl7.Fhir.Model.Questionnaire;
 
 namespace FhirBlaze.QuestionnaireModule
 {
@@ -17,12 +18,13 @@ namespace FhirBlaze.QuestionnaireModule
         IFhirService FhirService { get; set; }
         public Questionnaire Questionnaire { get; set; } = new Questionnaire();
 
-        protected Questionnaire.ItemComponent ItemComponent { get; set; }
+       
 
-        protected IList<ItemDisplay> ItemDisplays { get; set; }
-
-        protected IList<Questionnaire.ItemComponent> NewQuestionnaireItems { get; set; } = new List<Questionnaire.ItemComponent>();
-
+        protected override System.Threading.Tasks.Task OnInitializedAsync()
+        {
+            InitializeQuestionnaire();
+            return base.OnInitializedAsync();
+        }
         protected async void InitializeQuestionnaire()
         {
             var QuestionnaireIdentifier = new Hl7.Fhir.Model.Identifier();
@@ -31,17 +33,34 @@ namespace FhirBlaze.QuestionnaireModule
             Questionnaire.Identifier = new List<Hl7.Fhir.Model.Identifier>();
             Questionnaire.Identifier.Add(QuestionnaireIdentifier);
             Questionnaire.Status = PublicationStatus.Draft;
+            Questionnaire.Item = new List<Questionnaire.ItemComponent>();
         }
+        protected void AddItem(QuestionnaireItemType type)
+        {
+            var nItem = new Questionnaire.ItemComponent();
+            nItem.Type = type;
+            switch (type)
+            {
+                case Questionnaire.QuestionnaireItemType.Group:
+                    nItem.Text = "New Group";
+                    break;
+                case Questionnaire.QuestionnaireItemType.String:
+                    nItem.Text = "String Question";
+                    break;
+                default:
+                    break;
+            }
+            Questionnaire.Item.Add(nItem);
+        }
+        protected void RemoveItem(Questionnaire.ItemComponent Item)
+        {
+            Questionnaire.Item.Remove(Item);
+        }
+
 
         public async void Submit()
         {
             Questionnaire.Status = PublicationStatus.Draft;
-            
-            foreach (var item in NewQuestionnaireItems)
-            {
-                Questionnaire.Item.Add(item);
-            }
-
             await FhirService.CreateQuestionnaireAsync(Questionnaire);
         }
     }
