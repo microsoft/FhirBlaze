@@ -6,15 +6,15 @@
 
     <div class="container">
         <div class="row">
-	        <div class="form-group">
-		        <label class="col-sm-2 control-label" for="Id">Id</label>
-		        <InputText id="Id" disabled @bind-Value="Practitioner.Id" class="col-sm-4" style="width: 150px;" />
+	        <div class="form-group col-sm-3">
+		        <label class="control-label" for="Id">Id</label>
+		        <InputText id="Id" disabled @bind-Value="Practitioner.Id" class="" style="width: 150px;" />
 	        </div>
-	        <div class="form-group">
-		        <label class="col-sm-2 control-label">Identifier(s)</label>
+	        <div class="form-group col-sm-9">
+		        <label class="control-label">Identifier(s)</label>
 		        @foreach(var item in this.Practitioner.Identifier)
 		        {
-                    <div class="col-sm-4">
+                    <div class="">
     			        <input type="text" @bind="item.Value" />
                     </div>
 		        }
@@ -22,22 +22,24 @@
         </div>
 
         <div class="row">
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Active</label>
+            <div class="form-group col-sm-3">
+                <label class="control-label">Active</label>
                 <InputCheckbox @bind-Value="this.Active" class="col-sm-2" />
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Gender</label>
-                <InputSelect @bind-Value="this.Gender" class="col-sm-2" style="width: 150px;">
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                    <option value="Other">Other</option>
-                    <option value="Unknown">Unknown</option>
-                </InputSelect>
+            <div class="form-group col-sm-3">
+                <label class="control-label">Gender</label>
+                <div>
+                    <InputSelect @bind-Value="this.Gender" class="" style="width: 150px;">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                        <option value="Unknown">Unknown</option>
+                    </InputSelect>
+                </div>
             </div>
-            <div class="form-group">
-                <label class="col-sm-2 control-label">Birth Date</label>
-                <div class="col-sm-2">
+            <div class="form-group  col-sm-6">
+                <label class="control-label">Birth Date</label>
+                <div class="">
                     <InputDate @bind-Value="BirthDate" />
                 </div>
             </div>
