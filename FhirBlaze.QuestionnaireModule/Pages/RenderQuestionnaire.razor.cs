@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Components.Forms;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace FhirBlaze.QuestionnaireModule
+namespace FhirBlaze.QuestionnaireModule.Pages
 {
     public partial class RenderQuestionnaire
     {

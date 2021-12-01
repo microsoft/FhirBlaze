@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FhirBlaze.QuestionnaireModule
+namespace FhirBlaze.QuestionnaireModule.Components
 {
     public partial class AnswerCoding
     {

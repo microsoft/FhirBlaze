@@ -1,4 +1,5 @@
 ﻿@page "/questionnaire"
+@using FhirBlaze.QuestionnaireModule.Components
 @using FhirBlaze.SharedComponents
 @inject NavigationManager Navigation
 
@@ -21,7 +22,7 @@
     <div class="container">
         @if (ShowCreate)
         {
-            <CreateQuestionnaire />
+            <QuestionnaireComponent SaveQuestionnaire=SaveQuestionnaire />
         }
         <br/>
         <br/>   

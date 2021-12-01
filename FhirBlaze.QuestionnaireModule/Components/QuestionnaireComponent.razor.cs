@@ -9,22 +9,25 @@ using System.Text;
 using System.Threading.Tasks;
 using static Hl7.Fhir.Model.Questionnaire;
 
-namespace FhirBlaze.QuestionnaireModule
+namespace FhirBlaze.QuestionnaireModule.Components
 {
     [Authorize]
-    public partial class CreateQuestionnaire
+    public partial class QuestionnaireComponent
     {
         [Inject]
         IFhirService FhirService { get; set; }
         public Questionnaire Questionnaire { get; set; } = new Questionnaire();
+        
+        [Parameter]
+        public EventCallback<Questionnaire> SaveQuestionnaire { get; set; }
 
-       
 
         protected override System.Threading.Tasks.Task OnInitializedAsync()
         {
             InitializeQuestionnaire();
             return base.OnInitializedAsync();
-        }
+        }  
+        
         protected async void InitializeQuestionnaire()
         {
             var QuestionnaireIdentifier = new Hl7.Fhir.Model.Identifier();
@@ -55,7 +58,7 @@ namespace FhirBlaze.QuestionnaireModule
         public async void Submit()
         {
             Questionnaire.Status = PublicationStatus.Draft;
-            await FhirService.CreateQuestionnaireAsync(Questionnaire);
+            await SaveQuestionnaire.InvokeAsync(Questionnaire);
         }
     }
 }

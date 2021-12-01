@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static Hl7.Fhir.Model.Questionnaire;
 
-namespace FhirBlaze.QuestionnaireModule
+namespace FhirBlaze.QuestionnaireModule.Components
 {
     public partial class ItemDisplay
     {
