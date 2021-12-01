@@ -1,0 +1,36 @@
+﻿@page "/createquestionnaire"
+@using FhirBlaze.SharedComponents
+@using Hl7.Fhir.Model
+@using Microsoft.AspNetCore.Components.Forms
+
+<EditForm Model=Questionnaire OnValidSubmit=Submit>
+        <label class="col-sm-2 form-label">Title:</label>
+        <InputText @bind-Value=Questionnaire.Title />
+       
+    @foreach(var item in Questionnaire.Item)
+        {
+           <div class="card">
+           <div class="card-title">
+               @GetHeader(item) &nbsp;
+               <button type="button" @onclick="()=>RemoveItem(item)" class="btn btn-danger">-</button>
+           </div>  
+           <ItemDisplay ItemComponent=item/>
+           </div>
+           
+        }
+    
+
+<div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         + Item
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item"  @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.String)">String</a>
+        <a class="dropdown-item"  @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.Text)">Text</a>
+        <a class="dropdown-item"  @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.Choice)">Choice</a>
+        <a class="dropdown-item" @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.Group)">Group</a>
+      </div>
+  </div>
+<br/>
+<button type="submit">Submit</button>
+</EditForm>

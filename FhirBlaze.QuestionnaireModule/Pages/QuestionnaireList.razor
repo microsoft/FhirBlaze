@@ -1,22 +1,31 @@
 ﻿@page "/questionnaire"
+@using FhirBlaze.QuestionnaireModule.Components
 @using FhirBlaze.SharedComponents
 @inject NavigationManager Navigation
 
-<h3>Questionnaires List</h3>
+
 
 <div class="container">
     <nav class="navbar navbar-light bg-light">
-        <a class="navbar-brand" href="#">Questionnaire</a>
+       
         <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
-                    <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Questionnaire")</button>
+                    @if (Navigation.Uri.Contains("/questionnaire"))
+                                    {
+                                        <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel Create": "Create Questionnaire")</button>
+                                    }
+                   
                     <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch?"Cancel": "Search Questionnaire")</button>
                 </li>
         </ul>
     </nav>
     <div class="container">
-       
-       <br/>   
+        @if (ShowCreate)
+        {
+            <QuestionnaireComponent SaveQuestionnaire=SaveQuestionnaire />
+        }
+        <br/>
+        <br/>   
        <div class="container">
          <div class="row">
             <div class="col-sm-8">

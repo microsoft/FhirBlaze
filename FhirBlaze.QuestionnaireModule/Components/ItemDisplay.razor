@@ -1,0 +1,61 @@
+﻿@using Hl7.Fhir.Model
+   
+     <div class="card-body">
+        <label class="sr-only" >@GetTitleText(ItemComponent)</label>
+        <input type='text' required class='form-control' id='question' placeholder=@GetTitleText(ItemComponent) @bind-value='ItemComponent.Text' >
+        
+        <label  class="sr-only">LinkId:</label>
+        <input type='text' required class='form-control' placeholder='linkId' @bind-value='ItemComponent.LinkId'>
+            
+        
+        @switch (ItemComponent.Type)
+        {
+            case Questionnaire.QuestionnaireItemType.Group:
+                foreach(var groupitem in ItemComponent.Item)
+                {
+                    <div class="card">
+                    <div class="card-header">
+                         @GetHeader(groupitem) &nbsp;
+                         <button type="button" @onclick="()=>ItemComponent.Item.Remove(groupitem)" class="btn btn-danger">-</button>
+                    </div>
+                    <ItemDisplay ItemComponent=groupitem/>
+                     
+                </div>
+            }
+            break;
+        case Questionnaire.QuestionnaireItemType.Choice:
+            int ansnum= 1;
+            <ul class="list-group list-group-flush">
+            @foreach (var opt in ItemComponent.AnswerOption)
+            {
+               <li class="list-group-item">
+                 <form class="form-inline">
+                   #@ansnum
+                 <AnswerCoding Coding=(Coding)opt.Value />
+                 <button type="button" class="btn btn-small btn-warning" @onclick="()=>ItemComponent.AnswerOption.Remove(opt)" > - #@ansnum</button>
+                 </form>
+                </li>
+                ansnum++;
+            }
+            </ul>
+                <br/>
+                <button type="button" @onclick=AddAnswer >Add Choice</button>
+                break;
+            default:
+                break;
+    }
+    @if (ItemComponent.Type.Equals(Questionnaire.QuestionnaireItemType.Group))
+    {
+      <div class="dropdown">
+      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+         + Item
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item"  @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.String)">String</a>
+        <a class="dropdown-item"  @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.Text)">Text</a>
+        <a class="dropdown-item"  @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.Choice)">Choice</a>
+        <a class="dropdown-item" @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.Group)">Group</a>
+      </div>
+  </div>   
+    }
+  </div>

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using Task = System.Threading.Tasks.Task;
 using Microsoft.AspNetCore.Authorization;
 
-namespace FhirBlaze.QuestionnaireModule
+namespace FhirBlaze.QuestionnaireModule.Pages
 {
     [Authorize]
     public partial class QuestionnaireList
@@ -26,9 +26,10 @@ namespace FhirBlaze.QuestionnaireModule
         [Parameter]
         public EventCallback<string> OnSelectClick { get; set; }
 
-        private void CreateQuestionnaire(Questionnaire questionnaire)
+        private async void  SaveQuestionnaire(Questionnaire questionnaire)
         {
-
+            await FhirService.CreateQuestionnaireAsync(questionnaire);
+            ToggleCreate();
         }
 
         protected override async Task OnInitializedAsync()
