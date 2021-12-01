@@ -6,30 +6,32 @@
 
     <div class="container">
         <div class="row">
-	        <div class="form-group col-sm-3">
+	        <div class="form-group col-sm">
 		        <label class="control-label" for="Id">Id</label>
-		        <InputText id="Id" disabled @bind-Value="Practitioner.Id" class="" style="width: 150px;" />
+		        <InputText id="Id" disabled @bind-Value="Practitioner.Id" class="form-control" style="" />
 	        </div>
-	        <div class="form-group col-sm-9">
+	        <div class="form-group col-sm">
 		        <label class="control-label">Identifier(s)</label>
 		        @foreach(var item in this.Practitioner.Identifier)
 		        {
-                    <div class="">
-    			        <input type="text" @bind="item.Value" />
+                    <div>
+    			        <input type="text" @bind="item.Value" class="form-control"/>
                     </div>
 		        }
 	        </div>
         </div>
 
         <div class="row">
-            <div class="form-group col-sm-3">
+            <div class="form-group col-sm">
                 <label class="control-label">Active</label>
-                <InputCheckbox @bind-Value="this.Active" class="col-sm-2" />
+                <div>
+                    <InputCheckbox @bind-Value="this.Active" class="form-control"/>
+                </div>
             </div>
-            <div class="form-group col-sm-3">
+            <div class="form-group col-sm">
                 <label class="control-label">Gender</label>
                 <div>
-                    <InputSelect @bind-Value="this.Gender" class="" style="width: 150px;">
+                    <InputSelect @bind-Value="this.Gender" class="form-control" style="width: 150px;">
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                         <option value="Other">Other</option>
@@ -37,10 +39,10 @@
                     </InputSelect>
                 </div>
             </div>
-            <div class="form-group  col-sm-6">
+            <div class="form-group  col-sm">
                 <label class="control-label">Birth Date</label>
                 <div class="">
-                    <InputDate @bind-Value="BirthDate" />
+                    <InputDate @bind-Value="BirthDate" class="form-control" />
                 </div>
             </div>
         </div>

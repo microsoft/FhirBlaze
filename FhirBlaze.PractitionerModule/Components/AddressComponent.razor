@@ -1,8 +1,8 @@
-﻿<div class="border border-primary rounded-left">
+﻿<div class="border border-primary rounded-left rounded-right p-2">
 	<div class="row">
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="Use">Use</label>
-			<select id="Use" @bind="this.Use" class="col-sm-4">
+		<div class="form-group col-sm">
+			<label class="control-label" for="Use">Use</label>
+			<select id="Use" @bind="this.Use" class="form-control">
 				<option value="Home">Home</option>
 				<option value="Work">Work</option>
 				<option value="Temp">Temp</option>
@@ -10,9 +10,9 @@
 				<option value="Billing">Billing</option>
 			</select>
 		</div>
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="Type">Type</label>
-			<select id="Type" @bind="this.Type" class="col-sm-4">
+		<div class="form-group col-sm">
+			<label class="control-label" for="Type">Type</label>
+			<select id="Type" @bind="this.Type" class="form-control">
 				<option value="Postal">Postal</option>
 				<option value="Physical">Physical</option>
 				<option value="Both">Both</option>
@@ -21,64 +21,67 @@
 	</div>
 	
 	<div class="row">
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="Text">Text</label>
-			<div class="col-sm-10">
-				<input id="Text" type="text" @bind-value="Address.Text" placeholder="Text representation of the address" />
+		<div class="form-group col-sm">
+			<label class="control-label" for="Text">Text</label>
+			<div class="">
+				<input id="Text" type="text" @bind-value="Address.Text" placeholder="Text representation of the address" class="form-control"/>
 			</div>
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="Line">Line</label>
-			<div class="col-sm-10">
-				<input id="Line" type="text" @bind-value="Line" />
+		<div class="form-group col-sm">
+			<label class="control-label" for="Line">Line</label>
+			<div class="">
+				<input id="Line" type="text" @bind-value="Line" class="form-control"/>
 			</div>
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="City">City</label>
-			<div class="col-sm-2">
-				<input id="City" type="text" @bind-value="Address.City" />
+		<div class="form-group col-sm">
+			<label class="control-label" for="City">City</label>
+			<div class="">
+				<input id="City" type="text" @bind-value="Address.City" class="form-control"/>
 			</div>
 		</div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="District">District</label>
-			<div class="col-sm-2">
-				<input id="District" type="text" @bind="Address.District" />
-			</div>
-		</div>
-
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="State">State</label>
-			<div class="col-sm-2">
-				<input id="State" type="text" @bind="Address.State" />
+		<div class="form-group col-sm">
+			<label class="control-label" for="District">District</label>
+			<div class="">
+				<input id="District" type="text" @bind="Address.District" class="form-control"/>
 			</div>
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="PostalCode">Postal Code</label>
-			<div class="col-sm-2">
-				<input id="PostalCode" type="text" @bind="Address.PostalCode" />
+		<div class="form-group col-sm">
+			<label class="control-label" for="State">State</label>
+			<div class="">
+				<input id="State" type="text" @bind="Address.State" class="form-control"/>
+			</div>
+		</div>
+		<div class="form-group col-sm"></div>
+	</div>
+
+	<div class="row">
+		<div class="form-group col-sm">
+			<label class="control-label" for="PostalCode">Postal Code</label>
+			<div class="">
+				<input id="PostalCode" type="text" @bind="Address.PostalCode" class="form-control"/>
 			</div>
 		</div>
 
-		<div class="form-group">
-			<label class="control-label col-sm-2" for="Country">Country</label>
-			<div class="col-sm-2">
-				<input id="Country" type="text" @bind="Address.Country" />
+		<div class="form-group col-sm">
+			<label class="control-label" for="Country">Country</label>
+			<div class="">
+				<input id="Country" type="text" @bind="Address.Country" class="form-control"/>
 			</div>
 		</div>
 	</div>
 
 	<div class="row">
-		<div class="col-sm-12">
+		<div class="col-sm">
 			<PeriodComponent Period="Address.Period" />
 		</div>
 	</div>
