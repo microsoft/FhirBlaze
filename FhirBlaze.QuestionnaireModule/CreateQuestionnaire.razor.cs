@@ -33,23 +33,14 @@ namespace FhirBlaze.QuestionnaireModule
             Questionnaire.Identifier = new List<Hl7.Fhir.Model.Identifier>();
             Questionnaire.Identifier.Add(QuestionnaireIdentifier);
             Questionnaire.Status = PublicationStatus.Draft;
-            Questionnaire.Item = new List<Questionnaire.ItemComponent>();
+            Questionnaire.Title = "New Questionnaire";
+            Questionnaire.Description.Value = "A new questionnaire";
+            
         }
         protected void AddItem(QuestionnaireItemType type)
         {
             var nItem = new Questionnaire.ItemComponent();
             nItem.Type = type;
-            switch (type)
-            {
-                case Questionnaire.QuestionnaireItemType.Group:
-                    nItem.Text = "New Group";
-                    break;
-                case Questionnaire.QuestionnaireItemType.String:
-                    nItem.Text = "String Question";
-                    break;
-                default:
-                    break;
-            }
             Questionnaire.Item.Add(nItem);
         }
         protected void RemoveItem(Questionnaire.ItemComponent Item)
@@ -57,7 +48,10 @@ namespace FhirBlaze.QuestionnaireModule
             Questionnaire.Item.Remove(Item);
         }
 
-
+        protected string GetHeader(Questionnaire.ItemComponent item)
+        {
+            return (item.Type.Equals(Questionnaire.QuestionnaireItemType.Group))?"Group": $"{item.Type.ToString()} Question";        
+        }
         public async void Submit()
         {
             Questionnaire.Status = PublicationStatus.Draft;

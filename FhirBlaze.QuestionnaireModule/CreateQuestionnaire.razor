@@ -4,19 +4,25 @@
 @using Microsoft.AspNetCore.Components.Forms
 
 <EditForm Model=Questionnaire OnValidSubmit=Submit>
-    <div class="card">
-        @foreach(var item in Questionnaire.Item)
+        <label class="col-sm-2 form-label">Title:</label>
+        <InputText @bind-Value=Questionnaire.Title />
+       
+    @foreach(var item in Questionnaire.Item)
         {
+           <div class="card">
+           <div class="card-title">
+               @GetHeader(item) &nbsp;
+               <button type="button" @onclick="()=>RemoveItem(item)" class="btn btn-danger">-</button>
+           </div>  
            <ItemDisplay ItemComponent=item/>
-            <div class="card-footer">
-                 <button type="button" @onclick="()=>RemoveItem(item)" class="btn btn-danger">- @item.Type.ToString()</button>
-            </div>
+           </div>
+           
         }
-    </div>
+    
 
 <div class="dropdown">
       <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-         + Question
+         + Item
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item"  @onclick="()=>AddItem(Questionnaire.QuestionnaireItemType.String)">String</a>
