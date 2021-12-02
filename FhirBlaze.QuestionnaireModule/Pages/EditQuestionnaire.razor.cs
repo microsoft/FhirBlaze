@@ -23,8 +23,6 @@ namespace FhirBlaze.QuestionnaireModule.Pages
         public NavigationManager NavigationManager { get; set; }
         [Parameter]
         public string Id { get; set; }
-        [Parameter]
-        public EventCallback<Questionnaire> SaveQuestionnaire { get; set; }
         public bool QLoaded { get; set; } = false;
         public Questionnaire Questionnaire { get; set; } = new Questionnaire();
 
