@@ -14,27 +14,5 @@ using FhirBlaze.SharedComponents
 {
     <h1>Loading Questionnaire</h1>
 }else{
-    <EditForm Model=Questionnaire OnValidSubmit=Submit>
-        <label class="col-sm-2 form-label">Title:</label>
-        <InputText @bind-Value=Questionnaire.Title />
-       
-        @foreach(var item in Questionnaire.Item)
-            {
-               <div class="card">
-               <div class="card-title">
-                   @GetHeader(item) &nbsp;
-                   <button type="button" @onclick="()=>RemoveItem(item)" class="btn btn-danger">-</button>
-               </div>  
-               <ItemDisplay ItemComponent=item/>
-               </div>
-           
-            }
-
-        <div>
-            <ItemTypeComponent ItemSelected="AddItem" />
-        </div>    
-
-        <br/>
-        <button type="submit">Submit</button>
-    </EditForm>
+    <QuestionnaireComponent Questionnaire="Questionnaire" SaveQuestionnaire=Submit/>
 }

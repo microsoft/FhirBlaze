@@ -14,10 +14,9 @@ namespace FhirBlaze.QuestionnaireModule.Components
     [Authorize]
     public partial class QuestionnaireComponent
     {
-        [Inject]
-        IFhirService FhirService { get; set; }
-        public Questionnaire Questionnaire { get; set; } = new Questionnaire();
-        
+        //public Questionnaire Questionnaire { get; set; } = new Questionnaire();
+        [Parameter]
+        public Questionnaire Questionnaire { get; set; }
         [Parameter]
         public EventCallback<Questionnaire> SaveQuestionnaire { get; set; }
 
@@ -30,15 +29,19 @@ namespace FhirBlaze.QuestionnaireModule.Components
         
         protected async void InitializeQuestionnaire()
         {
-            var QuestionnaireIdentifier = new Hl7.Fhir.Model.Identifier();
-            QuestionnaireIdentifier.System = "http://hlsemops.microsoft.com";
-            QuestionnaireIdentifier.Value = Guid.NewGuid().ToString();
-            Questionnaire.Identifier = new List<Hl7.Fhir.Model.Identifier>();
-            Questionnaire.Identifier.Add(QuestionnaireIdentifier);
-            Questionnaire.Status = PublicationStatus.Draft;
-            Questionnaire.Title = "New Questionnaire";
-            Questionnaire.Description.Value = "A new questionnaire";
-            
+            if (Questionnaire == null)
+            {
+                Questionnaire = new Questionnaire();
+
+                var QuestionnaireIdentifier = new Identifier();
+                QuestionnaireIdentifier.System = "http://hlsemops.microsoft.com";
+                QuestionnaireIdentifier.Value = Guid.NewGuid().ToString();
+                Questionnaire.Identifier = new List<Hl7.Fhir.Model.Identifier>();
+                Questionnaire.Identifier.Add(QuestionnaireIdentifier);
+                Questionnaire.Status = PublicationStatus.Draft;
+                Questionnaire.Title = "New Questionnaire";
+                Questionnaire.Description.Value = "A new questionnaire";
+            }
         }
         protected void AddItem(QuestionnaireItemType type)
         {
