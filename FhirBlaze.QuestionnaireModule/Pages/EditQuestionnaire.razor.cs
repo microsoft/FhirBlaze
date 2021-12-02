@@ -61,7 +61,7 @@ namespace FhirBlaze.QuestionnaireModule.Pages
             {
                 Questionnaire.Status = PublicationStatus.Draft;
                 Questionnaire.Date = DateTime.Now.ToString("yyyy-MM-dd");
-                var questionnaire = await FhirService.CreateQuestionnaireAsync(Questionnaire);
+                var questionnaire = await FhirService.UpdateQuestionnaireAsync(Questionnaire);
                 NavigationManager.NavigateTo("/questionnaire");
                 Console.WriteLine($"Saved!  ID: {questionnaire.Id}");
             }

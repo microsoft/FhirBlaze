@@ -44,9 +44,9 @@
                                 <button @onclick="() => OnPreviewClick(questionnaire.Id)" class="btn btn-primary">Preview</button>
                                 <button @onclick="() => OnEditClick(questionnaire.Id)" class="btn btn-primary">Edit</button>
                                 @if (!Navigation.Uri.Contains("/questionnaire"))
-                                    {
-                                        <button @onclick="() => OnSelectClick.InvokeAsync(questionnaire.Id)" class="btn btn-secondary">Set</button>
-                                    }
+                                {
+                                    <button @onclick="() => OnSelectClick.InvokeAsync(questionnaire.Id)" class="btn btn-secondary">Set</button>
+                                }
                             </td>
                         </tr>
                     }

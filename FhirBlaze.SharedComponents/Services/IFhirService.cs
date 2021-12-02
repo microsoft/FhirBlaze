@@ -23,6 +23,7 @@ namespace FhirBlaze.SharedComponents.Services
         Task<Questionnaire> CreateQuestionnaireAsync(Questionnaire questionnaire);
         Task<QuestionnaireResponse> GetQuestionnaireResponseByIdAsync(string id);
         Task<IList<QuestionnaireResponse>> GetQuestionnaireResponsesByQuestionnaireIdAsync(string questionnaireId);
+        Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire);
 
         #endregion
 
