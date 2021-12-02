@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static Hl7.Fhir.Model.Questionnaire;
+using Task = System.Threading.Tasks.Task;
 
 namespace FhirBlaze.QuestionnaireModule.Components
 {
@@ -22,7 +23,7 @@ namespace FhirBlaze.QuestionnaireModule.Components
         [Parameter]
         public EventCallback<QuestionnaireItemType> ItemSelected { get; set; }
 
-        protected async System.Threading.Tasks.Task SetItemType(QuestionnaireItemType selectedItem)
+        protected async Task SetItemType(QuestionnaireItemType selectedItem)
         {
             QuestionnaireItemType = selectedItem;
             await ItemSelected.InvokeAsync(QuestionnaireItemType);
