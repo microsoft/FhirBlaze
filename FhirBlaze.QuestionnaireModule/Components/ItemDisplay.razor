@@ -13,14 +13,21 @@
             case Questionnaire.QuestionnaireItemType.Group:
                 foreach(var groupitem in ItemComponent.Item)
                 {
-                    <div class="card">
-                    <div class="card-header">
-                         @GetHeader(groupitem) &nbsp;
-                         <button type="button" @onclick="()=>ItemComponent.Item.Remove(groupitem)" class="btn btn-danger">-</button>
-                    </div>
-                    <ItemDisplay ItemComponent=groupitem/>
-                     
-                </div>
+                     <div class="border border-primary rounded-left  rounded-right p-2">
+                        <div class="row">
+                            <div class="col-sm">@GetHeader(groupitem)</div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm">
+                                <ItemDisplay ItemComponent=groupitem/>
+                            </div>
+                            <div class="col-sm">
+                                <button type="button" class="btn btn-primary"  @onclick="()=>ItemComponent.Item.Remove(groupitem)">
+                                    <span class="oi oi-trash" />
+                                </button>
+                            </div>
+                        </div>
+                    </div>                  
             }
             break;
         case Questionnaire.QuestionnaireItemType.Choice:
@@ -29,11 +36,11 @@
             @foreach (var opt in ItemComponent.AnswerOption)
             {
                <li class="list-group-item">
-                 <form class="form-inline">
-                   #@ansnum
-                 <AnswerCoding Coding=(Coding)opt.Value />
-                 <button type="button" class="btn btn-small btn-warning" @onclick="()=>ItemComponent.AnswerOption.Remove(opt)" > - #@ansnum</button>
-                 </form>
+                    <form class="form-inline">
+                        #@ansnum
+                        <AnswerCoding Coding=(Coding)opt.Value />                
+                        <button type="button" class="btn btn-primary" @onclick="()=>ItemComponent.AnswerOption.Remove(opt)"><span class="oi oi-trash" /></button>
+                    </form>
                 </li>
                 ansnum++;
             }
@@ -44,6 +51,7 @@
             default:
                 break;
     }
+
     @if (ItemComponent.Type.Equals(Questionnaire.QuestionnaireItemType.Group))
     {
        <div>
