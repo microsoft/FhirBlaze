@@ -14,10 +14,13 @@
                                     {
                                         <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel Create": "Create Questionnaire")</button>
                                     }
-                   
-                    <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch?"Cancel": "Search Questionnaire")</button>
+                  
                 </li>
         </ul>
+         <form class="form-inline my-2 my-lg-0">
+                        <input @bind-value=TitleSearch  class="form-control mr-sm-2" tyoe="search"  placeholder="Search" aria-label="Search">
+                        <button @onclick=SearchQuestionnaire class="btn btn-outline-success my-2 my-sm-0" type="button">Search</button>
+                    </form>
     </nav>
     <div class="container">
         @if (ShowCreate)

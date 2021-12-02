@@ -38,6 +38,16 @@ namespace FhirBlaze.SharedComponents.Services
             return bundle.Total ?? 0;
         }
 
+        public async Task<IList<Questionnaire>> SearchQuestionnaire(string title)
+        {
+            Bundle bundle=new Bundle(); 
+            if (!string.IsNullOrEmpty(title))
+            {
+                bundle = await _fhirClient.SearchAsync<Questionnaire>(criteria: new[] { $"title:contains={title}" });                  
+            }
+            return bundle.Entry.Select(p => (Questionnaire)p.Resource).ToList();
+
+        }
         public async Task<IList<Patient>> SearchPatient(Patient Patient)
         {
             string givenName = ""; //The given name is not working on the mapping
