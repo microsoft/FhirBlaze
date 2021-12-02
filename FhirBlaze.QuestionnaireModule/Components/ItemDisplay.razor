@@ -18,7 +18,7 @@
                             <div class="col-sm">@GetHeader(groupitem)</div>
                         </div>
                         <div class="row">
-                            <div class="col-sm">
+                            <div class="col-sm-11">
                                 <ItemDisplay ItemComponent=groupitem/>
                             </div>
                             <div class="col-sm">
@@ -31,25 +31,22 @@
             }
             break;
         case Questionnaire.QuestionnaireItemType.Choice:
-            int ansnum= 1;
-            <ul class="list-group list-group-flush">
+            int ansnum= 1;            
             @foreach (var opt in ItemComponent.AnswerOption)
             {
-               <li class="list-group-item">
-                    <form class="form-inline">
-                        #@ansnum
-                        <AnswerCoding Coding=(Coding)opt.Value />                
-                        <button type="button" class="btn btn-primary" @onclick="()=>ItemComponent.AnswerOption.Remove(opt)"><span class="oi oi-trash" /></button>
-                    </form>
-                </li>
-                ansnum++;
+               <div class="row">
+                   <form class="form-inline">
+                   <div class="col-sm-1">#@ansnum</div>
+                   <div class="col-sm-10"><AnswerCoding Coding=(Coding)opt.Value /></div>
+                   <div class="col-sm-1"><button type="button" class="btn btn-primary" @onclick="()=>ItemComponent.AnswerOption.Remove(opt)"><span class="oi oi-trash" /></button></div>
+                   </form>
+              </div>
+              ansnum++;
             }
-            </ul>
-                <br/>
-                <button type="button" @onclick=AddAnswer >Add Choice</button>
-                break;
-            default:
-                break;
+            <button type="button" @onclick=AddAnswer >Add Choice</button>
+            break;
+        default:
+            break;
     }
 
     @if (ItemComponent.Type.Equals(Questionnaire.QuestionnaireItemType.Group))
