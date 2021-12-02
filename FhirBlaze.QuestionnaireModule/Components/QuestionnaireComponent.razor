@@ -6,7 +6,7 @@
 <EditForm Model=Questionnaire OnValidSubmit=Submit>
     <label class="col-sm-2 form-label">Title:</label>
     <InputText @bind-Value=Questionnaire.Title />
-        
+
     @foreach(var item in Questionnaire.Item)
     {
         <div class="border border-primary rounded-left  rounded-right p-2">
@@ -27,11 +27,10 @@
     }
         
 
-
-  <div>
+    <div>
         <ItemTypeComponent ItemSelected="AddItem" />
-  </div>    
+    </div>    
 
-<br/>
-<button type="submit">Submit</button>
+    <br/>
+    <button type="submit">Submit</button>
 </EditForm>

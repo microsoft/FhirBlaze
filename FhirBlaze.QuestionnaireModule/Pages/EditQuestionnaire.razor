@@ -1,0 +1,14 @@
+﻿@page "/questionnaire/edit/{id}"
+@using Hl7.Fhir.Model
+@using Microsoft.AspNetCore.Components.Forms
+@using FhirBlaze.QuestionnaireModule.Components
+@using FhirBlaze.SharedComponents
+
+@if (!QLoaded)
+{
+    <LoadingSpinner />
+}else{
+    <h4>@Questionnaire.Description</h4>
+    <h5>ID: @Questionnaire.Id</h5>
+    <QuestionnaireComponent Questionnaire="Questionnaire" SaveQuestionnaire=Submit/>
+}

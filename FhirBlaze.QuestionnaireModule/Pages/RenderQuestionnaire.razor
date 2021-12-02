@@ -16,10 +16,10 @@
 }else{
    
     <EditForm Model=@QResponse OnSubmit=@SubmitQuestionnaireAsync>
-       @DynamicFragment
-       @if (!IsPreview){
-                <button type="submit" class="btn btn-primary" Disabled=@IsSubmitted>Submit</button> <label>@SubmittedMessage</label>
-       }
+        @DynamicFragment
+        @if (!IsPreview){
+            <button type="submit" class="btn btn-primary" Disabled=@IsSubmitted>Submit</button> <label>@SubmittedMessage</label>
+        }
     </EditForm>
 }
 
