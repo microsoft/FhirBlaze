@@ -14,7 +14,7 @@
                     {
                         <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate ? "Cancel Create": "Create Questionnaire")</button>
                     }
-                   
+                    &nbsp;
                     <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch ? "Cancel": "Search Questionnaire")</button>
                 </li>
         </ul>
@@ -25,38 +25,39 @@
             <QuestionnaireComponent SaveQuestionnaire=SaveQuestionnaire />
         }
         <br/>
-        <br/>   
-       <div class="container">
+    <div class="container">
          <div class="row">
-            <div class="col-sm-8">
                 <table class="table table-striped table-hover">
-                    <tr class="my-table-header">
-                        <th>Title</th>
-                        <th>Date</th>
-                        <th>&nbsp;</th>
-                    </tr>
-                    @foreach (var questionnaire in Questionnaires)
-                    {
-                        <tr class="my-table-row">
-                            <td>@questionnaire.Title</td>
-                            <td>@questionnaire.Date</td>                            
-                            <td>
-                                <button @onclick="() => OnPreviewClick(questionnaire.Id)" class="btn btn-primary">Preview</button>
-                                
-                                @if (Navigation.Uri.Contains("/questionnaire"))
-                                {                                       
-                                    <button @onclick="() => OnEditClick(questionnaire.Id)" class="btn btn-primary">Edit</button>
-                                }
-                                else
-                                {
-                                   <button @onclick="() => OnSelectClick.InvokeAsync(questionnaire.Id)" class="btn btn-secondary">Set</button>
-                                }
-                            </td>
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Date</th>
+                            <th>&nbsp;</th>
                         </tr>
-                    }
+                    </thead>
+                    <tbody>
+                        @foreach (var questionnaire in Questionnaires)
+                        {
+                            <tr>
+                                <td>@questionnaire.Title</td>
+                                <td>@questionnaire.Date</td>                            
+                                <td>
+                                    <button @onclick="() => OnPreviewClick(questionnaire.Id)" class="btn btn-primary">Preview</button>
+                                    &nbsp;
+                                
+                                    @if (Navigation.Uri.Contains("/questionnaire"))
+                                    {                                       
+                                        <button @onclick="() => OnEditClick(questionnaire.Id)" class="btn btn-primary">Edit</button>
+                                    }
+                                    else
+                                    {
+                                       <button @onclick="() => OnSelectClick.InvokeAsync(questionnaire.Id)" class="btn btn-secondary">Set</button>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
                 </table>
-            </div>
-
          </div>
         <br />
             @if (Loading)
