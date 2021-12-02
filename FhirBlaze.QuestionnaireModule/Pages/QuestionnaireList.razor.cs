@@ -49,9 +49,14 @@ namespace FhirBlaze.QuestionnaireModule.Pages
             ShowSearch = !ShowSearch;
         }
 
-        public void OnRespondClick(string id)
+        public void OnPreviewClick(string id)
         {
             NavigationManager.NavigateTo($"/questionnaire/{id}");
+        }
+
+        public void OnEditClick(string id)
+        {
+            NavigationManager.NavigateTo($"/questionnaire/edit/{id}");
         }
     }
 }

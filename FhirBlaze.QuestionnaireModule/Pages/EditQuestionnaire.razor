@@ -1,0 +1,53 @@
+﻿@page "/questionnaire/edit/{id}"
+using FhirBlaze.SharedComponents
+@using Hl7.Fhir.Model
+@using Microsoft.AspNetCore.Components.Forms
+@using FhirBlaze.QuestionnaireModule.Components
+
+@if(!QLoaded){
+    <h4>Loading</h4>
+}else{
+    <h4>@Questionnaire.Description</h4>
+    <h5>(ID: @Questionnaire.Id)</h5>
+}
+@if (!QLoaded)
+{
+    <h1>Loading Questionnaire</h1>
+}else{
+    <EditForm Model=Questionnaire OnValidSubmit=Submit>
+        <label class="col-sm-2 form-label">Title:</label>
+        <InputText @bind-Value=Questionnaire.Title />
+       
+        @foreach(var item in Questionnaire.Item)
+            {
+               <div class="card">
+               <div class="card-title">
+                   @GetHeader(item) &nbsp;
+                   <button type="button" @onclick="()=>RemoveItem(item)" class="btn btn-danger">-</button>
+               </div>  
+               <ItemDisplay ItemComponent=item/>
+               </div>
+           
+            }
+
+        <div>
+            <ItemTypeComponent ItemSelected="AddItem" />
+        </div>    
+
+        <br/>
+        <button type="submit">Submit</button>
+    </EditForm>
+}
+
+@code {
+
+}
+
+
+
+@*<EditForm Model=@QResponse OnSubmit=@SubmitQuestionnaireAsync>
+    @DynamicFragment
+    @if (!IsPreview){
+        <button type="submit" class="btn btn-primary" Disabled=@IsSubmitted>Submit</button> <label>@SubmittedMessage</label>
+    }
+</EditForm>*@

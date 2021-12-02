@@ -11,11 +11,11 @@
         <ul class="navbar-nav mr-auto">
                 <li class="nav-item active">
                     @if (Navigation.Uri.Contains("/questionnaire"))
-                                    {
-                                        <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel Create": "Create Questionnaire")</button>
-                                    }
+                    {
+                        <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate ? "Cancel Create": "Create Questionnaire")</button>
+                    }
                    
-                    <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch?"Cancel": "Search Questionnaire")</button>
+                    <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch ? "Cancel": "Search Questionnaire")</button>
                 </li>
         </ul>
     </nav>
@@ -41,7 +41,8 @@
                             <td>@questionnaire.Title</td>
                             <td>@questionnaire.Date</td>                            
                             <td>
-                                <button @onclick="() => OnRespondClick(questionnaire.Id)" class="btn btn-primary">Preview</button>
+                                <button @onclick="() => OnPreviewClick(questionnaire.Id)" class="btn btn-primary">Preview</button>
+                                <button @onclick="() => OnEditClick(questionnaire.Id)" class="btn btn-primary">Edit</button>
                                 @if (!Navigation.Uri.Contains("/questionnaire"))
                                     {
                                         <button @onclick="() => OnSelectClick.InvokeAsync(questionnaire.Id)" class="btn btn-secondary">Set</button>
