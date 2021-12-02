@@ -18,8 +18,6 @@ namespace FhirBlaze.QuestionnaireModule.Pages
         [Inject]
         public IFhirService FhirService { get; set; }
         [Inject]
-        public HttpClient Http { get; set; }
-        [Inject]
         public NavigationManager NavigationManager { get; set; }
         [Parameter]
         public string Id { get; set; }
@@ -30,26 +28,16 @@ namespace FhirBlaze.QuestionnaireModule.Pages
         {
             try
             {
+                QLoaded = false;
                 Questionnaire = await FhirService.GetQuestionnaireByIdAsync(Id);
                 QLoaded = true;
+                StateHasChanged();
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
             }
         }       
-
-        protected void AddItem(QuestionnaireItemType type)
-        {
-            var nItem = new Questionnaire.ItemComponent();
-            nItem.Type = type;
-            Questionnaire.Item.Add(nItem);
-        }
-
-        protected void RemoveItem(Questionnaire.ItemComponent Item)
-        {
-            Questionnaire.Item.Remove(Item);
-        }
 
         protected string GetHeader(Questionnaire.ItemComponent item)
         {
