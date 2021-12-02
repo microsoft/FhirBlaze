@@ -1,0 +1,13 @@
+﻿@using Hl7.Fhir.Model
+
+<div class="dropdown">
+    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        + Item
+    </button>
+    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item"  @onclick="()=>SetItemType(Questionnaire.QuestionnaireItemType.String)">String</a>
+        <a class="dropdown-item"  @onclick="()=>SetItemType(Questionnaire.QuestionnaireItemType.Text)">Text</a>
+        <a class="dropdown-item"  @onclick="()=>SetItemType(Questionnaire.QuestionnaireItemType.Choice)">Choice</a>
+        <a class="dropdown-item" @onclick="()=>SetItemType(Questionnaire.QuestionnaireItemType.Group)">Group</a>
+    </div>
+</div>

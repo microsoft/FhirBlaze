@@ -45,7 +45,8 @@ namespace FhirBlaze.QuestionnaireModule.Components
             var nItem = new Questionnaire.ItemComponent();
             nItem.Type = type;
             Questionnaire.Item.Add(nItem);
-        }
+        }         
+
         protected void RemoveItem(Questionnaire.ItemComponent Item)
         {
             Questionnaire.Item.Remove(Item);
