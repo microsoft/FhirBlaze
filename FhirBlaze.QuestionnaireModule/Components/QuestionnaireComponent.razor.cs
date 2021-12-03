@@ -40,7 +40,7 @@ namespace FhirBlaze.QuestionnaireModule.Components
                 Questionnaire.Identifier.Add(QuestionnaireIdentifier);
                 Questionnaire.Status = PublicationStatus.Draft;
                 Questionnaire.Title = "New Questionnaire";
-                Questionnaire.Description.Value = "A new questionnaire";
+                Questionnaire.Description = new Markdown { Value = "A new questionnaire" };
             }
         }
         protected void AddItem(QuestionnaireItemType type)
