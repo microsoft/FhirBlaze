@@ -44,5 +44,22 @@ namespace FhirBlaze.QuestionnaireModule.Components
             ItemComponent.AnswerOption.Add(a);
         }
 
+        protected void OnUpClick(ItemComponent item)
+        {
+            MoveItem(ItemComponent.Item.IndexOf(item) - 1, item);
+        }
+
+        protected void OnDownClick(ItemComponent item)
+        {
+            MoveItem(ItemComponent.Item.IndexOf(item)+1,item);
+           
+        }
+
+        protected void MoveItem(int NewIndex, ItemComponent item)
+        {
+            ItemComponent.Item.Remove(item);
+            ItemComponent.Item.Insert(NewIndex, item);
+        }
+
     }
 }
