@@ -37,7 +37,7 @@ namespace FhirBlaze.QuestionnaireModule.Pages
         public Dictionary<String, Questionnaire.QuestionnaireItemType> QuestionTypesDictionary { get; set; } = new Dictionary<string, Questionnaire.QuestionnaireItemType>();     
         public string SubmittedMessage { get; set; }
        
-        public async Task<bool>  SubmitQuestionnaireAsync(EditContext ec)
+        public async Task<bool> SubmitQuestionnaireAsync(EditContext ec)
         {
             IsSubmitted = true;
             bool submitted = false;
@@ -58,6 +58,7 @@ namespace FhirBlaze.QuestionnaireModule.Pages
                     }
                 }  
             }
+
             if (!string.IsNullOrEmpty(PatientId)){
                 var pat = new ResourceReference();
                 pat.Reference = PatientId;

@@ -9,6 +9,7 @@
             <li class="nav-item active">
                 <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
                 <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch?"Cancel": "Search Patient")</button>
+                &nbsp;                       
                 Questionnaire: <button @onclick="()=>ToggleQList(null)" class="btn btn-primary">@((string.IsNullOrEmpty(QuestionnaireId))?"Select": "Change")</button>   
             </li>
         </ul>
@@ -45,6 +46,7 @@
                     <tr>
                         <th>Name</th>
                         <th>DOB</th>
+                        <th>&nbsp;</th>
                     </tr>
                 </thead>
                 <tbody>

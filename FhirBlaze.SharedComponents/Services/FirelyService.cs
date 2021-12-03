@@ -146,6 +146,11 @@ namespace FhirBlaze.SharedComponents.Services
             return result.Where(r => r.Questionnaire.Contains(questionnaireId)).ToList();
         }
 
+        public async Task<Questionnaire> UpdateQuestionnaireAsync(Questionnaire questionnaire)
+        {
+            return await _fhirClient.UpdateAsync<Questionnaire>(questionnaire);
+        }
+
         #endregion
 
         #region Practitioners
