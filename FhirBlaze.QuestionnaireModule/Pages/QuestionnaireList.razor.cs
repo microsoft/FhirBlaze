@@ -24,25 +24,25 @@ namespace FhirBlaze.QuestionnaireModule.Pages
         public IList<Questionnaire> Questionnaires { get; set; } = new List<Questionnaire>();
         [Parameter]
         public EventCallback<string> OnSelectClick { get; set; }
-        protected string TitleSearch { get; set; }
+        
         private async void  SaveQuestionnaire(Questionnaire questionnaire)
         {
             await FhirService.CreateQuestionnaireAsync(questionnaire);
             ToggleCreate();
         }
-        protected async void SearchQuestionnaire()
+        protected async void OnSearchClick(string searchQuery)
         {
             Loading = true;
-            if (string.IsNullOrEmpty(TitleSearch))
+            if (!string.IsNullOrEmpty(searchQuery))
             {
-                Questionnaires = await FhirService.SearchQuestionnaire(TitleSearch);
+                Questionnaires = await FhirService.SearchQuestionnaire(searchQuery);
             }
             else
             {
                 Questionnaires = await FhirService.GetQuestionnairesAsync();
             }
             Loading = false;
-            ShouldRender();
+            StateHasChanged();
         }
 
         protected override async Task OnInitializedAsync()
