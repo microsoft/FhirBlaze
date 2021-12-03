@@ -1,0 +1,6 @@
+﻿ <form class="form-inline my-2 my-lg-0" @onsubmit=@(()=> SearchClicked.InvokeAsync(SearchQuery))>
+    <input @bind-value=SearchQuery  class="form-control mr-sm-2" tyoe="search"  placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+        <span class="oi oi-magnifying-glass" />
+    </button>
+</form>

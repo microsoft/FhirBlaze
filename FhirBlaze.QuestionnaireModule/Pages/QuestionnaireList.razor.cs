@@ -19,17 +19,30 @@ namespace FhirBlaze.QuestionnaireModule.Pages
         [Inject]
         public NavigationManager NavigationManager { get; set; }
         protected bool ShowCreate { get; set; } = false;
-        protected bool ShowSearch { get; set; } = false;
         protected bool Loading { get; set; } = true;
         protected bool ProcessingCreate { get; set; } = false;
         public IList<Questionnaire> Questionnaires { get; set; } = new List<Questionnaire>();
         [Parameter]
         public EventCallback<string> OnSelectClick { get; set; }
-
+        
         private async void  SaveQuestionnaire(Questionnaire questionnaire)
         {
             await FhirService.CreateQuestionnaireAsync(questionnaire);
             ToggleCreate();
+        }
+        protected async void OnSearchClick(string searchQuery)
+        {
+            Loading = true;
+            if (!string.IsNullOrEmpty(searchQuery))
+            {
+                Questionnaires = await FhirService.SearchQuestionnaire(searchQuery);
+            }
+            else
+            {
+                Questionnaires = await FhirService.GetQuestionnairesAsync();
+            }
+            Loading = false;
+            StateHasChanged();
         }
 
         protected override async Task OnInitializedAsync()
@@ -44,10 +57,7 @@ namespace FhirBlaze.QuestionnaireModule.Pages
         {
             ShowCreate = !ShowCreate;
         }
-        public void ToggleSearch()
-        {
-            ShowSearch = !ShowSearch;
-        }
+        
 
         public void OnPreviewClick(string id)
         {
