@@ -55,6 +55,24 @@ namespace FhirBlaze.QuestionnaireModule.Components
             Questionnaire.Item.Remove(Item);
         }
 
+
+        protected void OnUpClick(ItemComponent item)
+        {
+            MoveItem(Questionnaire.Item.IndexOf(item) - 1, item);
+        }
+
+        protected void OnDownClick(ItemComponent item)
+        {
+            MoveItem(Questionnaire.Item.IndexOf(item) + 1, item);
+
+        }
+
+        protected void MoveItem(int NewIndex, ItemComponent item)
+        {
+            Questionnaire.Item.Remove(item);
+            Questionnaire.Item.Insert(NewIndex, item);
+        }
+
         protected string GetHeader(Questionnaire.ItemComponent item)
         {
             return (item.Type.Equals(Questionnaire.QuestionnaireItemType.Group))?"Group": $"{item.Type.ToString()} Question";        

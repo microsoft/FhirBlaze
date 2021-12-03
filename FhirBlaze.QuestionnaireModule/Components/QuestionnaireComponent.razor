@@ -14,23 +14,33 @@
         <InputTextArea id="description" @bind-Value=Questionnaire.Description.Value class="form-control" />
     </div>
 
+    @{
+        int x = 0;
+    }
     @foreach(var item in Questionnaire.Item)
     {
         <div class="border border-primary rounded-left  rounded-right p-2">
             <div class="row">
-                <div class="col-sm-12">@GetHeader(item)</div>
+                <div class="col-sm-10">@GetHeader(item)</div>
+                <div class="col-sm-2 d-inline float-sm-end">                   
+                    @if (x != Questionnaire.Item.Count-1 && Questionnaire.Item.Count>1)
+                    {
+                        <button type="button" class="btn btn-primary" @onclick="()=>OnDownClick(item)"><span class="oi oi-arrow-thick-bottom" /></button>
+                    }
+                    @if (x!=0 && Questionnaire.Item.Count>1)
+                    {
+                        <button type="button" class="btn btn-primary" @onclick="()=>OnUpClick(item)"><span class="oi oi-arrow-thick-top" /></button>
+                    }
+                    <button type="button" class="btn btn-primary" @onclick="()=>RemoveItem(item)"><span class="oi oi-trash" /></button>
+                </div>
             </div>
             <div class="row">
-                <div class="col-sm-11">
+                <div class="col-sm-12">
                     <ItemDisplay ItemComponent=item/>
-                </div>
-                <div class="col-sm-1">
-                    <button type="button" class="btn btn-primary" @onclick="()=>RemoveItem(item)">
-                        <span class="oi oi-trash" />
-                    </button>
-                </div>
+                </div>                
             </div>
         </div>
+        x++;
     }
         
 
