@@ -16,26 +16,28 @@
 
     @{
         int x = 0;
+        bool disableDown = true;
+        bool disableUp = true;
     }
     @foreach(var item in Questionnaire.Item)
     {
         <div class="border border-primary rounded-left  rounded-right p-2">
             <div class="row">
                 <div class="col-sm">@GetHeader(item)</div>
-                <div class="col-sm btn-group"><p class="ml-auto">
+                <div class="col-sm btn-group">  <p class="ml-auto">                 
                     @if (x != Questionnaire.Item.Count-1 && Questionnaire.Item.Count>1)
-                    {                        
-                        <button type="button" class="btn btn-primary" @onclick="()=>OnDownClick(item)"><span class="oi oi-arrow-thick-bottom" /></button>
-                        <span>&nbsp;</span>
-                    }                    
-                    @if (x!=0 && Questionnaire.Item.Count>1)
-                    {                     
-                        <button type="button" class="btn btn-primary" @onclick="()=>OnUpClick(item)"><span class="oi oi-arrow-thick-top" /></button>
-                        <span>&nbsp;</span>
+                    {
+                        disableDown = false;
                     }
+                    @if (x!=0 && Questionnaire.Item.Count>1)
+                    {
+                        disableUp = false;  
+                    }
+                    <button type="button" disabled="@disableDown" class="btn btn-primary" @onclick="()=>OnDownClick(item)"><span class="oi oi-arrow-thick-bottom" /></button>
+                    <button type="button" disabled="@disableUp" class="btn btn-primary" @onclick="()=>OnUpClick(item)"><span class="oi oi-arrow-thick-top" /></button>   
                     <button type="button" class="btn btn-primary" @onclick="()=>RemoveItem(item)"><span class="oi oi-trash" /></button>
-                    </p>                   
-                </div>
+                    </p>
+                </div>              
             </div>
             <div class="row">
                 <div class="col-sm-12">
@@ -43,6 +45,9 @@
                 </div>                
             </div>
         </div>
+
+        disableDown = true;
+        disableUp = true;
         x++;
     }
         

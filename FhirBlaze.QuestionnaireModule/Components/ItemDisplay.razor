@@ -10,26 +10,27 @@
         
         @switch (ItemComponent.Type)
         {
-            case Questionnaire.QuestionnaireItemType.Group:
-               
+            case Questionnaire.QuestionnaireItemType.Group:               
                 int x = 0;
-                
+                bool disableDown = true;
+                bool disableUp = true;
+
                 foreach(var groupitem in ItemComponent.Item)
                 {
                     <div class="border border-primary rounded-left  rounded-right p-2">
                         <div class="row">
                             <div class="col-sm">@GetHeader(groupitem)</div>
-                            <div class="col-sm btn-group"><p class="ml-auto">
+                            <div class="col-sm btn-group">  <p class="ml-auto">                 
                                 @if (x != ItemComponent.Item.Count-1 && ItemComponent.Item.Count>1)
                                 {
-                                    <button type="button" class="btn btn-primary" @onclick="()=>OnDownClick(groupitem)"><span class="oi oi-arrow-thick-bottom" /></button> 
-                                    <span>&nbsp;</span>
+                                  disableDown = false;
                                 }
                                 @if (x!=0 && ItemComponent.Item.Count>1)
                                 {
-                                    <button type="button" class="btn btn-primary" @onclick="()=>OnUpClick(groupitem)"><span class="oi oi-arrow-thick-top" /></button>
-                                    <span>&nbsp;</span>
-                                }                                
+                                  disableUp = false;  
+                                }
+                                <button type="button" disabled="@disableDown" class="btn btn-primary" @onclick="()=>OnDownClick(groupitem)"><span class="oi oi-arrow-thick-bottom" /></button>
+                                <button type="button" disabled="@disableUp" class="btn btn-primary" @onclick="()=>OnUpClick(groupitem)"><span class="oi oi-arrow-thick-top" /></button>                                
                                 <button type="button" class="btn btn-primary" @onclick="()=>RemoveItem(groupitem)"><span class="oi oi-trash" /></button>
                                 </p>
                             </div>
@@ -40,6 +41,8 @@
                             </div>                
                         </div>
                     </div>
+                    disableDown = true;
+                    disableUp = true;
                     x++;
             }
             break;
