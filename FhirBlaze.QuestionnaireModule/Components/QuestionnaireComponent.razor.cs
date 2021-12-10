@@ -42,6 +42,10 @@ namespace FhirBlaze.QuestionnaireModule.Components
                 Questionnaire.Title = "New Questionnaire";
                 Questionnaire.Description = new Markdown { Value = "A new questionnaire" };
             }
+            if(Questionnaire.Description == null)
+            {
+                Questionnaire.Description = new Markdown { Value = "" };
+            }
         }
         protected void AddItem(QuestionnaireItemType type)
         {
