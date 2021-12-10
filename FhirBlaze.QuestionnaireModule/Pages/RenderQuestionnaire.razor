@@ -34,7 +34,7 @@
            
             @if (item.Item.Count > 0)
             {
-                @GetTitle(item.Text);
+               <h3> @GetTitle(item.Text) </h3>
                 @GetChildItems(item.Item);
             }
             else
