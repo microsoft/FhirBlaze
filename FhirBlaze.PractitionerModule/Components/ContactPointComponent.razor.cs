@@ -8,7 +8,7 @@ namespace FhirBlaze.PractitionerModule.Components
     public partial class ContactPointComponent
     {
         [Parameter]
-        public ContactPoint ContactPoint { get; set; }
+        public ContactPoint ContactPoint { get; set; } 
 
 		public string Use
         {
