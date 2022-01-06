@@ -85,7 +85,7 @@ namespace FhirBlaze.PractitionerModule.Components
             {
                 this.Practitioner.Name = new List<HumanName>();
             }
-            this.Practitioner.Name.Add(new HumanName() { });
+            this.Practitioner.Name.Add( new HumanName() { Period = new Period() });
         }
 
         private void RemoveHumanName(HumanName name)
@@ -98,8 +98,8 @@ namespace FhirBlaze.PractitionerModule.Components
             if(this.Practitioner.Address == null)
             {
                 this.Practitioner.Address = new List<Address>();
-            }
-            this.Practitioner.Address.Add(new Address());
+            }            
+            this.Practitioner.Address.Add(new Address() { Period = new Period() });
         }
 
         private void RemoveAddress(Address address)
@@ -113,7 +113,7 @@ namespace FhirBlaze.PractitionerModule.Components
             {
                 this.Practitioner.Telecom = new List<ContactPoint>();
             }
-            this.Practitioner.Telecom.Add(new ContactPoint());
+            this.Practitioner.Telecom.Add(new ContactPoint() { Period = new Period() });
         }
 
         private void RemoveTelecom(ContactPoint telecom)

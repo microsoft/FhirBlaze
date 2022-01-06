@@ -7,7 +7,7 @@ namespace FhirBlaze.PractitionerModule.Components
     public partial class PeriodComponent
 	{
 		[Parameter]
-		public Period Period { get; set; }
+		public Period Period { get; set; } = new Period();
 
 		private DateTime PeriodStart
 		{
@@ -20,7 +20,7 @@ namespace FhirBlaze.PractitionerModule.Components
 				}
 				else
 				{
-					return DateTime.MinValue;
+					return DateTime.MinValue;					
 				}
 			}
 			set
@@ -44,7 +44,7 @@ namespace FhirBlaze.PractitionerModule.Components
 				}
 				else
 				{
-					return DateTime.MinValue;
+					return DateTime.MinValue;					
 				}
 			}
 			set

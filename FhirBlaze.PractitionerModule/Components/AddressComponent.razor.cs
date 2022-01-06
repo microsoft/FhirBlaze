@@ -8,9 +8,9 @@ namespace FhirBlaze.PractitionerModule.Components
     public partial class AddressComponent
     {
         [Parameter]
-        public Address Address { get; set; }
+        public Address Address { get; set; } 
 
-		private string Use
+        private string Use
         {
             get
             {

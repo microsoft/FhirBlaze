@@ -3,6 +3,8 @@ using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using Task = System.Threading.Tasks.Task;
 
 namespace FhirBlaze.PractitionerModule.Pages
@@ -23,7 +25,29 @@ namespace FhirBlaze.PractitionerModule.Pages
 			if (this.Id != null)
 			{
 				this.SelectedPractitioner = await FhirService.GetResourceByIdAsync<Practitioner>(this.Id);
-			}
+                if (this.SelectedPractitioner != null) { 
+                    if (this.SelectedPractitioner.Address != null) {
+                        foreach (var x in this.SelectedPractitioner.Address)
+                        {
+                            if (x.Period == null) { x.Period = new Period(); }
+                        }                
+                    }
+                    if (this.SelectedPractitioner.Name != null)
+                    {
+                        foreach (var x in this.SelectedPractitioner.Name)
+                        {
+                            if (x.Period == null) { x.Period = new Period(); }
+                        }
+                    }
+                    if (this.SelectedPractitioner.Telecom != null)
+                    {
+                        foreach (var x in this.SelectedPractitioner.Telecom)
+                        {
+                            if (x.Period == null) { x.Period = new Period(); }
+                        }
+                    }
+                }
+            }
 			else
 			{
 				this.SelectedPractitioner = new Practitioner() { Active = true };
