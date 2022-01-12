@@ -26,14 +26,15 @@ namespace FhirBlaze.SharedComponents.Services.GraphQL
 
     public class Data
     {
-        [JsonPropertyName("patientList")]
-        public IList<JsonDocument> patientList { get; set; }
+        [JsonPropertyName("PatientList")]
+        public IList<JsonDocument> PatientList { get; set; }
         
 
         [JsonPropertyName("whoAmI")]
         public string WhoAmI { get; set; }
 
-      
+        [JsonPropertyName("PractitionerList")]
+        public IList<JsonDocument> PractitionerList { get; set; }     
 
     }
 

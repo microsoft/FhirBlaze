@@ -46,9 +46,9 @@ namespace FhirBlaze.SharedComponents.Services
         {
             GraphQLRequest request = new GraphQLRequest(_httpClient)
             {
-                OperationName = "AddArtifact",
+                OperationName = "PatientList",
                 Query = @"query {
-                    patientList:PatientList{
+                    PatientList{
                         identifier{value}    
                         id name{text family given} birthDate
                     }
@@ -56,7 +56,7 @@ namespace FhirBlaze.SharedComponents.Services
             };
             GraphQLResponse response = await request.PostAsync();
             var result = new List<Patient>();
-            foreach(var p in response.Data.patientList)
+            foreach(var p in response.Data.PatientList)
             {
                 try
                 {
@@ -74,9 +74,36 @@ namespace FhirBlaze.SharedComponents.Services
             throw new NotImplementedException();
         }
 
-        public Task<IList<Practitioner>> GetPractitionersAsync()
+        public async Task<IList<Practitioner>> GetPractitionersAsync()
         {
-            throw new NotImplementedException();
+            GraphQLRequest request = new GraphQLRequest(_httpClient)
+            {
+                OperationName = "PractitionerList",
+                Query = @"query {
+                          PractitionerList {
+                            name {
+                              given family
+                            }
+                            id
+                            birthDate
+                          }
+                        }"
+            };
+
+            GraphQLResponse response = await request.PostAsync();
+            var result = new List<Practitioner>();
+            foreach (var p in response.Data.PractitionerList)
+            {
+                try
+                {
+                    result.Add(_fhirParser.Parse<Practitioner>(p.RootElement.ToString()));
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+            return result;
         }
 
         public Task<Questionnaire> GetQuestionnaireByIdAsync(string id)
