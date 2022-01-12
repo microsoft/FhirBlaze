@@ -9,6 +9,7 @@ using FhirBlaze.Graph;
 using System.Net.Http;
 using FhirBlaze.SharedComponents.SMART;
 using Blazored.Modal;
+using FhirBlaze.SharedComponents.Services;
 
 namespace FhirBlaze
 {
@@ -42,13 +43,26 @@ namespace FhirBlaze
             .AddAccountClaimsPrincipalFactory<RemoteAuthenticationState, RemoteUserAccount, GraphUserAccountFactory>();
 
             builder.Services.AddScoped<GraphClientFactory>();
-
-            builder.Services.AddFhirService(() => 
+            if (true)
             {
-                var fhir = new FhirDataConnection();
-                builder.Configuration.Bind("FhirConnection", fhir);
-                return fhir;
-            });
+                builder.Services.AddHttpClient<IFhirService, GraphirServices>
+                               (s =>
+                                   s.BaseAddress = new Uri(builder.Configuration["Graphir:GraphirUri"]))
+                                   .AddHttpMessageHandler(sp => sp.GetRequiredService<AuthorizationMessageHandler>()
+                                   .ConfigureHandler(
+                                           authorizedUrls: new[] { builder.Configuration["Graphir:GraphirUri"] },
+                                           scopes: new[] { builder.Configuration["Graphir:GraphirScope"] }));
+            }
+            else
+            {
+
+                builder.Services.AddFhirService(() =>
+                {
+                    var fhir = new FhirDataConnection();
+                    builder.Configuration.Bind("FhirConnection", fhir);
+                    return fhir;
+                });
+            }
 
             builder.Services.AddBlazoredModal();
 
@@ -57,6 +71,8 @@ namespace FhirBlaze
                 var launcher = new SmartLauncher(builder.Configuration["ChestistApp:LaunchUrl"], builder.Configuration["FhirConnection:FhirServerUri"]);
                 return launcher;
             });
+
+            
 
             await builder.Build().RunAsync();
         }
