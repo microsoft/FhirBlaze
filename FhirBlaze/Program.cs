@@ -43,7 +43,7 @@ namespace FhirBlaze
             .AddAccountClaimsPrincipalFactory<RemoteAuthenticationState, RemoteUserAccount, GraphUserAccountFactory>();
 
             builder.Services.AddScoped<GraphClientFactory>();
-            if (true)
+            if (builder.Configuration.GetValue<bool>("UseGraphir"))
             {
                 builder.Services.AddHttpClient<IFhirService, GraphirServices>
                                (s =>
