@@ -20,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FhirBlaze.PatientModule\FhirBlaze.PatientModule.csproj" />
     <ProjectReference Include="..\FhirBlaze.PractitionerModule\FhirBlaze.PractitionerModule.csproj" />
+    <ProjectReference Include="..\FhirBlaze.MedicationModule\FhirBlaze.MedicationModule.csproj" />
     <ProjectReference Include="..\FhirBlaze.QuestionnaireModule\FhirBlaze.QuestionnaireModule.csproj" />
     <ProjectReference Include="..\FhirBlaze.SharedComponents\FhirBlaze.SharedComponents.csproj" />
   </ItemGroup>

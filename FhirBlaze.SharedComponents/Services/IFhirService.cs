@@ -16,6 +16,14 @@ namespace FhirBlaze.SharedComponents.Services
         Task<IList<Patient>> SearchPatient(Patient patient);
         #endregion
 
+        #region Medication
+        Task<Medication> CreateMedicationsAsync(Medication medication);
+        Task<IList<Medication>> GetMedicationsAsync();
+        Task<Medication> UpdateMedicationAsync(string medicationId, Medication medication);
+        Task<int> GetMedicationCountAsync();
+        Task<IList<Medication>> SearchMedication(Medication medication);
+        #endregion
+
         #region Questionnaire
         Task<QuestionnaireResponse> SaveQuestionnaireResponseAsync(QuestionnaireResponse qResponse);
         Task<IList<Questionnaire>> GetQuestionnairesAsync();

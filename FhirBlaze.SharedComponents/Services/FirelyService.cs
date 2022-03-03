@@ -31,7 +31,7 @@ namespace FhirBlaze.SharedComponents.Services
 
             return result;
         }
-       
+
         public async Task<int> GetPatientCountAsync()
         {
             var bundle = await _fhirClient.SearchAsync<Patient>(summary: SummaryType.Count);
@@ -40,10 +40,10 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<IList<Questionnaire>> SearchQuestionnaire(string title)
         {
-            Bundle bundle=new Bundle(); 
+            Bundle bundle=new Bundle();
             if (!string.IsNullOrEmpty(title))
             {
-                bundle = await _fhirClient.SearchAsync<Questionnaire>(criteria: new[] { $"title:contains={title}" });                  
+                bundle = await _fhirClient.SearchAsync<Questionnaire>(criteria: new[] { $"title:contains={title}" });
             }
             return bundle.Entry.Select(p => (Questionnaire)p.Resource).ToList();
 
@@ -71,7 +71,7 @@ namespace FhirBlaze.SharedComponents.Services
                     return bundle.Entry.Select(p => (Patient)p.Resource).ToList();
             }
 
-            return await GetPatientsAsync();           
+            return await GetPatientsAsync();
         }
 
         public async Task<Patient> CreatePatientsAsync(Patient patient)
@@ -87,6 +87,58 @@ namespace FhirBlaze.SharedComponents.Services
             }
 
             return await _fhirClient.UpdateAsync(patient);
+        }
+        #endregion
+
+        #region Medication
+        public async Task<IList<Medication>> GetMedicationsAsync()
+        {
+            var bundle = await _fhirClient.SearchAsync<Medication>(pageSize: 50);
+            var result = new List<Medication>();
+            while (bundle != null)
+            {
+                result.AddRange(bundle.Entry.Select(m => (Medication)m.Resource).ToList());
+                bundle = await _fhirClient.ContinueAsync(bundle);
+            }
+
+            return result;
+        }
+
+        public async Task<int> GetMedicationCountAsync()
+        {
+            var bundle = await _fhirClient.SearchAsync<Medication>(summary: SummaryType.Count);
+            return bundle.Total ?? 0;
+        }
+
+        public async Task<IList<Medication>> SearchMedication(Medication Medication)
+        {
+            string identifier = Medication.Identifier[0].Value;
+            Bundle bundle;
+
+            if (!string.IsNullOrEmpty(identifier))
+            {
+                bundle = await _fhirClient.SearchByIdAsync<Medication>(identifier);
+
+                if (bundle != null)
+                    return bundle.Entry.Select(m => (Medication)m.Resource).ToList();
+            }
+
+            return await GetMedicationsAsync();
+        }
+
+        public async Task<Medication> CreateMedicationsAsync(Medication medication)
+        {
+            return await _fhirClient.CreateAsync(medication);
+        }
+
+        public async Task<Medication> UpdateMedicationAsync(string medicationId, Medication medication)
+        {
+            if (medicationId != medication.Id)
+            {
+                throw new System.Exception("Unknown medication ID");
+            }
+
+            return await _fhirClient.UpdateAsync(medication);
         }
         #endregion
 

@@ -1,0 +1,44 @@
+﻿@page "/medications"
+@using FhirBlaze.SharedComponents
+@using Hl7.Fhir.Model
+
+    <nav class="navbar navbar-light bg-light">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <button class="btn btn-primary">A Button</button>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+
+    @if (!Loading)
+    {
+        <div class="container">
+
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var medication in Medications)
+                    {
+                        <tr  >
+                            <td>@medication.Id</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+        </div>
+
+        <br />
+        <h3>Found: @Medications.Count medications!</h3>
+
+    } else {
+      <LoadingSpinner />
+    }
+
+    </div>

@@ -14,15 +14,19 @@ namespace FhirBlaze.SharedComponents.Services
     {
         private readonly HttpClient _httpClient;
         private readonly FhirJsonParser _fhirParser;
+
         public GraphirServices(HttpClient httpClient)
         {
             _httpClient = httpClient;
             _fhirParser= new FhirJsonParser();
         }
 
-       
-
         public Task<Patient> CreatePatientsAsync(Patient patient)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Medication> CreateMedicationsAsync(Medication medication)
         {
             throw new NotImplementedException();
         }
@@ -42,6 +46,11 @@ namespace FhirBlaze.SharedComponents.Services
             throw new NotImplementedException();
         }
 
+        public Task<int> GetMedicationCountAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IList<Patient>> GetPatientsAsync()
         {
             GraphQLRequest request = new GraphQLRequest(_httpClient)
@@ -49,7 +58,7 @@ namespace FhirBlaze.SharedComponents.Services
                 OperationName = "PatientList",
                 Query = @"query {
                     PatientList{
-                        identifier{value}    
+                        identifier{value}
                         id name{text family given} birthDate
                     }
                 }"
@@ -64,9 +73,37 @@ namespace FhirBlaze.SharedComponents.Services
                 }catch (Exception e){
 
                 }
-            } 
+            }
             return result;
-                
+
+        }
+
+        public async Task<IList<Medication>> GetMedicationsAsync()
+        {
+            GraphQLRequest request = new GraphQLRequest(_httpClient)
+            {
+                OperationName = "MedicationList",
+                Query = @"query {
+                    MedicationList{
+                        identifier{value}
+                    }
+                }"
+            };
+            GraphQLResponse response = await request.PostAsync();
+            var result = new List<Medication>();
+            foreach(var p in response.Data.MedicationList)
+            {
+                try
+                {
+                    result.Add(_fhirParser.Parse<Medication>(p.RootElement.ToString()));
+                }
+                catch (Exception e)
+                {
+
+                }
+            }
+            return result;
+
         }
 
         public Task<int> GetPractitionerCountAsync()
@@ -141,6 +178,11 @@ namespace FhirBlaze.SharedComponents.Services
             throw new NotImplementedException();
         }
 
+        public Task<IList<Medication>> SearchMedication(Medication medication)
+        {
+            throw new NotImplementedException();
+        }
+
         public Task<IList<Practitioner>> SearchPractitioner(IDictionary<string, string> searchParameters)
         {
             throw new NotImplementedException();
@@ -152,6 +194,11 @@ namespace FhirBlaze.SharedComponents.Services
         }
 
         public Task<Patient> UpdatePatientAsync(string patientId, Patient patient)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<Medication> UpdateMedicationAsync(string medicationId, Medication medication)
         {
             throw new NotImplementedException();
         }
