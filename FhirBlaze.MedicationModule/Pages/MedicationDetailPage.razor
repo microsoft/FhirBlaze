@@ -1,0 +1,10 @@
+﻿@page "/medication"
+@page "/medication/{Id}"
+
+@using FhirBlaze.MedicationModule.Components
+
+@namespace FhirBlaze.MedicationModule.Pages
+
+<CascadingValue Value="SelectedMedication">
+  <MedicationDetailComponent IsEditable="true" OnMedicationSaved="SaveMedication" />
+</CascadingValue>
