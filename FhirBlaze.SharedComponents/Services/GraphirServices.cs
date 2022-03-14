@@ -178,7 +178,7 @@ namespace FhirBlaze.SharedComponents.Services
             throw new NotImplementedException();
         }
 
-        public Task<IList<Medication>> SearchMedication(Medication medication)
+        public Task<IList<Medication>> SearchMedication(IDictionary<string, string> searchParameters)
         {
             throw new NotImplementedException();
         }

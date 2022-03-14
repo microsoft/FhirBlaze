@@ -110,20 +110,36 @@ namespace FhirBlaze.SharedComponents.Services
             return bundle.Total ?? 0;
         }
 
-        public async Task<IList<Medication>> SearchMedication(Medication Medication)
+        public async Task<IList<Medication>> SearchMedication(IDictionary<string, string> searchParameters)
         {
-            string identifier = Medication.Identifier[0].Value;
-            Bundle bundle;
+            string identifier = searchParameters["identifier"];
+
+            var searchResults = new List<Medication>();
 
             if (!string.IsNullOrEmpty(identifier))
             {
-                bundle = await _fhirClient.SearchByIdAsync<Medication>(identifier);
+                Bundle bundle = await _fhirClient.SearchByIdAsync<Medication>(identifier);
 
                 if (bundle != null)
-                    return bundle.Entry.Select(m => (Medication)m.Resource).ToList();
+                    searchResults = bundle.Entry.Select(m => (Medication)m.Resource).ToList();
+            }
+            else
+            {
+                IList<string> filterStrings = new List<string>();
+                foreach (var parameter in searchParameters)
+                {
+                    if (!string.IsNullOrEmpty(parameter.Value))
+                    {
+                        filterStrings.Add($"{parameter.Key}:contains={parameter.Value}");
+                    }
+                }
+                Bundle bundle = await _fhirClient.SearchAsync<Medication>(criteria: filterStrings.ToArray<string>());
+
+                if (bundle != null)
+                    searchResults = bundle.Entry.Select(m => (Medication)m.Resource).ToList();
             }
 
-            return await GetMedicationsAsync();
+            return searchResults;
         }
 
         public async Task<Medication> CreateMedicationsAsync(Medication medication)
