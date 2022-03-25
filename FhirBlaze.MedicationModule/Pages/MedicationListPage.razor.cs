@@ -54,8 +54,7 @@ namespace FhirBlaze.MedicationModule.Pages
             }
             catch (Exception e)
             {
-                Console.WriteLine("Exception");
-                Console.WriteLine(e.Message); //TODO: manage the cancel search
+                Console.WriteLine("Error" + e.Message);
             }
         }
 

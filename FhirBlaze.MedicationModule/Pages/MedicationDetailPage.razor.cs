@@ -3,6 +3,8 @@ using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System;
+using System.Net.Http;
+using System.Net.Http.Json;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Task = System.Threading.Tasks.Task;
@@ -15,6 +17,10 @@ namespace FhirBlaze.MedicationModule.Pages
     [Inject]
     private IFhirService FhirService { get; set; }
 
+    public HttpClient localHttpClient = new HttpClient { BaseAddress = new Uri("https://localhost:5003/")};
+
+    public ValueSet MedicationCodes { get; set; }
+
     [Parameter]
     public string Id { get; set; }
 
@@ -22,13 +28,22 @@ namespace FhirBlaze.MedicationModule.Pages
 
     protected override async Task OnParametersSetAsync()
     {
-      if (this.Id != null)
+      try
       {
-        this.SelectedMedication = await FhirService.GetResourceByIdAsync<Medication>(this.Id);
+        this.MedicationCodes = await localHttpClient.GetFromJsonAsync<ValueSet>("sample-data/valueset-medication-codes.json");
+
+        if (this.Id != null)
+        {
+          this.SelectedMedication = await FhirService.GetResourceByIdAsync<Medication>(this.Id);
+        }
+        else
+        {
+          this.SelectedMedication = new Medication();
+        }
       }
-      else
-      {
-        this.SelectedMedication = new Medication();
+      catch (System.Exception e)
+      {        
+        Console.WriteLine("Error in MedicationDetailPage.razor.cs: " + e.Message + "; Source: " + e.Source);
       }
     }
 

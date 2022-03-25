@@ -16,6 +16,9 @@ namespace FhirBlaze.MedicationModule.Components
         [Parameter]
         public bool IsEditable { get; set; } = true;
 
+        [Parameter]
+        public ValueSet ValueSetCodes { get; set; }
+
         [CascadingParameter]
         public Medication Medication { get; set; }
 
@@ -117,7 +120,7 @@ namespace FhirBlaze.MedicationModule.Components
 
           return new Narrative()
           {
-            Status = Enum.Parse<Narrative.NarrativeStatus>("generated", true),
+            // Status = Narrative.NarrativeStatus.Generated,
             Div = rootBlock + headingBlock + idBlock + containedBlock + endBlock
           };
         }

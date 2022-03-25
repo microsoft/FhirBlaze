@@ -33,7 +33,20 @@
           <div class="form-group col-sm">
             <label class="control-label">Code</label>
             <div>
-              <input type="text" @bind="this.MedicationCode" placeholder="SNOMED CT Medication Code" class="form-control"/>
+              @* <input type="text" @bind="this.MedicationCode" placeholder="SNOMED CT Medication Code" class="form-control"/> *@
+              <select type="text" @bind="this.MedicationCode" class="form-control">
+                @if (this.ValueSetCodes != null)
+                {
+                  @foreach (var item in this.ValueSetCodes.Compose.Include[0].Concept)
+                  {
+                    <option value="@item.Code">@item.Display</option>
+                  }
+                }
+                else
+                {
+                  <option>No Medication to select</option>
+                }
+              </select>
             </div>
           </div>
           <div class="form-group col-sm">
