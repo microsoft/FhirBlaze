@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Components;
 using System;
 using System.Net.Http;
 using System.Net.Http.Json;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using Task = System.Threading.Tasks.Task;
@@ -17,7 +19,7 @@ namespace FhirBlaze.MedicationModule.Pages
     [Inject]
     private IFhirService FhirService { get; set; }
 
-    public HttpClient localHttpClient = new HttpClient { BaseAddress = new Uri("https://localhost:5003/")};
+    private HttpClient localHttpClient = new HttpClient { BaseAddress = new Uri("https://localhost:5003/")};
 
     public ValueSet MedicationCodes { get; set; }
 
@@ -30,7 +32,11 @@ namespace FhirBlaze.MedicationModule.Pages
     {
       try
       {
-        this.MedicationCodes = await localHttpClient.GetFromJsonAsync<ValueSet>("sample-data/valueset-medication-codes.json");
+        JsonStringEnumConverter strToEnumConvert = new JsonStringEnumConverter();
+        JsonSerializerOptions options = new JsonSerializerOptions();
+        options.Converters.Add(strToEnumConvert);
+
+        this.MedicationCodes = await localHttpClient.GetFromJsonAsync<ValueSet>("sample-data/valueset-medication-codes.json", options);
 
         if (this.Id != null)
         {

@@ -120,7 +120,7 @@ namespace FhirBlaze.MedicationModule.Components
 
           return new Narrative()
           {
-            // Status = Narrative.NarrativeStatus.Generated,
+            Status = Narrative.NarrativeStatus.Generated,
             Div = rootBlock + headingBlock + idBlock + containedBlock + endBlock
           };
         }
