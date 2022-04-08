@@ -13,15 +13,15 @@ using Task = System.Threading.Tasks.Task;
 
 namespace FhirBlaze.MedicationModule.Pages
 {
-    [Authorize]
-    public partial class MedicationDetailPage
+  [Authorize]
+  public partial class MedicationDetailPage
   {
     [Inject]
     private IFhirService FhirService { get; set; }
 
-    private HttpClient localHttpClient = new HttpClient { BaseAddress = new Uri("https://localhost:5003/")};
-
     public ValueSet MedicationCodes { get; set; }
+
+    public ValueSet MedicationFormCodes { get; set; }
 
     [Parameter]
     public string Id { get; set; }
@@ -32,11 +32,8 @@ namespace FhirBlaze.MedicationModule.Pages
     {
       try
       {
-        JsonStringEnumConverter strToEnumConvert = new JsonStringEnumConverter();
-        JsonSerializerOptions options = new JsonSerializerOptions();
-        options.Converters.Add(strToEnumConvert);
-
-        this.MedicationCodes = await localHttpClient.GetFromJsonAsync<ValueSet>("sample-data/valueset-medication-codes.json", options);
+        this.MedicationCodes = await FhirService.GetResourceByIdAsync<ValueSet>("medication-codes");
+        this.MedicationFormCodes = await FhirService.GetResourceByIdAsync<ValueSet>("medication-form-codes");
 
         if (this.Id != null)
         {
@@ -48,31 +45,31 @@ namespace FhirBlaze.MedicationModule.Pages
         }
       }
       catch (System.Exception e)
-      {        
+      {
         Console.WriteLine("Error in MedicationDetailPage.razor.cs: " + e.Message + "; Source: " + e.Source);
       }
     }
 
     private async Task SaveMedication(Medication medication)
     {
-        Medication persistedMedication = new Medication();
-        try
+      Medication persistedMedication = new Medication();
+      try
+      {
+        if (string.IsNullOrEmpty(medication.Id))
         {
-            if (string.IsNullOrEmpty(medication.Id))
-            {
-                persistedMedication = await FhirService.CreateMedicationsAsync(medication);
-            }
-            else
-            {
-                persistedMedication = await FhirService.UpdateMedicationAsync(medication.Id, medication);
-            }
+          persistedMedication = await FhirService.CreateMedicationsAsync(medication);
         }
-        catch (Exception ex)
+        else
         {
-            Console.WriteLine($"Exception: {ex.Message}");
+          persistedMedication = await FhirService.UpdateMedicationAsync(medication.Id, medication);
         }
+      }
+      catch (Exception ex)
+      {
+        Console.WriteLine($"Exception: {ex.Message}");
+      }
 
-        this.SelectedMedication = persistedMedication;
+      this.SelectedMedication = persistedMedication;
     }
   }
 }

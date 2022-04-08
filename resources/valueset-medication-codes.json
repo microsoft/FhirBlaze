@@ -108,6 +108,23 @@
             "code": "1189780",
             "display": "Aspirin 81 MG [Ecotrin]"
           }
+        ],
+        "filter": [
+          {
+            "property": "concept",
+            "op": "is-a",
+            "value": "410942007"
+          },
+          {
+            "property": "concept",
+            "op": "is-a",
+            "value": "373873005"
+          },
+          {
+            "property": "concept",
+            "op": "is-a",
+            "value": "106181007"
+          }
         ]
       }
     ]

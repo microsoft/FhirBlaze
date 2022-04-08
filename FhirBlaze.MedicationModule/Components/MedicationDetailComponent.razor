@@ -4,59 +4,68 @@
   <DataAnnotationsValidator />
   <ValidationSummary />
 
-    <div class="container">
-        <div class="row">
-          <div class="form-group col-sm">
-            <label class="control-label" for="Id">Id</label>
-            <InputText id="Id" disabled @bind-Value="Medication.Id" class="form-control" style="" />
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm">
+        <label class="control-label" for="Id">Id</label>
+        <InputText id="Id" disabled @bind-Value="Medication.Id" class="form-control" style="" />
+      </div>
+      <div class="form-group col-sm">
+        <label class="control-label">Business Identifier(s)</label>
+        @foreach (var item in this.Medication.Identifier)
+        {
+          <div>
+            <input type="text" @bind="item.Value" class="form-control" />
           </div>
-          <div class="form-group col-sm">
-            <label class="control-label">Business Identifier(s)</label>
-            @foreach(var item in this.Medication.Identifier)
-            {
-            <div>
-              <input type="text" @bind="item.Value" class="form-control"/>
-            </div>
-            }
-          </div>
-        </div>
-
-        <hr />
-
-        <div class="row">
-          <div class="form-group col-sm">
-            <label class="control-label">Name</label>
-            <div>
-              <input type="text" @bind="this.MedicationName" placeholder="Name of the medication" class="form-control"/>
-            </div>
-          </div>
-          <div class="form-group col-sm">
-            <label class="control-label">Code</label>
-            <div>
-              @* <input type="text" @bind="this.MedicationCode" placeholder="SNOMED CT Medication Code" class="form-control"/> *@
-              <select type="text" @bind="this.MedicationCode" class="form-control">
-                @if (this.ValueSetCodes != null)
-                {
-                  @foreach (var item in this.ValueSetCodes.Compose.Include[0].Concept)
-                  {
-                    <option value="@item.Code">@item.Display</option>
-                  }
-                }
-                else
-                {
-                  <option>No Medication to select</option>
-                }
-              </select>
-            </div>
-          </div>
-          <div class="form-group col-sm">
-            <label class="control-label">Form</label>
-            <div>
-              <input type="text" @bind="this.MedicationForm" placeholder="Physical description of the medication" class="form-control"/>
-            </div>
-          </div>
-        </div>
+        }
+      </div>
     </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Name</label>
+        <div>
+          <select type="text" @bind="this.MedicationCode" class="form-control">
+            @if (this.ValueSetMedicationCodes != null)
+            {
+              var VSMCConcept = this.ValueSetMedicationCodes.Compose.Include[0].Concept;
+
+              @for (var i = 0; i < VSMCConcept.Count; i++)
+              {
+                <option value="@i">@VSMCConcept[i].Display</option>
+              }
+            }
+            else
+            {
+              <option>No Medication to select</option>
+            }
+          </select>
+        </div>
+      </div>
+      <div class="form-group col-sm">
+        <label class="control-label">Form</label>
+        <div>
+          <select type="text" @bind="this.MedicationFormCode" class="form-control">
+            @if (this.ValueSetMedicationFormCodes != null)
+            {
+              var VSMFCConcept = this.ValueSetMedicationFormCodes.Compose.Include[0].Concept;
+
+              @for (var i = 0; i < VSMFCConcept.Count; i++)
+              {
+                <option value="@i">@VSMFCConcept[i].Display</option>
+              }
+            }
+            else
+            {
+              <option>No Medication to select</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
 
   @if (Processing)
   {
@@ -66,4 +75,4 @@
   {
     <button type="submit" class="btn btn-primary">Save</button>
   }
-</EditForm>
+  </EditForm>
