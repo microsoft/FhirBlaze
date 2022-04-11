@@ -5,17 +5,17 @@ using System.Collections.Generic;
 
 namespace FhirBlaze.MedicationModule.Components
 {
-    public partial class MedicationListComponent
+  public partial class MedicationListComponent
+  {
+    [Parameter]
+    public EventCallback<Medication> OnMedicationSelected { get; set; }
+
+    [CascadingParameter]
+    public IList<Medication> Medications { get; set; } = new List<Medication>();
+
+    private void MedicationSelected(Medication medication)
     {
-        [Parameter]
-        public EventCallback<Medication> OnMedicationSelected { get; set; }
-
-        [CascadingParameter]
-        public IList<Medication> Medications { get; set; } = new List<Medication>();
-
-        private void MedicationSelected(Medication medication)
-        {
-            OnMedicationSelected.InvokeAsync(medication);
-        }
+      OnMedicationSelected.InvokeAsync(medication);
     }
+  }
 }

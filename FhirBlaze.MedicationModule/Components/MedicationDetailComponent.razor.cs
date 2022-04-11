@@ -55,15 +55,7 @@ namespace FhirBlaze.MedicationModule.Components
         }
         else
         {
-          Coding CodingItem = new Coding("http://snomed.info/sct", Concept.Code, Concept.Display);
-
-          List<Coding> CodingList = new List<Coding>();
-          CodingList.Add(CodingItem);
-
-          CodeableConcept Code = new CodeableConcept();
-          Code.Coding = CodingList;
-
-          this.Medication.Code = Code;
+          this.Medication.Code = GeneratedCodeConcept(Concept.Code, Concept.Display);
         }
       }
     }
@@ -98,17 +90,22 @@ namespace FhirBlaze.MedicationModule.Components
         }
         else
         {
-          Coding CodingItem = new Coding("http://snomed.info/sct", Concept.Code, Concept.Display);
-
-          List<Coding> CodingList = new List<Coding>();
-          CodingList.Add(CodingItem);
-
-          CodeableConcept Code = new CodeableConcept();
-          Code.Coding = CodingList;
-
-          this.Medication.Form = Code;
+          this.Medication.Form = GeneratedCodeConcept(Concept.Code, Concept.Display);
         }
       }
+    }
+
+    private CodeableConcept GeneratedCodeConcept(string Code, string Display)
+    {
+      Coding CodingItem = new Coding("http://snomed.info/sct", Code, Display);
+
+      List<Coding> CodingList = new List<Coding>();
+      CodingList.Add(CodingItem);
+
+      CodeableConcept CodeConcept = new CodeableConcept();
+      CodeConcept.Coding = CodingList;
+
+      return CodeConcept;
     }
 
     private Narrative GeneratedText()
