@@ -1,0 +1,31 @@
+﻿@namespace FhirBlaze.MedicationModule.Components
+
+<div class="container">
+  <h3>Found: @(MedicationStatements.Count) medication statements!</h3>
+  <div class="container">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Summary</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var statement in this.MedicationStatements)
+        {
+          @if (@statement.Text != null && @statement.Text.Div != null)
+          {
+            <tr>
+              <td>@(new MarkupString(statement.Text.Div))</td>
+              <td>
+                <button @onclick="(() => MedicationStatementSelected(statement))" class="btn btn-primary">
+                  Edit
+                </button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -36,6 +36,11 @@ namespace FhirBlaze.SharedComponents.Services
       throw new NotImplementedException();
     }
 
+    public Task<MedicationStatement> CreateMedicationStatementsAsync(MedicationStatement statement)
+    {
+      throw new NotImplementedException();
+    }
+
     public Task<Practitioner> CreatePractitionersAsync(Practitioner practitioner)
     {
       throw new NotImplementedException();
@@ -52,6 +57,11 @@ namespace FhirBlaze.SharedComponents.Services
     }
 
     public Task<int> GetMedicationCountAsync()
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<int> GetMedicationStatementCountAsync()
     {
       throw new NotImplementedException();
     }
@@ -103,6 +113,34 @@ namespace FhirBlaze.SharedComponents.Services
         try
         {
           result.Add(_fhirParser.Parse<Medication>(p.RootElement.ToString()));
+        }
+        catch (Exception e)
+        {
+
+        }
+      }
+      return result;
+
+    }
+
+    public async Task<IList<MedicationStatement>> GetMedicationStatementsAsync()
+    {
+      GraphQLRequest request = new GraphQLRequest(_httpClient)
+      {
+        OperationName = "MedicationStatementList",
+        Query = @"query {
+                    MedicationStatementList{
+                        identifier{value}
+                    }
+                }"
+      };
+      GraphQLResponse response = await request.PostAsync();
+      var result = new List<MedicationStatement>();
+      foreach (var p in response.Data.MedicationStatementList)
+      {
+        try
+        {
+          result.Add(_fhirParser.Parse<MedicationStatement>(p.RootElement.ToString()));
         }
         catch (Exception e)
         {
@@ -190,6 +228,11 @@ namespace FhirBlaze.SharedComponents.Services
       throw new NotImplementedException();
     }
 
+    public Task<IList<MedicationStatement>> SearchMedicationStatement(IDictionary<string, string> searchParameters)
+    {
+      throw new NotImplementedException();
+    }
+
     public Task<IList<Practitioner>> SearchPractitioner(IDictionary<string, string> searchParameters)
     {
       throw new NotImplementedException();
@@ -206,6 +249,11 @@ namespace FhirBlaze.SharedComponents.Services
     }
 
     public Task<Medication> UpdateMedicationAsync(string medicationId, Medication medication)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<MedicationStatement> UpdateMedicationStatementAsync(string statementId, MedicationStatement statement)
     {
       throw new NotImplementedException();
     }

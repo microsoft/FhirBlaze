@@ -1,0 +1,94 @@
+﻿@namespace FhirBlaze.MedicationModule.Components
+
+<EditForm Model="@Statement" OnValidSubmit="@SaveMedicationStatement">
+  <DataAnnotationsValidator />
+  <ValidationSummary />
+
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm">
+        <label class="control-label" for="Id">Id</label>
+        <InputText id="Id" disabled @bind-Value="Statement.Id" class="form-control" style="" />
+      </div>
+      <div class="form-group col-sm">
+        <label class="control-label">Business Identifier(s)</label>
+        @foreach (var item in this.Statement.Identifier)
+        {
+          <div>
+            <input type="text" @bind="item.Value" class="form-control" />
+          </div>
+        }
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Select Patient</label>
+        <div>
+          <select type="text" @bind="this.SelectedPatientId" class="form-control">
+            @if (this.Patients != null)
+            {
+              @foreach (var patient in this.Patients)
+              {
+                <option value="@patient.Id">@patient.Name.FirstOrDefault()</option>
+              }
+            }
+            else
+            {
+              <option>No Patient to select</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Select Medication That Was Taken</label>
+        <div>
+          <select type="text" @bind="this.SelectedMedicationId" class="form-control">
+            @if (this.Medications != null)
+            {
+              @foreach (var medication in this.Medications)
+              {
+                <option value="@medication.Id">@medication.Code.Coding[0].Display
+                  @medication.Form.Coding[0].Display</option>
+              }
+            }
+            else
+            {
+              <option>No Medication to select</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Statement Status</label>
+        <div>
+          <select type="text" @bind="this.SelectedStatus" class="form-control">
+            <option value="active">Active</option>
+            <option value="completed">Completed</option>
+            <option value="enteredinerror">Entered in Error</option>
+            <option value="intended">Intended</option>
+            <option value="stopped">Stopped</option>
+            <option value="onhold">On Hold</option>
+            <option value="unknown">Unknown</option>
+            <option value="nottaken">Not Taken</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  @if (Processing)
+  {
+    <button type="button" class="btn btn-primary-outline" disabled>Processing</button>
+  }
+  else
+  {
+    <button type="submit" class="btn btn-primary">Save</button>
+  }
+  </EditForm>

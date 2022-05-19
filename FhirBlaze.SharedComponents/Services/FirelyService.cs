@@ -158,6 +158,74 @@ namespace FhirBlaze.SharedComponents.Services
     }
     #endregion
 
+    #region MedicationStatement
+    public async Task<IList<MedicationStatement>> GetMedicationStatementsAsync()
+    {
+      var bundle = await _fhirClient.SearchAsync<MedicationStatement>(pageSize: 50);
+      var result = new List<MedicationStatement>();
+      while (bundle != null)
+      {
+        result.AddRange(bundle.Entry.Select(s => (MedicationStatement)s.Resource).ToList());
+        bundle = await _fhirClient.ContinueAsync(bundle);
+      }
+
+      return result;
+    }
+
+    public async Task<int> GetMedicationStatementCountAsync()
+    {
+      var bundle = await _fhirClient.SearchAsync<MedicationStatement>(summary: SummaryType.Count);
+      return bundle.Total ?? 0;
+    }
+
+    public async Task<IList<MedicationStatement>> SearchMedicationStatement(IDictionary<string, string> searchParameters)
+    {
+      string identifier = searchParameters["identifier"];
+
+      var searchResults = new List<MedicationStatement>();
+
+      if (!string.IsNullOrEmpty(identifier))
+      {
+        Bundle bundle = await _fhirClient.SearchByIdAsync<MedicationStatement>(identifier);
+
+        if (bundle != null)
+          searchResults = bundle.Entry.Select(s => (MedicationStatement)s.Resource).ToList();
+      }
+      else
+      {
+        IList<string> filterStrings = new List<string>();
+        foreach (var parameter in searchParameters)
+        {
+          if (!string.IsNullOrEmpty(parameter.Value))
+          {
+            filterStrings.Add($"{parameter.Key}:contains={parameter.Value}");
+          }
+        }
+        Bundle bundle = await _fhirClient.SearchAsync<MedicationStatement>(criteria: filterStrings.ToArray<string>());
+
+        if (bundle != null)
+          searchResults = bundle.Entry.Select(s => (MedicationStatement)s.Resource).ToList();
+      }
+
+      return searchResults;
+    }
+
+    public async Task<MedicationStatement> CreateMedicationStatementsAsync(MedicationStatement statement)
+    {
+      return await _fhirClient.CreateAsync(statement);
+    }
+
+    public async Task<MedicationStatement> UpdateMedicationStatementAsync(string statementId, MedicationStatement statement)
+    {
+      if (statementId != statement.Id)
+      {
+        throw new System.Exception("Unknown medication ID");
+      }
+
+      return await _fhirClient.UpdateAsync(statement);
+    }
+    #endregion
+
     #region Questionnaire
     public async Task<IList<Questionnaire>> GetQuestionnairesAsync()
     {
