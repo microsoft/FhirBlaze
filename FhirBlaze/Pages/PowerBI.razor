@@ -1,8 +1,9 @@
 ﻿@page "/PowerBI"
+@using System
 @using System.Net.Http
 @using System.Threading.Tasks
-@using Microsoft.PowerBI.Api.V2
-@using Microsoft.PowerBI.Api.V2.Models
+@using Microsoft.PowerBI.Api
+@using Microsoft.PowerBI.Api.Models
 @using Microsoft.Rest
 @using Newtonsoft.Json.Linq
 @using Microsoft.Extensions.Configuration
@@ -28,8 +29,8 @@
 
             using (var client = new PowerBIClient(new Uri(_configuration["PowerBI:ApiUrl"]), tokenCredentials))
             {
-                var workspaceId = _configuration["PowerBI:WorkspaceId"];
-                var reportId = _configuration["PowerBI:ReportId"];
+                var workspaceId = Guid.Parse(_configuration["PowerBI:WorkspaceId"]);
+                var reportId = Guid.Parse(_configuration["PowerBI:ReportId"]);
                 var report = await client.Reports.GetReportInGroupAsync(workspaceId, reportId);
                 var generateTokenRequestParameters = new GenerateTokenRequest(accessLevel: "view");
                 var tokenResponse = await client.Reports.GenerateTokenAsync(workspaceId, reportId, generateTokenRequestParameters);
@@ -39,7 +40,7 @@
                     PowerBIElement,
                     tokenResponse.Token,
                     report.EmbedUrl,
-                    report.Id);
+                    report.Id.ToString());
             }
         }
     }
