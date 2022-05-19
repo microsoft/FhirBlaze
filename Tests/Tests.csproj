@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFrameworks>net5.0</TargetFrameworks>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+	</PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Verify.AngleSharp" Version="2.7.2" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
