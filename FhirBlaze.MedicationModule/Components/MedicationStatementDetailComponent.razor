@@ -66,17 +66,13 @@
     </div>
     <div class="row">
       <div class="form-group col-md">
-        <label class="control-label">Statement Status</label>
+        <label class="control-label">Status</label>
         <div>
           <select type="text" @bind="this.SelectedStatus" class="form-control">
-            <option value="active">Active</option>
-            <option value="completed">Completed</option>
-            <option value="enteredinerror">Entered in Error</option>
-            <option value="intended">Intended</option>
-            <option value="stopped">Stopped</option>
-            <option value="onhold">On Hold</option>
-            <option value="unknown">Unknown</option>
-            <option value="nottaken">Not Taken</option>
+            @for (int i = 0; i < this.StatementStatuses.Length; i++)
+            {
+              <option value="@this.StatementStatuses[i]">@this.StatementStatuses[i]</option>
+            }
           </select>
         </div>
       </div>

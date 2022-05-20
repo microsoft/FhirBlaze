@@ -93,14 +93,12 @@ namespace FhirBlaze.MedicationModule.Components
       {
         try
         {
-          foreach (var medication in this.Medications)
+          var medication = this.Medications[this.medicationIndexFromId(value)];
+
+          if (this.Statement.Contained.Count == 0 || this.Statement.Contained[0].Id != value)
           {
-            if (this.Statement.Contained[0].Id != medication.Id)
-            {
-              medication.Text = null;
-              this.Statement.Contained.Add(medication);
-              break;
-            }
+            medication.Text = null;
+            this.Statement.Contained.Add(medication);
           }
 
           this.Statement.Medication = new ResourceReference($"#{value}");
@@ -112,11 +110,13 @@ namespace FhirBlaze.MedicationModule.Components
       }
     }
 
+    public string[] StatementStatuses = Enum.GetNames(typeof(MedicationStatement.MedicationStatusCodes));
+
     public string SelectedStatus
     {
       get
       {
-        return $"{this.Statement.StatusElement}";
+        return $"{this.Statement.Status}";
       }
       set
       {
@@ -126,12 +126,12 @@ namespace FhirBlaze.MedicationModule.Components
 
           if (Enum.TryParse<MedicationStatement.MedicationStatusCodes>(value, true, out statusCode))
           {
+            Console.WriteLine($"Status value set: {value}");
             this.Statement.Status = statusCode;
-            this.Statement.StatusElement = new Code<MedicationStatement.MedicationStatusCodes>(statusCode);
           }
           else
           {
-            Console.WriteLine("Status: " + statusCode);
+            Console.WriteLine("Status value not set: " + value);
           }
         }
         catch (Exception e)
@@ -141,11 +141,11 @@ namespace FhirBlaze.MedicationModule.Components
       }
     }
 
-    private int patientIndexFromId()
+    private int patientIndexFromId(string Id = null)
     {
       for (var index = 0; index < this.Patients.Count; index++)
       {
-        if (this.SelectedPatientId == this.Patients[index].Id)
+        if (Id == this.Patients[index].Id || this.SelectedPatientId == this.Patients[index].Id)
         {
           return index;
         }
@@ -154,11 +154,11 @@ namespace FhirBlaze.MedicationModule.Components
       return -1;
     }
 
-    private int medicationIndexFromId()
+    private int medicationIndexFromId(string Id = null)
     {
       for (var index = 0; index < this.Medications.Count; index++)
       {
-        if (this.SelectedMedicationId == this.Medications[index].Id)
+        if (Id == this.Medications[index].Id || this.SelectedMedicationId == this.Medications[index].Id)
         {
           return index;
         }
