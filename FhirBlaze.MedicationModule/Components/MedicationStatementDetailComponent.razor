@@ -77,6 +77,19 @@
         </div>
       </div>
     </div>
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Category</label>
+        <div>
+          <select type="text" @bind="this.SelectedCategory" class="form-control">
+            @foreach (var cat in this.categories)
+            {
+              <option value="@cat.Key">@cat.Value</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
   </div>
 
   @if (Processing)

@@ -141,6 +141,37 @@ namespace FhirBlaze.MedicationModule.Components
       }
     }
 
+    public Dictionary<string, string> categories = new Dictionary<string, string>() {
+      {"inpatient", "Inpatient"},
+      {"outpatient", "Outpatient"},
+      {"community", "Community"},
+      {"patientspecified", "Patient Specified"}
+    };
+
+    public string SelectedCategory
+    {
+      get
+      {
+        if (this.Statement.Category != null && this.Statement.Category.Coding != null)
+        {
+          return $"{this.Statement.Category.Coding[0].Code}";
+        }
+        
+        return "";
+      }
+      set
+      {
+        try
+        {
+          this.Statement.Category = this.GeneratedCodeConcept(value, this.categories[value]);
+        }
+        catch (Exception e)
+        {
+          Console.WriteLine("Error in setSelectedCategory from MedicationStatementDetailComponent.razor.cs: " + e.Message + "; Source: " + e.Source + "; StackTrace: " + e.StackTrace);
+        }
+      }
+    }
+
     private int patientIndexFromId(string Id = null)
     {
       for (var index = 0; index < this.Patients.Count; index++)
@@ -196,7 +227,7 @@ namespace FhirBlaze.MedicationModule.Components
 
       string statusBlock = $"<p><b>status</b>: {this.Statement.Status}</p>";
 
-      string category = (this.Statement.Category != null) ? $"{this.Statement.Category}" : "";
+      string category = (this.Statement.Category != null && this.Statement.Category.Coding != null) ? $"{this.Statement.Category.Coding[0].Display}" : "";
       string categoryBlock = $"<p><b>category</b>: {category}</p>";
 
       string medicationBlock = $"<p><b>medication</b>: id: {medication.Id}; ";
