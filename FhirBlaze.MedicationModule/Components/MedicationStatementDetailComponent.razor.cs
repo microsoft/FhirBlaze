@@ -195,6 +195,32 @@ namespace FhirBlaze.MedicationModule.Components
       }
     }
 
+    public string Annote
+    {
+      get
+      {
+        if (this.Statement.Note != null && this.Statement.Note.Count > 0)
+        {
+          return this.Statement.Note[0].Text.ToString();
+        }
+
+        return string.Empty;
+      }
+      set
+      {
+        if (this.Statement.Note != null && this.Statement.Note.Count > 0)
+        {
+          this.Statement.Note[0].Text = new Markdown(value);
+        }
+        else
+        {
+          Annotation note = new Annotation();
+          note.Text = new Markdown(value);
+          this.Statement.Note.Add(note);
+        }
+      }
+    }
+
     private int patientIndexFromId(string Id = null)
     {
       for (var index = 0; index < this.Patients.Count; index++)
@@ -258,13 +284,14 @@ namespace FhirBlaze.MedicationModule.Components
       string subjectBlock = $"<p><b>subject</b>: {patient.Name[0].ToString()}</p>";
 
       string effectiveDateBlock = $"<p><b>effective</b>: {(this.Statement.Effective != null ? this.Statement.Effective.ToString() : "")}</p>";
+      string noteBlock = $"<p><b>note</b>: {(this.Statement.Note != null && this.Statement.Note.Count > 0 ? this.Statement.Note[0].Text.ToString() : "")}</p>";
 
       string endBlock = "</div>";
 
       return new Narrative()
       {
         Status = Narrative.NarrativeStatus.Generated,
-        Div = rootBlock + headingBlock + idBlock + containedBlock + identifierBlock + statusBlock + categoryBlock + medicationBlock + subjectBlock + effectiveDateBlock + endBlock
+        Div = rootBlock + headingBlock + idBlock + containedBlock + identifierBlock + statusBlock + categoryBlock + medicationBlock + subjectBlock + effectiveDateBlock + noteBlock + endBlock
       };
     }
 
