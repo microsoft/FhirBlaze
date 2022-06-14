@@ -221,6 +221,21 @@ namespace FhirBlaze.MedicationModule.Components
       }
     }
 
+    public void AddNoteAnnotation()
+    {
+      if (this.Statement.Note == null)
+      {
+        this.Statement.Note = new List<Annotation>();
+      }
+
+      this.Statement.Note.Add(new Annotation() { Text = new Markdown() });
+    }
+
+    public void RemoveNoteAnnotation(Annotation note)
+    {
+      this.Statement.Note.Remove(note);
+    }
+
     private int patientIndexFromId(string Id = null)
     {
       for (var index = 0; index < this.Patients.Count; index++)

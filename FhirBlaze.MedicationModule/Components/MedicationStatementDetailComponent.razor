@@ -101,22 +101,40 @@
         </div>
       </div>
     </div>
+
+    <hr />
+
     <div class="row">
-      <div class="form-group col-md">
-        <label class="control-label">Note</label>
-        <div>
-          <textarea @bind="this.Annote" class="form-control" rows="3"></textarea>
-        </div>
+      <div class="col-sm-11">Note(s)</div>
+      <div class="col-sm-1">
+        <button type="button" class="btn btn-primary" @onclick="AddNoteAnnotation"><span class="oi oi-plus" /></button>
       </div>
+    </div>
+    <div class="row form-group">
+      @foreach (var note in this.Statement.Note)
+      {
+        <div class="col-sm-11">
+          <AnnotationComponent Note="note" />
+        </div>
+        <div class="col-sm-1">
+          <button type="button" class="btn btn-primary" @onclick="(() => RemoveNoteAnnotation(note))">
+            <span class="oi oi-trash" />
+          </button>
+        </div>
+      }
     </div>
   </div>
 
   @if (Processing)
   {
-    <button type="button" class="btn btn-primary-outline" disabled>Processing</button>
+    <div class="row">
+      <div class="col-sm-11"><button type="button" class="btn btn-primary-outline" disabled>Processing</button></div>
+    </div>
   }
   else
   {
-    <button type="submit" class="btn btn-primary">Save</button>
+    <div class="row">
+      <div class="col-sm-11"><button type="submit" class="btn btn-primary">Save</button></div>
+    </div>
   }
   </EditForm>
