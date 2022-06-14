@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
+using BlazorDateRangePicker;
 
 namespace FhirBlaze.MedicationModule.Components
 {
@@ -156,8 +157,8 @@ namespace FhirBlaze.MedicationModule.Components
         {
           return $"{this.Statement.Category.Coding[0].Code}";
         }
-        
-        return "";
+
+        return string.Empty;
       }
       set
       {
@@ -169,6 +170,28 @@ namespace FhirBlaze.MedicationModule.Components
         {
           Console.WriteLine("Error in setSelectedCategory from MedicationStatementDetailComponent.razor.cs: " + e.Message + "; Source: " + e.Source + "; StackTrace: " + e.StackTrace);
         }
+      }
+    }
+
+    public void SelectDate(DateTimeOffset date)
+    {
+      this.Statement.Effective = new FhirDateTime(date.ToString("yyyy-MM-dd"));
+    }
+
+    public DateTimeOffset? SelectedEffectiveDate
+    {
+      get
+      {
+        if (this.Statement.Effective != null)
+        {
+          return DateTimeOffset.Parse(this.Statement.Effective.ToString());
+        }
+
+        return DateTimeOffset.Now;
+      }
+      set
+      {
+
       }
     }
 
@@ -222,26 +245,26 @@ namespace FhirBlaze.MedicationModule.Components
 
       string containedBlock = $"<p><b>contained</b>: </p>";
 
-      string identifier = (this.Statement.Identifier.Count > 0) ? $"{this.Statement.Identifier[0]} (OFFICIAL)" : "";
-      string identifierBlock = $"<p><b>identifier</b>: {identifier}</p>";
+      string identifierBlock = $"<p><b>identifier</b>: {(this.Statement.Identifier.Count > 0 ? this.Statement.Identifier[0].Value + "(OFFICIAL)" : "")}</p>";
 
       string statusBlock = $"<p><b>status</b>: {this.Statement.Status}</p>";
 
-      string category = (this.Statement.Category != null && this.Statement.Category.Coding != null) ? $"{this.Statement.Category.Coding[0].Display}" : "";
-      string categoryBlock = $"<p><b>category</b>: {category}</p>";
+      string categoryBlock = $"<p><b>category</b>: {(this.Statement.Category != null && this.Statement.Category.Coding != null ? this.Statement.Category.Coding[0].Display : "")}</p>";
 
       string medicationBlock = $"<p><b>medication</b>: id: {medication.Id}; ";
       medicationBlock += $"{medication.Code.Coding[0].Display} <span>(Details : {{{medication.Code.Coding[0].System} code {medication.Code.Coding[0].Code}, given as '{medication.Code.Coding[0].Display}'}})</span>; ";
       medicationBlock += $"{medication.Form.Coding[0].Display} <span>(Details : {{SNOMED CT code '{medication.Form.Coding[0].Code}', given as '{medication.Form.Coding[0].Display}'}})</span></p>";
 
-      string subjectBlock = $"<b>subject</b>: {patient.Name[0].ToString()}";
+      string subjectBlock = $"<p><b>subject</b>: {patient.Name[0].ToString()}</p>";
+
+      string effectiveDateBlock = $"<p><b>effective</b>: {(this.Statement.Effective != null ? this.Statement.Effective.ToString() : "")}</p>";
 
       string endBlock = "</div>";
 
       return new Narrative()
       {
         Status = Narrative.NarrativeStatus.Generated,
-        Div = rootBlock + headingBlock + idBlock + containedBlock + identifierBlock + statusBlock + categoryBlock + medicationBlock + subjectBlock + endBlock
+        Div = rootBlock + headingBlock + idBlock + containedBlock + identifierBlock + statusBlock + categoryBlock + medicationBlock + subjectBlock + effectiveDateBlock + endBlock
       };
     }
 

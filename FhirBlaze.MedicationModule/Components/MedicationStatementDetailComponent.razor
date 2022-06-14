@@ -1,4 +1,6 @@
-﻿@namespace FhirBlaze.MedicationModule.Components
+﻿@using BlazorDateRangePicker
+
+@namespace FhirBlaze.MedicationModule.Components
 
 <EditForm Model="@Statement" OnValidSubmit="@SaveMedicationStatement">
   <DataAnnotationsValidator />
@@ -87,6 +89,15 @@
               <option value="@cat.Key">@cat.Value</option>
             }
           </select>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Effective Date</label>
+        <div>
+          <DateRangePicker @bind-StartDate="SelectedEffectiveDate" SingleDatePicker="true" AutoApply="true"
+            ShowOnlyOneCalendar="true" OnSelectionStart="SelectDate" class="form-control" />
         </div>
       </div>
     </div>

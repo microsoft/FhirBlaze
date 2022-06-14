@@ -1,8 +1,8 @@
 ﻿@page "/PowerBI"
 @using System.Net.Http
 @using System.Threading.Tasks
-@using Microsoft.PowerBI.Api.V2
-@using Microsoft.PowerBI.Api.V2.Models
+@using Microsoft.PowerBI.Api
+@using Microsoft.PowerBI.Api.Models
 @using Microsoft.Rest
 @using Newtonsoft.Json.Linq
 @using Microsoft.Extensions.Configuration
@@ -16,63 +16,63 @@
 <div @ref="@PowerBIElement" style="height: 600px;width: 100%;max-width: 2000px;" />
 
 @code {
-    private ElementReference PowerBIElement;
+  private ElementReference PowerBIElement;
 
-    protected override async Task
-        OnAfterRenderAsync(bool firstRender)
+  protected override async Task
+  OnAfterRenderAsync(bool firstRender)
+  {
+    if (firstRender)
     {
-        if (firstRender)
-        {
-            var accessToken = await GetPowerBIAccessToken();
-            var tokenCredentials = new TokenCredentials(accessToken, "Bearer");
+      var accessToken = await GetPowerBIAccessToken();
+      var tokenCredentials = new TokenCredentials(accessToken, "Bearer");
 
-            using (var client = new PowerBIClient(new Uri(_configuration["PowerBI:ApiUrl"]), tokenCredentials))
-            {
-                var workspaceId = _configuration["PowerBI:WorkspaceId"];
-                var reportId = _configuration["PowerBI:ReportId"];
-                var report = await client.Reports.GetReportInGroupAsync(workspaceId, reportId);
-                var generateTokenRequestParameters = new GenerateTokenRequest(accessLevel: "view");
-                var tokenResponse = await client.Reports.GenerateTokenAsync(workspaceId, reportId, generateTokenRequestParameters);
+      using (var client = new PowerBIClient(new Uri(_configuration["PowerBI:ApiUrl"]), tokenCredentials))
+      {
+        var workspaceId = Guid.Parse(_configuration["PowerBI:WorkspaceId"]);
+        var reportId = Guid.Parse(_configuration["PowerBI:ReportId"]);
+        var report = await client.Reports.GetReportInGroupAsync(workspaceId, reportId);
+        var generateTokenRequestParameters = new GenerateTokenRequest(accessLevel: "view");
+        var tokenResponse = await client.Reports.GenerateTokenAsync(workspaceId, reportId, generateTokenRequestParameters);
 
-                await Interop.CreateReport(
-                    JSRuntime,
-                    PowerBIElement,
-                    tokenResponse.Token,
-                    report.EmbedUrl,
-                    report.Id);
-            }
-        }
+        await Interop.CreateReport(
+        JSRuntime,
+        PowerBIElement,
+        tokenResponse.Token,
+        report.EmbedUrl,
+        report.Id.ToString());
+      }
     }
+  }
 
-    private async Task<string> GetPowerBIAccessToken()
+  private async Task<string> GetPowerBIAccessToken()
+  {
+    using (var client = new HttpClient())
     {
-        using (var client = new HttpClient())
+      var form = new Dictionary<string, string>();
+      form["grant_type"] = "password";
+      form["resource"] = _configuration["PowerBI:ResourceUrl"];
+      form["username"] = _configuration["PowerBI:UserName"];
+      form["password"] = _configuration["PowerBI:Password"];
+      form["client_id"] = _configuration["PowerBI:ApplicationId"];
+      form["client_secret"] = _configuration["PowerBI:ApplicationSecret"];
+      form["scope"] = "https://analysis.windows.net/powerbi/api/.default";
+
+      client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
+
+      using (var formContent = new FormUrlEncodedContent(form))
+      using (var response = await client.PostAsync(_configuration["PowerBI:AuthorityUrl"], formContent))
+      {
+        var body = await response.Content.ReadAsStringAsync();
+        var jsonBody = JObject.Parse(body);
+
+        var errorToken = jsonBody.SelectToken("error");
+        if (errorToken != null)
         {
-            var form = new Dictionary<string, string>();
-            form["grant_type"] = "password";
-            form["resource"] = _configuration["PowerBI:ResourceUrl"];
-            form["username"] = _configuration["PowerBI:UserName"];
-            form["password"] = _configuration["PowerBI:Password"];
-            form["client_id"] = _configuration["PowerBI:ApplicationId"];
-            form["client_secret"] = _configuration["PowerBI:ApplicationSecret"];
-            form["scope"] = "https://analysis.windows.net/powerbi/api/.default";
-
-            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/x-www-form-urlencoded");
-
-            using (var formContent = new FormUrlEncodedContent(form))
-            using (var response = await client.PostAsync(_configuration["PowerBI:AuthorityUrl"], formContent))
-            {
-                var body = await response.Content.ReadAsStringAsync();
-                var jsonBody = JObject.Parse(body);
-
-                var errorToken = jsonBody.SelectToken("error");
-                if (errorToken != null)
-                {
-                    throw new Exception(errorToken.Value<string>());
-                }
-
-                return jsonBody.SelectToken("access_token").Value<string>();
-            }
+          throw new Exception(errorToken.Value<string>());
         }
+
+        return jsonBody.SelectToken("access_token").Value<string>();
+      }
     }
+  }
 }

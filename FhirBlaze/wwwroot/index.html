@@ -2,57 +2,65 @@
 <html>
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <title>FhirBlaze</title>
-    <base href="/" />
-    <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>FhirBlaze</title>
+  <base href="/" />
+  <link href="css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
 
-    <link href="css/app.css" rel="stylesheet" />
-    <link href="css/modal/custom-modal.css" rel="stylesheet" />
-    <link href="FhirBlaze.styles.css" rel="stylesheet" />
-    <link href="_content/Blazored.Modal/blazored-modal.css" rel="stylesheet" />
+  <link href="css/app.css" rel="stylesheet" />
+  <link href="css/modal/custom-modal.css" rel="stylesheet" />
+  <link href="FhirBlaze.styles.css" rel="stylesheet" />
+  <link href="_content/Blazored.Modal/blazored-modal.css" rel="stylesheet" />
+  <link rel="stylesheet" href="_content/BlazorDateRangePicker/daterangepicker.min.css" />
 </head>
 
 <body>
-    <div id="app">Loading...</div>
+  <div id="app">Loading...</div>
 
-    <div id="blazor-error-ui">
-        An unhandled error has occurred.
-        <a href="" class="reload">Reload</a>
-        <a class="dismiss">🗙</a>
-    </div>
-    <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
-    <script src="_framework/blazor.webassembly.js"></script>
-    <script src="_content/Blazored.Modal/blazored.modal.js"></script>
-    <script>
-        window.ShowMyPowerBI = {
-            showReport: function (reportContainer, accessToken, embedUrl, embedReportId) {
+  <div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+  </div>
+  <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
+  <script src="_framework/blazor.webassembly.js"></script>
+  <script src="_content/Blazored.Modal/blazored.modal.js"></script>
+  <script>
+    window.ShowMyPowerBI = {
+      showReport: function (reportContainer, accessToken, embedUrl, embedReportId) {
 
-                var models = window['powerbi-client'].models;
+        var models = window['powerbi-client'].models;
 
-                var config = {
-                    type: 'report',
-                    tokenType: models.TokenType.Embed,
-                    accessToken: accessToken,
-                    embedUrl: embedUrl,
-                    id: embedReportId,
-                    permissions: models.Permissions.All,
-                    settings: {
-                        filterPaneEnabled: true,
-                        navContentPaneEnabled: true
-                    }
-                };
-
-                // Embed the report and display it within the div container.
-                powerbi.embed(reportContainer, config);
-            }
+        var config = {
+          type: 'report',
+          tokenType: models.TokenType.Embed,
+          accessToken: accessToken,
+          embedUrl: embedUrl,
+          id: embedReportId,
+          permissions: models.Permissions.All,
+          settings: {
+            filterPaneEnabled: true,
+            navContentPaneEnabled: true
+          }
         };
-    </script>
-    <script src="js/powerbi.min.js"></script>
+
+        // Embed the report and display it within the div container.
+        powerbi.embed(reportContainer, config);
+      }
+    };
+  </script>
+  <script src="_content/BlazorDateRangePicker/clickAndPositionHandler.js"></script>
+  <script src="js/powerbi.min.js"></script>
 
 </body>
 
