@@ -19,6 +19,17 @@ Host your own with one of these popular offerings:
 
 OR, use one of these [publicly available test servers](https://wiki.hl7.org/index.php?title=Publicly_Available_FHIR_Servers_for_testing).
 
+### ValueSet Data
+Provided are sample data for [medication](./resources/valueset-medication-codes.json) and [medication form](./resources/valueset-medication-form-codes.json) ValueSet codes to be used when creating Medication records. These data must be inserted into your FHIR Server:
+
+```sh
+# Example: Using 'curl' command to insert into a locally-running FHIR server:
+
+curl -H 'Content-Type: application/json' -d @resources/valueset-medication-codes.json -X PUT 'http://localhost:8080/fhir/ValueSet/medication-codes'
+
+curl -H 'Content-Type: application/json' -d @resources/valueset-medication-form-codes.json -X PUT 'http://localhost:8080/fhir/ValueSet/medication-form-codes'
+```
+
 ### Web Host
 There are many options for hosting a Blazor WebAssembly application. This repo contains a Github Action workflow to automatically deploy the site to Azure Static Web Apps. 
 Follow [this tutorial](https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-blazor) to learn more.
