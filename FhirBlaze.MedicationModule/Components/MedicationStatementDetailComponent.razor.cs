@@ -299,7 +299,17 @@ namespace FhirBlaze.MedicationModule.Components
       string subjectBlock = $"<p><b>subject</b>: {patient.Name[0].ToString()}</p>";
 
       string effectiveDateBlock = $"<p><b>effective</b>: {(this.Statement.Effective != null ? this.Statement.Effective.ToString() : "")}</p>";
-      string noteBlock = $"<p><b>note</b>: {(this.Statement.Note != null && this.Statement.Note.Count > 0 ? this.Statement.Note[0].Text.ToString() : "")}</p>";
+      string noteBlock = string.Empty;
+
+      if (this.Statement.Note != null && this.Statement.Note.Count > 0)
+      {
+        noteBlock = $"<p><b>note</b>: ";
+        foreach (var note in this.Statement.Note)
+        {
+          noteBlock += $"{note.Text.ToString()} ";
+        }
+        noteBlock += "</p>";
+      }
 
       string endBlock = "</div>";
 
