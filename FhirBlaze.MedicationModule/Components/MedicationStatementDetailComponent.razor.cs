@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using BlazorDateRangePicker;
 
 namespace FhirBlaze.MedicationModule.Components
 {
@@ -192,32 +191,6 @@ namespace FhirBlaze.MedicationModule.Components
       set
       {
 
-      }
-    }
-
-    public string Annote
-    {
-      get
-      {
-        if (this.Statement.Note != null && this.Statement.Note.Count > 0)
-        {
-          return this.Statement.Note[0].Text.ToString();
-        }
-
-        return string.Empty;
-      }
-      set
-      {
-        if (this.Statement.Note != null && this.Statement.Note.Count > 0)
-        {
-          this.Statement.Note[0].Text = new Markdown(value);
-        }
-        else
-        {
-          Annotation note = new Annotation();
-          note.Text = new Markdown(value);
-          this.Statement.Note.Add(note);
-        }
       }
     }
 
