@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FhirBlaze.PractitionerModul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FhirBlaze.MedicationModule", "FhirBlaze.MedicationModule\FhirBlaze.MedicationModule.csproj", "{D84F20A1-E2B9-4170-A10B-319622B4D4B2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FhirBlaze.ObservationModule", "FhirBlaze.ObservationModule\FhirBlaze.ObservationModule.csproj", "{19996DD2-A2B7-4FDF-9587-352BBEBC1D38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{D84F20A1-E2B9-4170-A10B-319622B4D4B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D84F20A1-E2B9-4170-A10B-319622B4D4B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D84F20A1-E2B9-4170-A10B-319622B4D4B2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19996DD2-A2B7-4FDF-9587-352BBEBC1D38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19996DD2-A2B7-4FDF-9587-352BBEBC1D38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19996DD2-A2B7-4FDF-9587-352BBEBC1D38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19996DD2-A2B7-4FDF-9587-352BBEBC1D38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

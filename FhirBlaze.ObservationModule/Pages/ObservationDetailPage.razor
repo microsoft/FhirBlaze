@@ -1,0 +1,11 @@
+@page "/observation"
+@page "/observation/{Id}"
+
+@using FhirBlaze.ObservationModule.Components
+
+@namespace FhirBlaze.ObservationModule.Pages
+
+<CascadingValue Value="SelectedObservation">
+  <ObservationDetailComponent IsEditable="true" Patients="Patients" Practitioners="Practitioners"
+    Statements="Statements" ObservationCodes="ValuesetCodes" OnObservationSaved="SaveObservation" />
+</CascadingValue>

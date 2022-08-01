@@ -41,6 +41,11 @@ namespace FhirBlaze.SharedComponents.Services
       throw new NotImplementedException();
     }
 
+    public Task<Observation> CreateObservationsAsync(Observation observation)
+    {
+      throw new NotImplementedException();
+    }
+
     public Task<Practitioner> CreatePractitionersAsync(Practitioner practitioner)
     {
       throw new NotImplementedException();
@@ -62,6 +67,11 @@ namespace FhirBlaze.SharedComponents.Services
     }
 
     public Task<int> GetMedicationStatementCountAsync()
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<int> GetObservationCountAsync()
     {
       throw new NotImplementedException();
     }
@@ -150,6 +160,32 @@ namespace FhirBlaze.SharedComponents.Services
       return result;
 
     }
+    public async Task<IList<Observation>> GetObservationsAsync()
+    {
+      GraphQLRequest request = new GraphQLRequest(_httpClient)
+      {
+        OperationName = "ObservationList",
+        Query = @"query {
+                    ObservationList{
+                        identifier{value}
+                    }
+                }"
+      };
+      GraphQLResponse response = await request.PostAsync();
+      var result = new List<Observation>();
+      foreach (var p in response.Data.ObservationList)
+      {
+        try
+        {
+          result.Add(_fhirParser.Parse<Observation>(p.RootElement.ToString()));
+        }
+        catch (Exception e)
+        {
+
+        }
+      }
+      return result;
+    }
 
     public Task<int> GetPractitionerCountAsync()
     {
@@ -233,6 +269,11 @@ namespace FhirBlaze.SharedComponents.Services
       throw new NotImplementedException();
     }
 
+    public Task<IList<Observation>> SearchObservation(IDictionary<string, string> searchParameters)
+    {
+      throw new NotImplementedException();
+    }
+
     public Task<IList<Practitioner>> SearchPractitioner(IDictionary<string, string> searchParameters)
     {
       throw new NotImplementedException();
@@ -254,6 +295,11 @@ namespace FhirBlaze.SharedComponents.Services
     }
 
     public Task<MedicationStatement> UpdateMedicationStatementAsync(string statementId, MedicationStatement statement)
+    {
+      throw new NotImplementedException();
+    }
+
+    public Task<Observation> UpdateObservationAsync(string observationId, Observation observation)
     {
       throw new NotImplementedException();
     }

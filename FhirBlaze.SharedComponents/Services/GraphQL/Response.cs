@@ -35,6 +35,9 @@ namespace FhirBlaze.SharedComponents.Services.GraphQL
     [JsonPropertyName("MedicationStatementList")]
     public IList<JsonDocument> MedicationStatementList { get; set; }
 
+    [JsonPropertyName("ObservationList")]
+    public IList<JsonDocument> ObservationList { get; set; }
+
     [JsonPropertyName("whoAmI")]
     public string WhoAmI { get; set; }
 

@@ -1,0 +1,172 @@
+@using BlazorDateRangePicker
+@using FhirBlaze.SharedComponents.Components
+
+@namespace FhirBlaze.ObservationModule.Components
+
+<EditForm Model="@Observation" OnValidSubmit="@SaveObservation">
+  <DataAnnotationsValidator />
+  <ValidationSummary />
+
+  <div class="container">
+    <div class="row">
+      <div class="form-group col-sm">
+        <label class="control-label" for="Id">Id</label>
+        <InputText id="Id" disabled @bind-Value="Observation.Id" class="form-control" style="" />
+      </div>
+      <div class="form-group col-sm">
+        <label class="control-label">Business Identifier(s)</label>
+        @foreach (var item in this.Observation.Identifier)
+        {
+          <div>
+            <input type="text" @bind="item.Value" class="form-control" />
+          </div>
+        }
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Status</label>
+        <div>
+          <select type="text" @bind="this.ObservationStatus" class="form-control">
+            @for (int i = 0; i < this.ObservationStatuses.Length; i++)
+            {
+              <option value="@this.ObservationStatuses[i]">@this.ObservationStatuses[i]</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Code</label>
+        <div>
+          <select type="text" @bind="this.ObservationCode" class="form-control">
+            @if (this.ObservationCodes != null)
+            {
+              var VSOCConcept = this.ObservationCodes.Compose.Include[0].Concept;
+
+              @for (var i = 0; i < VSOCConcept.Count; i++)
+              {
+                <option value="@i">@VSOCConcept[i].Display</option>
+              }
+            }
+            else
+            {
+              <option>No type of observation to select</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Select Patient (Who the observation is about)</label>
+        <div>
+          <select type="text" @bind="this.SelectedPatientId" class="form-control">
+            @if (this.Patients != null)
+            {
+              @foreach (var patient in this.Patients)
+              {
+                <option value="@patient.Id">@patient.Name.FirstOrDefault()</option>
+              }
+            }
+            else
+            {
+              <option>No Patient to select</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Select Practitioner (Who is responsible for the observation)</label>
+        <div>
+          <select type="text" @bind="this.SelectedPractitionerId" class="form-control">
+            @if (this.Practitioners != null)
+            {
+              @foreach (var practitioner in this.Practitioners)
+              {
+                <option value="@practitioner.Id">@practitioner.Name.FirstOrDefault()</option>
+              }
+            }
+            else
+            {
+              <option>No Practitioner to select</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Select Medication Statement (Part of referenced event)</label>
+        <div>
+          <select type="text" @bind="this.SelectedStatementId" class="form-control">
+            @if (this.Statements != null)
+            {
+              @foreach (var statement in this.Statements)
+              {
+                <option value="@statement.Id">#@statement.Id (@statement.Category.Coding[0].Display)</option>
+              }
+            }
+            else
+            {
+              <option>No Medication statement to select</option>
+            }
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="form-group col-md">
+        <label class="control-label">Effective Date</label>
+        <div>
+          <DateRangePicker @bind-StartDate="SelectedEffectiveDate" SingleDatePicker="true" AutoApply="true"
+            ShowOnlyOneCalendar="true" OnSelectionStart="SelectDate" class="form-control" />
+        </div>
+      </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+      <div class="col-sm-11">Note(s)</div>
+      <div class="col-sm-1">
+        <button type="button" class="btn btn-primary" @onclick="AddNoteAnnotation"><span class="oi oi-plus" /></button>
+      </div>
+    </div>
+    <div class="row form-group">
+      @foreach (var note in this.Observation.Note)
+      {
+        <div class="col-sm-11">
+          <AnnotationComponent Note="note" />
+        </div>
+        <div class="col-sm-1">
+          <button type="button" class="btn btn-primary" @onclick="(() => RemoveNoteAnnotation(note))">
+            <span class="oi oi-trash" />
+          </button>
+        </div>
+      }
+    </div>
+  </div>
+
+  @if (Processing)
+  {
+    <div class="row">
+      <div class="col-sm-11"><button type="button" class="btn btn-primary-outline" disabled>Processing</button></div>
+    </div>
+  }
+  else
+  {
+    <div class="row">
+      <div class="col-sm-11"><button type="submit" class="btn btn-primary">Save</button></div>
+    </div>
+  }
+  </EditForm>
