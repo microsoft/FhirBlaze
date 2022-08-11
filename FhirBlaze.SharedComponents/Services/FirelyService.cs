@@ -18,6 +18,15 @@ namespace FhirBlaze.SharedComponents.Services
             _fhirClient = client;
         }
 
+        public async Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Hl7.Fhir.Model.Resource, new()
+        {
+            var result = await _fhirClient.SearchByIdAsync<TResource>(resourceId, pageSize: _defaultPageSize);
+
+            TResource r = result.Entry.Select(e => (TResource)e.Resource).First();
+
+            return r;
+        }
+
         #region Patient
         public async Task<IList<Patient>> GetPatientsAsync()
         {
@@ -154,15 +163,7 @@ namespace FhirBlaze.SharedComponents.Services
         #endregion
 
         #region Practitioners
-        public async Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Hl7.Fhir.Model.Resource, new()
-        {
-            var result = await _fhirClient.SearchByIdAsync<TResource>(resourceId, pageSize: _defaultPageSize);
-
-            TResource r = result.Entry.Select(e => (TResource)e.Resource).First();
-
-            return r;
-        }
-
+        
         public async Task<IList<Practitioner>> GetPractitionersAsync()
         {
             var bundle = await _fhirClient.SearchAsync<Practitioner>(pageSize: 50);
