@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
   </PropertyGroup>
 
   
@@ -10,9 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Hl7.Fhir.R4" Version="3.4.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.8" />
-    <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="5.0.8" />
+    <PackageReference Include="Hl7.Fhir.R4" Version="4.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="6.0.8" />
+    <PackageReference Include="Microsoft.Authentication.WebAssembly.Msal" Version="6.0.8" />
     <PackageReference Include="Microsoft.Graph.Beta" Version="4.6.0-preview" />
   </ItemGroup>
 
