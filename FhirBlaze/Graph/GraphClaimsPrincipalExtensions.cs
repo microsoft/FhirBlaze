@@ -18,23 +18,22 @@ namespace FhirBlaze.Graph
         public static string GetUserGraphEmail(this ClaimsPrincipal claimsPrincipal)
         {
             var claim = claimsPrincipal.FindFirst(GraphClaimTypes.Email);
-            return claim == null ? null : claim.Value;
+            return claim?.Value;
         }
 
         public static string GetUserGraphPhoto(this ClaimsPrincipal claimsPrincipal)
         {
             var claim = claimsPrincipal.FindFirst(GraphClaimTypes.Photo);
-            return claim == null ? null : claim.Value;
+            return claim?.Value;
         }
 
         // Adds claims from the provided User object
         public static void AddUserGraphInfo(this ClaimsPrincipal claimsPrincipal, User user)
         {
-            var identity = claimsPrincipal.Identity as ClaimsIdentity;
-
-            identity.AddClaim(
-                new Claim(GraphClaimTypes.Email,
-                    user.Mail ?? user.UserPrincipalName));
+            if (claimsPrincipal.Identity is ClaimsIdentity identity)
+                identity.AddClaim(
+                    new Claim(GraphClaimTypes.Email,
+                        user.Mail ?? user.UserPrincipalName));
         }
 
         // Converts a photo Stream to a Data URI and stores it in a claim
@@ -42,20 +41,18 @@ namespace FhirBlaze.Graph
         {
             var identity = claimsPrincipal.Identity as ClaimsIdentity;
 
-            if (photoStream != null)
-            {
-                // Copy the photo stream to a memory stream
-                // to get the bytes out of it
-                var memoryStream = new MemoryStream();
-                photoStream.CopyTo(memoryStream);
-                var photoBytes = memoryStream.ToArray();
+            if (photoStream == null) return;
+            // Copy the photo stream to a memory stream
+            // to get the bytes out of it
+            var memoryStream = new MemoryStream();
+            photoStream.CopyTo(memoryStream);
+            var photoBytes = memoryStream.ToArray();
 
-                // Generate a date URI for the photo
-                var photoUri = $"data:image/png;base64,{Convert.ToBase64String(photoBytes)}";
+            // Generate a date URI for the photo
+            var photoUri = $"data:image/png;base64,{Convert.ToBase64String(photoBytes)}";
 
-                identity.AddClaim(
-                    new Claim(GraphClaimTypes.Photo, photoUri));
-            }
+            identity?.AddClaim(
+                new Claim(GraphClaimTypes.Photo, photoUri));
         }
     }
 }
