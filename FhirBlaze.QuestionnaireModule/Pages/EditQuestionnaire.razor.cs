@@ -3,12 +3,8 @@ using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
+
 using Task = System.Threading.Tasks.Task;
-using static Hl7.Fhir.Model.Questionnaire;
 
 namespace FhirBlaze.QuestionnaireModule.Pages
 {

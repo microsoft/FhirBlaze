@@ -1,6 +1,4 @@
-﻿using Hl7.Fhir.Model;
-using System.Collections.Generic;
-using System.Net.Http.Json;
+﻿using System.Collections.Generic;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 

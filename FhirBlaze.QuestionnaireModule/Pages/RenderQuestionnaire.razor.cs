@@ -5,12 +5,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Json;
-using System.Text;
-using Task = System.Threading.Tasks.Task;
+
+ using Task = System.Threading.Tasks.Task;
 using Microsoft.AspNetCore.Components.Forms;
-using System.Text.Json;
-using System.Threading.Tasks;
+
+ using System.Threading.Tasks;
 
 namespace FhirBlaze.QuestionnaireModule.Pages
 {

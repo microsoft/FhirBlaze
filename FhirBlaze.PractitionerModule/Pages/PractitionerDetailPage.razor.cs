@@ -3,8 +3,7 @@ using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using System;
-using System.Linq;
-using System.Runtime.CompilerServices;
+
 using Task = System.Threading.Tasks.Task;
 
 namespace FhirBlaze.PractitionerModule.Pages

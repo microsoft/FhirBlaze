@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Authentication.Internal;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+
 using System.Security.Claims;
 using System.Threading.Tasks;
 
@@ -30,7 +28,7 @@ namespace FhirBlaze.Graph
             this.logger = logger;
         }
 
-        public async override ValueTask<ClaimsPrincipal> CreateUserAsync(
+        public override async ValueTask<ClaimsPrincipal> CreateUserAsync(
             RemoteUserAccount account,
             RemoteAuthenticationUserOptions options)
         {
@@ -38,30 +36,27 @@ namespace FhirBlaze.Graph
             var initialUser = await base.CreateUserAsync(account, options);
 
             // If authenticated, we can call Microsoft Graph
-            if (initialUser.Identity.IsAuthenticated)
+            if (initialUser.Identity is not { IsAuthenticated: true }) return initialUser;
+            
+            try
             {
-                try
-                {
-                    // Add additional info from Graph to the identity
-                    await AddGraphInfoToClaims(accessor, initialUser);
-                }
-                catch (AccessTokenNotAvailableException exception)
-                {
-                    logger.LogError($"Graph API access token failure: {exception.Message}");
-                }
-                catch (Microsoft.Graph.ServiceException exception)
-                {
-                    logger.LogError($"Graph API error: {exception.Message}");
-                    logger.LogError($"Response body: {exception.RawResponseBody}");
-                }
+                // Add additional info from Graph to the identity
+                await AddGraphInfoToClaims(initialUser);
+            }
+            catch (AccessTokenNotAvailableException exception)
+            {
+                logger.LogError("Graph API access token failure: {ExceptionMessage}", exception.Message);
+            }
+            catch (Microsoft.Graph.ServiceException exception)
+            {
+                logger.LogError("Graph API error: {ExceptionMessage}", exception.Message);
+                logger.LogError("Response body: {ExceptionRawResponseBody}", exception.RawResponseBody);
             }
 
             return initialUser;
         }
 
-        private async Task AddGraphInfoToClaims(
-            IAccessTokenProviderAccessor accessor,
-            ClaimsPrincipal claimsPrincipal)
+        private async Task AddGraphInfoToClaims(ClaimsPrincipal claimsPrincipal)
         {
             var serviceClient = clientFactory.GetAuthenticatedClient();
 
