@@ -391,6 +391,12 @@ namespace FhirBlaze.ObservationModule.Components
     protected async void SaveObservation()
     {
       this.Observation.Text = this.GeneratedText();
+
+      if (this.Observation.Issued == null)
+      {
+        this.Observation.Issued = DateTimeOffset.Now;
+      }
+
       await OnObservationSaved.InvokeAsync(this.Observation);
     }
   }
