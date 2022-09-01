@@ -1,0 +1,31 @@
+@namespace FhirBlaze.ObservationModule.Components
+
+<div class="container">
+  <h3>Found: @(Observations.Count) observations!</h3>
+  <div class="container">
+    <table class="table table-striped table-hover">
+      <thead>
+        <tr>
+          <th>Summary</th>
+          <th>&nbsp;</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var observation in this.Observations)
+        {
+          @if (@observation.Text != null && @observation.Text.Div != null)
+          {
+            <tr>
+              <td>@(new MarkupString(observation.Text.Div))</td>
+              <td>
+                <button @onclick="(() => ObservationSelected(observation))" class="btn btn-primary">
+                  Edit
+                </button>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

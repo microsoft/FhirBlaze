@@ -32,6 +32,14 @@ namespace FhirBlaze.SharedComponents.Services
     Task<IList<MedicationStatement>> SearchMedicationStatement(IDictionary<string, string> searchParameters);
     #endregion
 
+    #region Observation
+    Task<Observation> CreateObservationsAsync(Observation observation);
+    Task<IList<Observation>> GetObservationsAsync();
+    Task<Observation> UpdateObservationAsync(string observationId, Observation observation);
+    Task<int> GetObservationCountAsync();
+    Task<IList<Observation>> SearchObservation(IDictionary<string, string> searchParameters);
+    #endregion
+
     #region Questionnaire
     Task<QuestionnaireResponse> SaveQuestionnaireResponseAsync(QuestionnaireResponse qResponse);
     Task<IList<Questionnaire>> GetQuestionnairesAsync();

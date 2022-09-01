@@ -226,6 +226,74 @@ namespace FhirBlaze.SharedComponents.Services
     }
     #endregion
 
+    #region Observation
+    public async Task<IList<Observation>> GetObservationsAsync()
+    {
+      var bundle = await _fhirClient.SearchAsync<Observation>(pageSize: 50);
+      var result = new List<Observation>();
+      while (bundle != null)
+      {
+        result.AddRange(bundle.Entry.Select(o => (Observation)o.Resource).ToList());
+        bundle = await _fhirClient.ContinueAsync(bundle);
+      }
+
+      return result;
+    }
+
+    public async Task<int> GetObservationCountAsync()
+    {
+      var bundle = await _fhirClient.SearchAsync<Observation>(summary: SummaryType.Count);
+      return bundle.Total ?? 0;
+    }
+
+    public async Task<IList<Observation>> SearchObservation(IDictionary<string, string> searchParameters)
+    {
+      string identifier = searchParameters["identifier"];
+
+      var searchResults = new List<Observation>();
+
+      if (!string.IsNullOrEmpty(identifier))
+      {
+        Bundle bundle = await _fhirClient.SearchByIdAsync<Observation>(identifier);
+
+        if (bundle != null)
+          searchResults = bundle.Entry.Select(o => (Observation)o.Resource).ToList();
+      }
+      else
+      {
+        IList<string> filterStrings = new List<string>();
+        foreach (var parameter in searchParameters)
+        {
+          if (!string.IsNullOrEmpty(parameter.Value))
+          {
+            filterStrings.Add($"{parameter.Key}:contains={parameter.Value}");
+          }
+        }
+        Bundle bundle = await _fhirClient.SearchAsync<Observation>(criteria: filterStrings.ToArray<string>());
+
+        if (bundle != null)
+          searchResults = bundle.Entry.Select(o => (Observation)o.Resource).ToList();
+      }
+
+      return searchResults;
+    }
+
+    public async Task<Observation> CreateObservationsAsync(Observation observation)
+    {
+      return await _fhirClient.CreateAsync(observation);
+    }
+
+    public async Task<Observation> UpdateObservationAsync(string observationId, Observation observation)
+    {
+      if (observationId != observation.Id)
+      {
+        throw new System.Exception("Unknown observation ID");
+      }
+
+      return await _fhirClient.UpdateAsync(observation);
+    }
+    #endregion
+
     #region Questionnaire
     public async Task<IList<Questionnaire>> GetQuestionnairesAsync()
     {
