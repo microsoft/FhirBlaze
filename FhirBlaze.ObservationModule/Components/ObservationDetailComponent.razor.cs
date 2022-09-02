@@ -348,30 +348,30 @@ namespace FhirBlaze.ObservationModule.Components
     private Narrative GeneratedText()
     {
       string rootBlock = "<div xmlns=\"http://www.w3.org/1999/xhtml\">";
-      string headingBlock = "<p><b>Generated Narrative with Details</b></p>";
-      string idBlock = $"<p><b>id</b>: {this.Observation.Id}</p>";
+      string headingBlock = "<p class=\"obsservation_narrative\"><b>Generated Narrative with Details</b></p>";
+      string idBlock = $"<p class=\"obsservation_id\"><b>id</b>: {this.Observation.Id}</p>";
 
-      string identifierBlock = $"<p><b>identifier</b>: {(this.Observation.Identifier.Count > 0 ? this.Observation.Identifier[0].Value + "(OFFICIAL)" : "")}</p>";
+      string identifierBlock = $"<p class=\"obsservation_identifier\"><b>identifier</b>: {(this.Observation.Identifier.Count > 0 ? this.Observation.Identifier[0].Value + "(OFFICIAL)" : "")}</p>";
 
-      string partOfBlock = $"<p><b>part of</b>: <a href=\"{this.Observation.PartOf[0].Reference}\">{this.Observation.PartOf[0].Display}</a></p>";
+      string partOfBlock = $"<p class=\"obsservation_part_of\"><b>part of</b>: <a href=\"{this.Observation.PartOf[0].Reference}\">{this.Observation.PartOf[0].Display}</a></p>";
 
-      string statusBlock = $"<p><b>status</b>: {this.Observation.Status}</p>";
+      string statusBlock = $"<p class=\"obsservation_status\"><b>status</b>: {this.Observation.Status}</p>";
 
-      string codeBlock = $"<p><b>code</b>: {this.Observation.Code.Coding[0].Display} <span>(Details : {{{this.Observation.Code.Coding[0].System} code {this.Observation.Code.Coding[0].Code}, given as '{this.Observation.Code.Coding[0].Display}'}})</span></p>";
+      string codeBlock = $"<p class=\"obsservation_code\"><b>code</b>: {this.Observation.Code.Coding[0].Display} <span>(Details : {{{this.Observation.Code.Coding[0].System} code {this.Observation.Code.Coding[0].Code}, given as '{this.Observation.Code.Coding[0].Display}'}})</span></p>";
 
-      // string categoryBlock = $"<p><b>category</b>: {(this.Observation.Category != null && this.Observation.Category.Coding != null ? this.Observation.Category.Coding[0].Display : "")}</p>";
+      // string categoryBlock = $"<p class=\"obsservation_category\"><b>category</b>: {(this.Observation.Category != null && this.Observation.Category.Coding != null ? this.Observation.Category.Coding[0].Display : "")}</p>";
 
-      string subjectBlock = $"<p><b>subject</b>: <a href=\"{this.Observation.Subject.Reference}\">{this.Observation.Subject.Display}</a></p>";
+      string subjectBlock = $"<p class=\"obsservation_subject\"><b>subject</b>: <a href=\"{this.Observation.Subject.Reference}\">{this.Observation.Subject.Display}</a></p>";
 
-      string effectiveDateBlock = $"<p><b>effective</b>: {(this.Observation.Effective != null ? this.Observation.Effective.ToString() : "")}</p>";
+      string effectiveDateBlock = $"<p class=\"obsservation_effective\"><b>effective</b>: {(this.Observation.Effective != null ? this.Observation.Effective.ToString() : "")}</p>";
 
-      string performerBlock = $"<p><b>performer</b>: <a href=\"{this.Observation.Performer[0].Reference}\">{this.Observation.Performer[0].Display}</a></p>";
+      string performerBlock = $"<p class=\"obsservation_performer\"><b>performer</b>: <a href=\"{this.Observation.Performer[0].Reference}\">{this.Observation.Performer[0].Display}</a></p>";
 
       string noteBlock = string.Empty;
 
       if (this.Observation.Note != null && this.Observation.Note.Count > 0)
       {
-        noteBlock = $"<p><b>note</b>: ";
+        noteBlock = $"<p class=\"obsservation_note\"><b>note</b>: ";
         foreach (var note in this.Observation.Note)
         {
           noteBlock += $"{note.Text.ToString()} ";

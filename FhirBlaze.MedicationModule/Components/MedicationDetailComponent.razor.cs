@@ -111,11 +111,11 @@ namespace FhirBlaze.MedicationModule.Components
     private Narrative GeneratedText()
     {
       string rootBlock = "<div xmlns=\"http://www.w3.org/1999/xhtml\">";
-      string headingBlock = "<p><b>Generated Narrative with Details</b></p>";
-      string idBlock = $"<p><b>id</b>: {this.Medication.Id}</p>";
+      string headingBlock = "<p class=\"medication_narrative\"><b>Generated Narrative with Details</b></p>";
+      string idBlock = $"<p class=\"medication_id\"><b>id</b>: {this.Medication.Id}</p>";
 
-      string containedBlock = $"<p><b>contained</b>: </p><p><b>code</b>: {this.Medication.Code.Coding[0].Display} <span>(Details : {{{this.Medication.Code.Coding[0].System} code {this.Medication.Code.Coding[0].Code}, given as '{this.Medication.Code.Coding[0].Display}'}})</span></p>";
-      containedBlock += $"<p><b>form</b>: {this.Medication.Form.Coding[0].Display} <span>(Details : {{SNOMED CT code '{this.Medication.Form.Coding[0].Code}', given as '{this.Medication.Form.Coding[0].Display}'}})</span></p>";
+      string containedBlock = $"<p class=\"medication_contained\"><b>contained</b>: </p><p class=\"medication_code\"><b>code</b>: {this.Medication.Code.Coding[0].Display} <span>(Details : {{{this.Medication.Code.Coding[0].System} code {this.Medication.Code.Coding[0].Code}, given as '{this.Medication.Code.Coding[0].Display}'}})</span></p>";
+      containedBlock += $"<p class=\"medication_form_code\"><b>form</b>: {this.Medication.Form.Coding[0].Display} <span>(Details : {{SNOMED CT code '{this.Medication.Form.Coding[0].Code}', given as '{this.Medication.Form.Coding[0].Display}'}})</span></p>";
       string endBlock = "</div>";
 
       return new Narrative()

@@ -254,29 +254,29 @@ namespace FhirBlaze.MedicationModule.Components
       Medication medication = this.Medications[this.medicationIndexFromId()];
 
       string rootBlock = "<div xmlns=\"http://www.w3.org/1999/xhtml\">";
-      string headingBlock = "<p><b>Generated Narrative with Details</b></p>";
-      string idBlock = $"<p><b>id</b>: {this.Statement.Id}</p>";
+      string headingBlock = "<p class=\"medication_statement_narrative\"><b>Generated Narrative with Details</b></p>";
+      string idBlock = $"<p class=\"medication_statement_id\"><b>id</b>: {this.Statement.Id}</p>";
 
-      string containedBlock = $"<p><b>contained</b>: </p>";
+      string containedBlock = $"<p class=\"medication_statement_contained\"><b>contained</b>: </p>";
 
-      string identifierBlock = $"<p><b>identifier</b>: {(this.Statement.Identifier.Count > 0 ? this.Statement.Identifier[0].Value + "(OFFICIAL)" : "")}</p>";
+      string identifierBlock = $"<p class=\"medication_statement_identifier\"><b>identifier</b>: {(this.Statement.Identifier.Count > 0 ? this.Statement.Identifier[0].Value + "(OFFICIAL)" : "")}</p>";
 
-      string statusBlock = $"<p><b>status</b>: {this.Statement.Status}</p>";
+      string statusBlock = $"<p class=\"medication_statement_status\"><b>status</b>: {this.Statement.Status}</p>";
 
-      string categoryBlock = $"<p><b>category</b>: {(this.Statement.Category != null && this.Statement.Category.Coding != null ? this.Statement.Category.Coding[0].Display : "")}</p>";
+      string categoryBlock = $"<p class=\"medication_statement_category\"><b>category</b>: {(this.Statement.Category != null && this.Statement.Category.Coding != null ? this.Statement.Category.Coding[0].Display : "")}</p>";
 
-      string medicationBlock = $"<p><b>medication</b>: id: {medication.Id}; ";
+      string medicationBlock = $"<p class=\"medication_statement_id\"><b>medication</b>: id: {medication.Id}; ";
       medicationBlock += $"{medication.Code.Coding[0].Display} <span>(Details : {{{medication.Code.Coding[0].System} code {medication.Code.Coding[0].Code}, given as '{medication.Code.Coding[0].Display}'}})</span>; ";
       medicationBlock += $"{medication.Form.Coding[0].Display} <span>(Details : {{SNOMED CT code '{medication.Form.Coding[0].Code}', given as '{medication.Form.Coding[0].Display}'}})</span></p>";
 
-      string subjectBlock = $"<p><b>subject</b>: {patient.Name[0].ToString()}</p>";
+      string subjectBlock = $"<p class=\"medication_statement_subject\"><b>subject</b>: {patient.Name[0].ToString()}</p>";
 
-      string effectiveDateBlock = $"<p><b>effective</b>: {(this.Statement.Effective != null ? this.Statement.Effective.ToString() : "")}</p>";
+      string effectiveDateBlock = $"<p class=\"medication_statement_effective\"><b>effective</b>: {(this.Statement.Effective != null ? this.Statement.Effective.ToString() : "")}</p>";
       string noteBlock = string.Empty;
 
       if (this.Statement.Note != null && this.Statement.Note.Count > 0)
       {
-        noteBlock = $"<p><b>note</b>: ";
+        noteBlock = $"<p class=\"medication_statement_note\"><b>note</b>: ";
         foreach (var note in this.Statement.Note)
         {
           noteBlock += $"{note.Text.ToString()} ";
