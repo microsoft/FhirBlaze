@@ -172,26 +172,18 @@ namespace FhirBlaze.MedicationModule.Components
       }
     }
 
-    public void SelectDate(DateTimeOffset date)
-    {
-      this.Statement.Effective = new FhirDateTime(date.ToString("yyyy-MM-dd"));
-    }
-
-    public DateTimeOffset? SelectedEffectiveDate
+    public DateTime SelectedEffectiveDate
     {
       get
       {
-        if (this.Statement.Effective != null)
+        if (this.Statement.Effective != null && !string.IsNullOrWhiteSpace(this.Statement.Effective.ToString()))
         {
-          return DateTimeOffset.Parse(this.Statement.Effective.ToString());
+          return DateTime.Parse(this.Statement.Effective.ToString());
         }
 
-        return DateTimeOffset.Now;
+        return DateTime.Now;
       }
-      set
-      {
-
-      }
+      set => this.Statement.Effective = new FhirDateTime(value.ToString("yyyy-MM-dd"));
     }
 
     public void AddNoteAnnotation()

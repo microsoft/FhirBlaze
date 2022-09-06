@@ -1,4 +1,3 @@
-@using BlazorDateRangePicker
 @using FhirBlaze.SharedComponents.Components
 
 @namespace FhirBlaze.ObservationModule.Components
@@ -128,8 +127,7 @@
       <div class="form-group col-md">
         <label class="control-label">Effective Date</label>
         <div>
-          <DateRangePicker @bind-StartDate="SelectedEffectiveDate" SingleDatePicker="true" AutoApply="true"
-            ShowOnlyOneCalendar="true" OnSelectionStart="SelectDate" class="form-control" />
+          <InputDate @bind-Value="this.SelectedEffectiveDate" class="form-control" />
         </div>
       </div>
     </div>

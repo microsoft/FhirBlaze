@@ -2,7 +2,6 @@ using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Components;
 using System;
 using System.Collections.Generic;
-using BlazorDateRangePicker;
 using Task = System.Threading.Tasks.Task;
 
 namespace FhirBlaze.ObservationModule.Components
@@ -118,7 +117,7 @@ namespace FhirBlaze.ObservationModule.Components
         }
         catch (System.Exception e)
         {
-          Console.WriteLine("Error in getSelectedPatientId from MedicationStatementDetailComponent.razor.cs: " + e.Message + "; Source: " + e.Source + "; StackTrace: " + e.StackTrace);
+          Console.WriteLine("Error in getSelectedPatientId from ObservationDetailComponent.razor.cs: " + e.Message + "; Source: " + e.Source + "; StackTrace: " + e.StackTrace);
         }
 
         return "0";
@@ -132,7 +131,7 @@ namespace FhirBlaze.ObservationModule.Components
         }
         catch (System.Exception e)
         {
-          Console.WriteLine("Error in setSelectedPatientId from MedicationStatementDetailComponent.razor.cs: " + e.Message + "; Source: " + e.Source + "; StackTrace: " + e.StackTrace);
+          Console.WriteLine("Error in setSelectedPatientId from ObservationDetailComponent.razor.cs: " + e.Message + "; Source: " + e.Source + "; StackTrace: " + e.StackTrace);
         }
       }
     }
@@ -230,26 +229,18 @@ namespace FhirBlaze.ObservationModule.Components
       }
     }
 
-    public void SelectDate(DateTimeOffset date)
-    {
-      this.Observation.Effective = new FhirDateTime(date.ToString("yyyy-MM-dd"));
-    }
-
-    public DateTimeOffset? SelectedEffectiveDate
+    public DateTime SelectedEffectiveDate
     {
       get
       {
-        if (this.Observation.Effective != null)
+        if (this.Observation.Effective != null && !string.IsNullOrWhiteSpace(this.Observation.Effective.ToString()))
         {
-          return DateTimeOffset.Parse(this.Observation.Effective.ToString());
+          return DateTime.Parse(this.Observation.Effective.ToString());
         }
 
-        return DateTimeOffset.Now;
+        return DateTime.Now;
       }
-      set
-      {
-
-      }
+      set => this.Observation.Effective = new FhirDateTime(value.ToString("yyyy-MM-dd"));
     }
 
     public string Annote
