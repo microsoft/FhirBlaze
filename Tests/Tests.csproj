@@ -14,6 +14,8 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3" PrivateAssets="all" />
     <ProjectReference Include="..\FhirBlaze.PatientModule\FhirBlaze.PatientModule.csproj" />
     <ProjectReference Include="..\FhirBlaze.PractitionerModule\FhirBlaze.PractitionerModule.csproj" />
+    <ProjectReference Include="..\FhirBlaze.MedicationModule\FhirBlaze.MedicationModule.csproj" />
+    <ProjectReference Include="..\FhirBlaze.ObservationModule\FhirBlaze.ObservationModule.csproj" />
     <ProjectReference Include="..\FhirBlaze.QuestionnaireModule\FhirBlaze.QuestionnaireModule.csproj" />
     <ProjectReference Include="..\FhirBlaze.SharedComponents\FhirBlaze.SharedComponents.csproj" />
     <ProjectReference Include="..\FhirBlaze\FhirBlaze.csproj" />
