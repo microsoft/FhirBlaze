@@ -353,3 +353,7 @@ MigrationBackup/
 
 # VerifyTests temp files
 *.received.*
+
+# VS Code artifacts
+.vscode
+.dccache
