@@ -39,7 +39,7 @@
 
     <div class="row">
       <div class="form-group col-md">
-        <label class="control-label">Code</label>
+        <label class="control-label">Type of Observation</label>
         <div>
           <select type="text" @bind="this.ObservationCode" class="form-control">
             @if (this.ObservationCodes != null)
@@ -62,7 +62,7 @@
 
     <div class="row">
       <div class="form-group col-md">
-        <label class="control-label">Select Patient (Who the observation is about)</label>
+        <label class="control-label">Patient (Who the observation is about)</label>
         <div>
           <select type="text" @bind="this.SelectedPatientId" class="form-control">
             @if (this.Patients != null)
@@ -83,7 +83,7 @@
 
     <div class="row">
       <div class="form-group col-md">
-        <label class="control-label">Select Practitioner (Who is responsible for the observation)</label>
+        <label class="control-label">Practitioner (Who is responsible for the observation)</label>
         <div>
           <select type="text" @bind="this.SelectedPractitionerId" class="form-control">
             @if (this.Practitioners != null)
@@ -104,7 +104,7 @@
 
     <div class="row">
       <div class="form-group col-md">
-        <label class="control-label">Select Medication Statement (Part of referenced event)</label>
+        <label class="control-label">Medication Statement (Part of referenced event)</label>
         <div>
           <select type="text" @bind="this.SelectedStatementId" class="form-control">
             @if (this.Statements != null)
