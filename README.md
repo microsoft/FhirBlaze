@@ -27,9 +27,38 @@ Other options include:
 * Azure App Service
 * Azure Blob Storage static web
 * [and more...](https://docs.microsoft.com/en-us/aspnet/core/blazor/host-and-deploy/webassembly?view=aspnetcore-5.0)
+* Localhost
 
 ### Next Steps
 [Fork this repo](https://github.com/microsoft/fhirblaze/fork) to modify or add your own functionality.
+
+## Quickstart Running Locally
+* Open Solution with Visual Studio
+* Right click on the FhireBlaze poject and select "Manage User Secrets"
+* Add your information from app registrations
+```JSON
+{
+  "AzureAd": {
+    	"Instance": "https://login.microsoftonline.com/", 
+    	"Domain": "<Your domain>.onmicrosoft.com", ?
+    	"TenantId": "<add the tenant id from the azure tenant containing your app registrations here>",
+    	"ClientId": "<add the client id from your client app registration here>"
+    	
+   },
+  "ChestistApp": {
+    // used with the integrated SMART on FHIR App. 
+    "LaunchUrl": "http://localhost:3000"
+  },
+  "Api": {
+    "Scope": "<copy from app registration info will look like: api://[guid]/user_impersonation>",
+    "BaseUri": "http://localhost:7275"
+  }
+}
+``` 
+* Compile
+* Run/debug local
+
+
 
 ## Contributing
 
