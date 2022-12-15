@@ -1,0 +1,532 @@
+[
+  {
+    "Term": "adverse event",
+    "Definition": "Any health problem that happens during the study.",
+    "Use_in_context": "The research team will track all types of adverse events during a study.",
+    "More_Info": "Participants should tell the study team about any health problem that happens while they are  in the study.",
+    "Words_like": "none",
+    "Words_related_to": "adverse reaction, side effect",
+    "Words_opposite_to": "none",
+    "Other_Resources": "none"
+  },
+  {
+    "Term": "adverse reaction",
+    "Definition": "A health problem that happens during the study and is likely caused by the study treatment",
+    "Use_in_context": "Adverse reactions that happen in a study are health problems that might be caused by the study treatment.",
+    "More_Info": "Participants should tell the study team about any health problem that happens while they are  in the study.",
+    "Words_like": "none",
+    "Words_related_to": "adverse event, side effect",
+    "Words_opposite_to": "none",
+    "Other_Resources": "none"
+  },
+  {
+    "Term": "anonymize",
+    "Definition": "Remove, change, or hide personal details to protect participant privacy",
+    "Use_in_context": "When participant data are anonymized, it is not possible for someone to find out who the information belongs to.",
+    "More_Info": "Details such as name, birthdate, and address are removed so that personal information is no longer obvious.",
+    "Words_like": "unlink",
+    "Words_related_to": "data",
+    "Words_opposite_to": "deidentify,  code/coded",
+    "Other_Resources": "none"
+  },
+  {
+    "Term": "arm",
+    "Definition": "A group of participants in a research study who all receive the same study treatment.",
+    "Use_in_context": "If a study has two arms,  one group will receive one study treatment while a second group will receive a different study treatment.",
+    "More_Info": "Studies that compare two or more study treatments divide participants into separate arms to find out the impact of the different treatments.",
+    "Words_like": "study arm,group",
+    "Words_related_to": "randomization, cohort,treatment group",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "assessment",
+    "Definition": "Information that is collected and analyzed from a study participant.",
+    "Use_in_context": "A study often includes assessments, like surveys or medical tests.",
+    "More_Info": "An assessment is used in a study to collect data that helps the researchers answer the research questions.",
+    "Words_like": "test, questionnaire, survey",
+    "Words_related_to": "baseline assessment, data",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "baseline assessment",
+    "Definition": "Information that is collected and analyzed from a study participant at the start of a study.",
+    "Use_in_context": "A baseline assessment collects data about the participant?s health status at the start of a study.",
+    "More_Info": "A baseline assessment is used to compare how the participant's health status changes during the study.  For example, if a study is measuring weight loss, the participant?s weight must be taken at the start of the study to see if the participant loses weight while they are in the study.A baseline assessment could include questionnaires, lab tests, or other medical information for the study.",
+    "Words_like": "assessment, questionnaire, , survey",
+    "Words_related_to": "data",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none listed"
+  },
+  {
+    "Term": "blood draw",
+    "Definition": "Taking a sample of blood by using a needle.",
+    "Use_in_context": "A  blood draw is often needed for lab tests.",
+    "More_Info": "If a study includes a blood draw, it means one (or more) samples of the participant?s blood will be taken for the research.",
+    "Words_like": "phlebotomy, blood sample",
+    "Words_related_to": "none yet",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "https://kidshealth.org/en/teens/video-bldtest.html.  Harvard catalyst flyer: https://catalyst.harvard.edu/pdf/regulatory/BloodDraw_English_LowResolution.pdf"
+  },
+  {
+    "Term": "clinical benefit",
+    "Definition": "A health change that researchers measure to find out if the study treatment helps the study participants.",
+    "Use_in_context": "A study treatment may have clinical benefit if  participants have some kind of improvement.",
+    "More_Info": "For example, the clinical benefit of a drug used in a diabetes study might be lowering and better controlling the blood sugar of  participants.",
+    "Words_like": "benefit",
+    "Words_related_to": "none yet",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "None yet"
+  },
+  {
+    "Term": "clinical research",
+    "Definition": "A controlled way to study health and illness in people.",
+    "Use_in_context": "Clinical research is a way to find out which treatments are safe and work best.",
+    "More_Info": "Clinical research can include many different types of studies, like preclinical studies, clinical trials, observational studies, survey studies, etc.",
+    "Words_like": "health research, medical research",
+    "Words_related_to": "clinical trial, clinical study, research study, observational study, pre-clinical study",
+    "Words_opposite_to": "None yet",
+    "Other_Resources": "https://www.youtube.com/watch?v=4pLsHhP7yTw&t=7shttps://www.fda.gov/patients/drug-development-process/step-3-clinical-research"
+  },
+  {
+    "Term": "clinical trial",
+    "Definition": "A way to study new drugs, devices and treatments to see if they are safe and work in people.",
+    "Use_in_context": "Participants in a clinical trial help the study doctor learn more about a new treatment.",
+    "More_Info": "A clinical trial  compares the study treatment to another treatment or even to a group that is taking nothing in order to measure how well the study treatment works.",
+    "Words_like": "research study, trial, clinical study, study, interventional study, clinical research study,",
+    "Words_related_to": "clinical research, control, placebo",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "https://www.fda.gov/patients/clinical-trials-what-patients-need-know/basics-about-clinical-trials. And: https://catalyst.harvard.edu/pdf/regulatory/ClinicalTrials_English_LowResolution.pdf"
+  },
+  {
+    "Term": "cohort",
+    "Definition": "A group of participants who are similar to each other.",
+    "Use_in_context": "Data was collected from a cohort of smokers for 20 years to see if the participants developed health problems.",
+    "More_Info": "A cohort is usually a group of people who are in an observational study to see how a disease/condition develops.",
+    "Words_like": "study cohort, study group",
+    "Words_related_to": "arm, observational study",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "None yet"
+  },
+  {
+    "Term": "Computerized Tomography (CT) Scan",
+    "Definition": "Pictures of the inside of a person?s body taken by a machine that uses a type of radiation.",
+    "Use_in_context": "A CT scan is able to show specific changes in a study participant?s body (like the brain, other tissues, organs or bones).",
+    "More_Info": "none yet",
+    "Words_like": "imaging study",
+    "Words_related_to": "x-ray, MRI",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "�https://catalyst.harvard.edu/pdf/regulatory/CTScan_English_LowResolution.pdf"
+  },
+  {
+    "Term": "confidentiality",
+    "Definition": "Protecting personal information from people who should not have access.",
+    "Use_in_context": "Confidentiality in research means researchers keep participant information private.",
+    "More_Info": "Researchers protect confidentiality by not sharing personal details about study participants with people who do not need to know.",
+    "Words_like": "privacy",
+    "Words_related_to": "Non-disclosure, data",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none"
+  },
+  {
+    "Term": "consent form",
+    "Definition": "A document used to explain the details of the research study.",
+    "Use_in_context": "A person signs the consent form when they understand the information and choose to take  part in a study.",
+    "More_Info": "A consent form includes information about benefits and risks, other treatment options,  the rights of participants, and the responsibilities of the researchers.   A consent form can be on paper or electronic.",
+    "Words_like": "informed consent form",
+    "Words_related_to": "informed consent",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "https://www.hhs.gov/ohrp/regulations-and-policy/guidance/checklists/index.html"
+  },
+  {
+    "Term": "control group",
+    "Definition": "People in a study who do not receive the treatment or do not have the condition being studied.",
+    "Use_in_context": "A control group is used as a comparison to see the effect of the study treatment.",
+    "More_Info": "People in the control group receive something different during the research study [such as a different dose, standard of care, something that looks like the study treatment but is inactive  (placebo) or no treatment at all].",
+    "Words_like": "control arm, comparison group",
+    "Words_related_to": "None yet",
+    "Words_opposite_to": "None yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "data",
+    "Definition": "Information collected from or about people taking part in a research study.",
+    "Use_in_context": "Researchers use data to answer study questions.",
+    "More_Info": "There are many different types of data including:personal information like age and date of birth, questionnaires, blood test results, imaging scans and their interpretations, health insurance status and so on.  The types of data collected depend on the study.",
+    "Words_like": "information",
+    "Words_related_to": "questionnaire, assessment",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "discontinue",
+    "Definition": "To stop a study treatment or stop being a participant in the study.",
+    "Use_in_context": "If a participant stops the study treatment or their participation, they should have a conversation with the study team about how to discontinue safely.",
+    "More_Info": "A participant can take action and decide to discontinue  from a study. Or a participant can be discontinued from a study by the researchers for safety or other reasons. Reasons for discontinuing should be discussed.",
+    "Words_like": "withdraw",
+    "Words_related_to": "none",
+    "Words_opposite_to": "none",
+    "Other_Resources": "none"
+  },
+  {
+    "Term": "double-blind study",
+    "Definition": "A study that is set up so that participants do not know which study treatment they are getting, and researchers do not know either.",
+    "Use_in_context": "In a double-blind study, the study participants and the study doctor will not know the treatment each participant is getting.",
+    "More_Info": "Some studies are done this way because knowing which treatment each participant is getting can affect the results of the study, through a concept called bias.Bias can occur when participants or researchers know which study treatment participants are getting Participants can ask to find out which study treatment they received after the study ends.",
+    "Words_like": "masked/masking",
+    "Words_related_to": "Bias, single-blind study, randomization",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "https://www.verywellmind.com/what-is-a-double-blind-study-2795103"
+  },
+  {
+    "Term": "efficacy",
+    "Definition": "How well a study treatment works in the study.",
+    "Use_in_context": "A study tests efficacy to see how well a new treatment works.",
+    "More_Info": "Efficacy (how well a study treatment works in the study) is different from effectiveness which refers to how well the treatment works in the real world outside a study.",
+    "Words_like": "none yet",
+    "Words_related_to": "effectiveness",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "eligibility criteria",
+    "Definition": "The reasons a person can be included in, or excluded from, a study.",
+    "Use_in_context": "A study has eligibility criteria to make sure only people who fit the study requirements join as participants.",
+    "More_Info": "For example, a study may be looking to include only people of a certain age or with a certain health condition.",
+    "Words_like": "inclusion criteria, exclusion criteria",
+    "Words_related_to": "none yet",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "None yet"
+  },
+  {
+    "Term": "endpoint",
+    "Definition": "A measure of the expected effect of the study treatment.",
+    "Use_in_context": "An endpoint is one of the main questions the study is trying to answer.",
+    "More_Info": "A study could have more than one endpoint. Some examples of endpoints that are used in studies include finding out about the health condition, quality of life, or symptoms of a disease.",
+    "Words_like": "clinical endpoint",
+    "Words_related_to": "outcome, primary endpoint,  secondary endpoint, surrogate",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "enroll",
+    "Definition": "Agree to join a study as a study participant.",
+    "Use_in_context": "If you enroll in a study, it means you decided to volunteer to be a  participant.",
+    "More_Info": "In order to enroll in a study, a person must meet the eligibility criteria.  Study participation is voluntary.  If the study includes randomization, this would be included in the enrollment process.",
+    "Words_like": "join",
+    "Words_related_to": "informed consent, consent form, eligibility criteria, inclusion crieria,  exclusion criteria, randomization",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "exclusion criteria",
+    "Definition": "A list of reasons a person cannot be included in a study.",
+    "Use_in_context": "If someone wants to join a study, they can not have any of the exclusion criteria.",
+    "More_Info": "For example, if a study is only enrolling adults with diabetes, a person who does not have diabetes could not take part.",
+    "Words_like": "eligibility criteria,",
+    "Words_related_to": "inclusion criteria",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "None yet"
+  },
+  {
+    "Term": "healthy volunteer",
+    "Definition": "A study participant who does not have a disease or condition, including the one being studied.",
+    "Use_in_context": "A healthy volunteer should not have a known disease that could impact the study.",
+    "More_Info": "A healthy volunteer may  test the study treatment's safety or act as comparison (control) during the study.",
+    "Words_like": "healthy control",
+    "Words_related_to": "participant, subject, study participant, research participant, research subject, study subject",
+    "Words_opposite_to": "none",
+    "Other_Resources": "https://clinicalcenter.nih.gov/recruit/volunteers.html#:~:text=Research%20participants%20include%20healthy%20volunteers,a%20specific%20disease%20or%20condition."
+  },
+  {
+    "Term": "healthy volunteer",
+    "Definition": "A study participant who does not have a disease or condition, including the one being studied.",
+    "Use_in_context": "A healthy volunteer can help the research team learn more about potential treatment options for a specific disease or condition.",
+    "More_Info": "A healthy volunteer may  test the study treatment's safety or act as comparison (control) during the study.",
+    "Words_like": "healthy control",
+    "Words_related_to": "participant, subject, study participant, research participant, research subject, study subject",
+    "Words_opposite_to": "none",
+    "Other_Resources": "https://clinicalcenter.nih.gov/recruit/volunteers.html#:~:text=Research%20participants%20include%20healthy%20volunteers,a%20specific%20disease%20or%20condition."
+  },
+  {
+    "Term": "inclusion criteria",
+    "Definition": "A list of requirements a person must meet to take part in a study.",
+    "Use_in_context": "If someone wants to join a study, they  must meet all the inclusion criteria.",
+    "More_Info": "For example, if a study is for adults only, a person can only consider joining if they are 18 years of age or older.",
+    "Words_like": "eligibility criteria,",
+    "Words_related_to": "exclusion criteria",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "None yet"
+  },
+  {
+    "Term": "informed consent",
+    "Definition": "The process of learning and discussing the details of a research study before deciding whether to take part.",
+    "Use_in_context": "Informed consent is required for most research studies before a person can join as a participant.",
+    "More_Info": "Informed consent is an ongoing conversation that occurs before someone can participate in a study and whenever information about the study changes.A consent form is used as part of the informed consent process.",
+    "Words_like": "consent",
+    "Words_related_to": "consent form",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "https://www.fda.gov/patients/clinical-trials-what-patients-need-know/informed-consent-clinical-trials"
+  },
+  {
+    "Term": "infusion",
+    "Definition": "A way to give a fluid into a vein of a study participant.",
+    "Use_in_context": "A study treatment  given to the participant through their vein is an infusion.",
+    "More_Info": "In an infusion, the fluid could be a study treatment or other liquids, like saline for hydration.",
+    "Words_like": "intravenous infusion",
+    "Words_related_to": "intervention, intravenous injection",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "institutional review board (IRB)",
+    "Definition": "A team of people who review studies to protect the rights and welfare of study participants.",
+    "Use_in_context": "Only after an IRB reviews and approves the study protocol can participants join the study.",
+    "More_Info": "A research study must be approved by an IRB before it starts.The IRB members are not part of the study team.  They come from many different backgrounds and can be medical, scientific or non scientific experts.",
+    "Words_like": "committee for the protection of human subjects ; independent ethics committee; independent review board; research ethics committee; ethics committee",
+    "Words_related_to": "None yet",
+    "Words_opposite_to": "None yet",
+    "Other_Resources": "https://www.youtube.com/watch?v=4r2uH8s50Ro                      https://www.youtube.com/watch?v=U8fme1boEbE"
+  },
+  {
+    "Term": "intervention",
+    "Definition": "A treatment given in a study.",
+    "Use_in_context": "If a research study includes an intervention, it means that participants will test out something new to see whether it works.",
+    "More_Info": "An intervention in a study can also include ways to change behavior, attitudes, and maintain or improve  health.  For example, a study might test whether giving participants a step counter leads to weight loss.",
+    "Words_like": "study treatment, investigational product, investigational drug, investigational device",
+    "Words_related_to": "none yet",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "investigational product",
+    "Definition": "A drug, device, vaccine or other treatment being tested in a study.",
+    "Use_in_context": "The investigational product is what is  studied in a clinical trial.",
+    "More_Info": "If a study is using an investigational product it means the product has not been approved yet or is not yet approved for the condition or disease being studied.",
+    "Words_like": "investigational treatment, study treatment,  intervention",
+    "Words_related_to": "none yet",
+    "Words_opposite_to": "standard of care",
+    "Other_Resources": "None yet"
+  },
+  {
+    "Term": "investigator",
+    "Definition": "A person who leads a research study.",
+    "Use_in_context": "The investigator is responsible for making sure the study is carried out as planned.",
+    "More_Info": "A Principal Investigator is in charge of the overall research study. This person could be a doctor, scientist, or other health professional.",
+    "Words_like": "researcher, study doctor",
+    "Words_related_to": "Principal Investigator, sub-investigator, co-investigator, coordinating investigator, site investigator",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": ""
+  },
+  {
+    "Term": "Magnetic Resonance Imaging (MRI)",
+    "Definition": "Pictures of the inside of a person?s body that are taken by a machine using strong magnets and radio waves.",
+    "Use_in_context": "MRI is most often used to take pictures of bones, tissues, organs or the brain.",
+    "More_Info": "Powerful magnets and radio waves are used to create very detailed pictures of the inside of a person's body.",
+    "Words_like": "imaging study",
+    "Words_related_to": "CT scan, x-ray",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": ""
+  },
+  {
+    "Term": "multicenter trial",
+    "Definition": "A study that takes place at more than one research center",
+    "Use_in_context": "A multicenter trial can be done in many locations in a country or even around the world.",
+    "More_Info": "Studies are sometimes done at more than one center to make sure   participants can be recruited from diverse backgrounds. In some cases, studies can be done remotely if communication and  data collection can happen by phone or computer; but there is always an investigator in charge.",
+    "Words_like": "multi-site study",
+    "Words_related_to": "investigator",
+    "Words_opposite_to": "single center trial",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "non-inferiority trial",
+    "Definition": "A study to test if a study treatment works about as well as another treatment.",
+    "Use_in_context": "One example of a non-inferiority trial would be to test whether a new medicine for asthma works as well as one that some patients already use.",
+    "More_Info": "Non-inferiority trials are done to find more treatment options that work as well as ones that are already approved for a specific disease or condition.",
+    "Words_like": "non-inferiority study,",
+    "Words_related_to": "superiority trial, equivalence trial, control",
+    "Words_opposite_to": "none",
+    "Other_Resources": "none"
+  },
+  {
+    "Term": "observational study",
+    "Definition": "A study that collects health information about study participants without changing their medical care.",
+    "Use_in_context": "In an observational study data will be collected about each participant but there won't be a study treatment given.",
+    "More_Info": "For example, a study might enroll participants to see whether, over time, those who report eating a vegetarian diet have lower blood pressure levels than those who eat meat. Data are collected using methods like surveys and lab tests, as well as from other sources like medical records and historical datasets.",
+    "Words_like": "none yet",
+    "Words_related_to": "natural history study, cohort study, case control study",
+    "Words_opposite_to": "clinical trial",
+    "Other_Resources": ""
+  },
+  {
+    "Term": "Outcome",
+    "Definition": "A description of the overall results of the study.",
+    "Use_in_context": "The outcome of the study will show whether or not a study treatment could  help patients.",
+    "More_Info": "NA",
+    "Words_like": "result",
+    "Words_related_to": "endpoint, primary endpoint, surrogate, secondary endpoint, clinical endpoint",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "Outcome measure",
+    "Definition": "How the endpoints of the study are measured.",
+    "Use_in_context": "An outcome measure is used to collect information for the study.",
+    "More_Info": "A study will use outcome measures to collect information that is useful for finding out how well the study treatment works.",
+    "Words_like": "questionnaire, assessment, survey",
+    "Words_related_to": "data, endpoint",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "Pharmacokinetic Study (PK study)",
+    "Definition": "A study that measures what happens to a drug in a person?s body over time.",
+    "Use_in_context": "A pharmacokinetic study usually enrolls healthy volunteers.",
+    "More_Info": "A pharmacokinetic  study means that a participant will have their blood and other body fluids taken a few times over a few  hours to see how the study treatment was processed by their body. The measurement includes how the drug is taken up, moves through, is broken down, and exits the body",
+    "Words_like": "pharmacodynamic studies",
+    "Words_related_to": "none yet",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "phase",
+    "Definition": "A step in the overall clinical research process to test a new drug, device, or treatment",
+    "Use_in_context": "Research is done in phases to make sure the study treatment is safe and works before it is approved.",
+    "More_Info": "Phases of research studies build on each other and each have a separate goal. Phase 1 studies are usually the first to enroll humans and test for safety. Phase 2 studies test if the drug, device or treatment works. Phase 3 studies compare the study treatment to the usual, standard treatment.  Phase 4 studies continue to collect data after a study treatment is approved. These are sometimes called post-marketing studies.",
+    "Words_like": "none yet",
+    "Words_related_to": "clinical research, clinical trial, pre-clinical study",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "https://www.fda.gov/patients/drug-development-process/step-3-clinical-research"
+  },
+  {
+    "Term": "preclinical study",
+    "Definition": "A study to test a treatment in the lab or in animals before testing it in people.",
+    "Use_in_context": "A preclinical study is done to make sure the study treatment is safe enough to give to people.",
+    "More_Info": "If a  study treatment has gone through preclinical studies, it means there was laboratory or animal testing before it was found to be safe enough to give to humans in a clinical trial.",
+    "Words_like": "none yet",
+    "Words_related_to": "none yet",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "protocol",
+    "Definition": "A complete description of the research plan and procedures.",
+    "Use_in_context": "The protocol is like a recipe to make sure the research study is done in the same way by all of the study staff members.",
+    "More_Info": "A protocol is shared amongst study team members, approved by an insitutional review board (IRB), and ensures the study procedures are conducted consistently.  Participants do not usually see the complete protocol but parts of it will be talked about during the informed consent conversation and at study visits.",
+    "Words_like": "study protocol, research protocol",
+    "Words_related_to": "consent form, informed consent",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "questionnaire",
+    "Definition": "A list of questions for study participants to answer as part of the study.",
+    "Use_in_context": "A questionnaire is one way researchers can collect data.",
+    "More_Info": "A questionnaire could be used to find out if a person is eligible to take part in the study, or to measure if the intervention is working. A questionnaire could  be online  or on paper.",
+    "Words_like": "survey, assessment",
+    "Words_related_to": "data",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "https://www.youtube.com/watch?v=0LklWXCOawE"
+  },
+  {
+    "Term": "randomization",
+    "Definition": "A way to use chance to place study participants into different study treatment groups.",
+    "Use_in_context": "A randomized study uses a computer program to decide which group a  participant is put into.",
+    "More_Info": "Randomization helps make sure the study groups are similar so they can be compared against each other at the end of the study. This is a way to avoid bias.Every participant has a chance to be put into one of the study groups. No one can choose which group a participant is placed in, because it is done by a computer program.",
+    "Words_like": "random assignment, randomize, randomly assigned",
+    "Words_related_to": "blinded, study arm, bias",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "https://www.youtube.com/watch?v=MmpF1zxfQZ8&t=6s.   https://www.cancer.gov/about-cancer/treatment/clinical-trials/what-are-trials/randomization"
+  },
+  {
+    "Term": "side effect",
+    "Definition": "A health problem that is likely caused by an approved treatment.",
+    "Use_in_context": "A side effect is usually unwanted and not the main effect of the treatment.",
+    "More_Info": "For example, a side effect of taking aspirin is excess bleeding.",
+    "Words_like": "health effect",
+    "Words_related_to": "adverse reaction",
+    "Words_opposite_to": "none",
+    "Other_Resources": "none"
+  },
+  {
+    "Term": "single-blind study",
+    "Definition": "A study that is set up so that participants do not know which study treatment they are getting.",
+    "Use_in_context": "A  participant in a single-blind study will not know which study group they are in, but the study doctor will.",
+    "More_Info": "Some studies are done this way because knowing which treatment each participant is getting can affect the results of the study, through a concept called bias. Bias can occur when participants know which study group they are in.Participants can ask to find out which study treatment they received after the study ends.",
+    "Words_like": "masked/masking",
+    "Words_related_to": "Bias, double-blind study, randomization",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "standard of care",
+    "Definition": "Treatment usually given to patients for an illness.",
+    "Use_in_context": "Some research studies compare the study treatment to the standard of care for a given condition.",
+    "More_Info": "Depending on the health issue, there could be many types of standard of care that are used by health care providers. For example, there are different medications used to treat high blood pressure.",
+    "Words_like": "standard therapy, standard treatment, usual care",
+    "Words_related_to": "none yet",
+    "Words_opposite_to": "investigational product",
+    "Other_Resources": "None yet"
+  },
+  {
+    "Term": "study design",
+    "Definition": "The way a study is set up to answer the study question.",
+    "Use_in_context": "It is very important for researchers to use a study design that will answer the study questions.",
+    "More_Info": "The study design determines how participants will be recruited and enrolled, whether participants will be randomized, what kinds of data will be collected, and how it will be analyzed. There are many different types of study design.",
+    "Words_like": "design",
+    "Words_related_to": "single-blind study, double-blind study, randomization, observational study, clinical trial",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "study participant",
+    "Definition": "A person who joins a research study.",
+    "Use_in_context": "A study participant volunteers to join research.",
+    "More_Info": "If you are a study participant in a research study, your data will help answer the research question.",
+    "Words_like": "participant, subject, research participant, research subject, study subject",
+    "Words_related_to": "healthy volunteer, data, clinical trial, observational study",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none yet"
+  },
+  {
+    "Term": "study population",
+    "Definition": "All the participants in a study.",
+    "Use_in_context": "A  participant  is a member of the study population.",
+    "More_Info": "NA",
+    "Words_like": "participant population",
+    "Words_related_to": "participant",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "None yet"
+  },
+  {
+    "Term": "superiority trial",
+    "Definition": "A study to test if a study treatment works better than another treatment.",
+    "Use_in_context": "One example of a superiority trial would be to test whether a new medicine is better for treating asthma than an existing one.",
+    "More_Info": "NA",
+    "Words_like": "superiority study,",
+    "Words_related_to": "confirmatory trial,  equivalence trial, control; non-inferiority trial,",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": "none"
+  },
+  {
+    "Term": "withdraw",
+    "Definition": "To stop being a participant in a study.",
+    "Use_in_context": "If a participant decides to  withdraw from a study, they should  discuss with the study team how to  do so safely.",
+    "More_Info": "A participant can decide to withdraw from a study. Or an investigator can decide it is in the participant's  best interest to be withdrawn from the study. Reasons for withdrawal should be discussed.",
+    "Words_like": "discontinue",
+    "Words_related_to": "none",
+    "Words_opposite_to": "none",
+    "Other_Resources": "none"
+  },
+  {
+    "Term": "X-ray",
+    "Definition": "Pictures of the inside of person?s body taken using radiation.",
+    "Use_in_context": "An x-ray views and diagnose lung and bone disease, fractures, dislocations and tumors.",
+    "More_Info": "An x-ray is a process using radiation to take pictures of the inside of a person's body.",
+    "Words_like": "imaging study",
+    "Words_related_to": "CT Scan, MRI",
+    "Words_opposite_to": "none yet",
+    "Other_Resources": ""
+  }
+]
