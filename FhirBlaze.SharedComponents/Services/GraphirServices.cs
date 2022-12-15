@@ -179,7 +179,10 @@ namespace FhirBlaze.SharedComponents.Services
             return response.Data.WhoAmI ;
         }
 
-
+        Task<IList<Observation>> IFhirService.GetPatientObservations(string patientId)
+        {
+            throw new NotImplementedException();
+        }
     }
 
 }

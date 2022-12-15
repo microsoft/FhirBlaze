@@ -1,0 +1,52 @@
+﻿@using Hl7.Fhir.Model;
+@using Task = System.Threading.Tasks.Task;
+
+<div class="input-group" style="border-radius: 5px; border: 2px solid gray; padding: 20px">
+    <div class="container">
+        @if (!string.IsNullOrWhiteSpace(Title))
+        {
+            <div class="row">
+                <div class="col">
+                    <h4>@Title</h4>
+                </div>
+            </div>
+        }
+
+        <div class="row">
+            <div class="col">
+                <b>Text:</b> @CodeableConcept?.Text
+            </div>
+        </div>
+        @if (CodeableConcept?.Coding?.Any() ?? false)
+        {
+            <div class="row">
+                @{
+                    var coding = CodeableConcept.Coding.FirstOrDefault(c => c.System.ToLower() == FIRST_PRIORITY_CODING_SYSTEM)
+                    ?? CodeableConcept.Coding.FirstOrDefault(c => c.System.ToLower() == SECOND_PRIORITY_CODING_SYSTEM)
+                    ?? CodeableConcept.Coding.FirstOrDefault();
+
+                    <div class="col">
+                        <i>System:</i> @coding?.System
+                    </div>
+                    <div class="col">
+                        <i>Code:</i> @coding?.Code
+                    </div>
+                    <div class="col">
+                        <i>Display:</i> @coding?.Display
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    private const string FIRST_PRIORITY_CODING_SYSTEM = "http://www.nlm.nih.gov/research/umls";
+    private const string SECOND_PRIORITY_CODING_SYSTEM = "http://snomed.info/sct";
+
+    [Parameter]
+    public string? Title { get; set; } = null;
+
+    [Parameter]
+    public CodeableConcept CodeableConcept { get; set; } = default!;
+}

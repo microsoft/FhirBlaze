@@ -3,6 +3,7 @@
 @using FhirBlaze.QuestionnaireModule.Pages
 @using FhirBlaze.SharedComponents
 @using Hl7.Fhir.Model
+@inject NavigationManager Navigation
 
     <nav class="navbar navbar-light bg-light">
         <ul class="navbar-nav mr-auto">
@@ -58,7 +59,8 @@
                             <td>
                                 <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
                                 <ChestistLauncher CurrentPatient=@patient/>
-                                <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name.FirstOrDefault()))" class="btn btn-primary">View</button>
+                                <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name.FirstOrDefault()))" class="btn btn-primary">Show Questionnaire</button>
+                                <button @onclick="@(e => GotoDetails(patient.Id))" class="btn btn-primary">Details</button>
                             </td>
                         </tr>
                     }
@@ -80,6 +82,11 @@
 @code {
     [CascadingParameter] public IModalService Modal { get; set; }
 
+
+    private async System.Threading.Tasks.Task GotoDetails(string patientId)
+    {
+        Navigation.NavigateTo($"patient/{patientId}");
+    }
 
     void ShowQuestionnaire(string patientId, HumanName patientName)
     {
