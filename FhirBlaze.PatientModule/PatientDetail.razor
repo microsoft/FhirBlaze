@@ -6,31 +6,36 @@
 @inject SmartLauncher Launcher
 @inject IFhirService fhirService
 <div class="container">
-	<h3>Patient Detail</h3>
-	<div class="card border-primary mb-3" style="max-width: 18rem;">        
+    <h3>Patient Detail</h3>
+    <div class="card border-primary mb-6">
         <h5 class="card-header">
             @CurrentPatient.Name?.FirstOrDefault() - (@CurrentPatient.Gender)
         </h5>
         <div class="card-body">
             <p class="card-text">
-                Address: @CurrentPatient.Address?.FirstOrDefault()
-                <br />
-                Phone: @CurrentPatient.Telecom?.FirstOrDefault()
-                <br />
-                Date of Birth: @CurrentPatient.BirthDate
-                <br />
-                Email: @CurrentPatient.Contact?.FirstOrDefault()
+                <dl class="row">
+                    <dt class="col-sm-3">Address:</dt>
+                    <dd class="col-sm-9"><AddressDisplay Address="@CurrentPatient.Address?.FirstOrDefault()" /></dd>
+
+                    <dt class="col-sm-3">Phone:</dt>
+                    <dd class="col-sm-9">@CurrentPatient.Telecom?.FirstOrDefault(t => t.System == ContactPoint.ContactPointSystem.Phone)?.Value</dd>
+
+                    <dt class="col-sm-3">Date of Birth:</dt>
+                    <dd class="col-sm-9">@CurrentPatient.BirthDate</dd>
+
+                    <dt class="col-sm-3 text-truncate">E-mail:</dt>
+                    <dd class="col-sm-9">@CurrentPatient.Telecom?.FirstOrDefault(e => e.System == ContactPoint.ContactPointSystem.Email)?.Value</dd>
+                </dl>
             </p>
             <button type="button" class="btn btn-primary">Active: @CurrentPatient.Active</button>
             <a class="btn btn-primary" target="_blank" href="@ChestistLaunchUrl">Chestist</a>
-            @*<button type="button" class="btn btn-primary" @onclick="LaunchClick">Chestist</button>*@
             <button type="button" class="btn btn-primary" @onclick="LaunchQuestionnaire">Take Survey</button>
-        </div>          
+        </div>
     </div>
     <div class="container">
-        <div>Observations:</div>
-        @foreach(var o in PatientObservations)
-        {            
+        <h3>Observations: @PatientObservations.Count</h3>
+        @foreach (var o in PatientObservations)
+        {
             <ObservationDisplay Observation="o" />
         }
     </div>
