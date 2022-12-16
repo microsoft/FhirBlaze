@@ -1,0 +1,19 @@
+﻿@using Address = Hl7.Fhir.Model.Address
+@if (Address is not null)
+{
+    <div>
+        @foreach(var line in Address?.Line)
+        {
+            @line
+            <br/>
+        }
+    </div>
+    <div>
+        @Address?.City, @Address?.State @Address?.PostalCode
+    </div>
+}
+
+@code {
+    [Parameter]
+    public Address Address { get; set; } = default!;
+}
