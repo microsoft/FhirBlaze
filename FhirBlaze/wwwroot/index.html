@@ -27,32 +27,7 @@
     </div>
     <script src="_content/Microsoft.Authentication.WebAssembly.Msal/AuthenticationService.js"></script>
     <script src="_framework/blazor.webassembly.js"></script>
-    <script src="_content/Blazored.Modal/blazored.modal.js"></script>
-    <script>
-        window.ShowMyPowerBI = {
-            showReport: function (reportContainer, accessToken, embedUrl, embedReportId) {
-
-                var models = window['powerbi-client'].models;
-
-                var config = {
-                    type: 'report',
-                    tokenType: models.TokenType.Embed,
-                    accessToken: accessToken,
-                    embedUrl: embedUrl,
-                    id: embedReportId,
-                    permissions: models.Permissions.All,
-                    settings: {
-                        filterPaneEnabled: true,
-                        navContentPaneEnabled: true
-                    }
-                };
-
-                // Embed the report and display it within the div container.
-                powerbi.embed(reportContainer, config);
-            }
-        };
-    </script>
-    <script src="js/powerbi.min.js"></script>
+    <script src="_content/Blazored.Modal/blazored.modal.js"></script>    
 
 </body>
 
