@@ -13,7 +13,7 @@ public partial class PatientSearch
     public bool Processing { get; set; }
 
     [Parameter]
-    public models.SimplePatient Patient { get; set; }
+    public Models.SimplePatient Patient { get; set; }
 
     protected async void searchPatient()
     {
