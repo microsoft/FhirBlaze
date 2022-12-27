@@ -1,9 +1,11 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
+using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bundle = Hl7.Fhir.Model.Bundle;
 
 namespace FhirBlaze.SharedComponents.Services
 {
@@ -97,6 +99,26 @@ namespace FhirBlaze.SharedComponents.Services
 
             return await _fhirClient.UpdateAsync(patient);
         }
+
+        public async Task<IList<Observation>> GetPatientObservations(string patientId)
+        {
+            if (string.IsNullOrEmpty(patientId))
+            {
+                throw new ArgumentNullException("patientId");
+            }
+            
+            var bundle = await _fhirClient.SearchAsync<Observation>(criteria: new[] { $"subject=Patient/{patientId}" });
+            var result = new List<Observation>();
+
+            while (bundle != null)
+            {
+                result.AddRange(bundle.Entry.Select(p => (Observation)p.Resource).ToList());
+                bundle = await _fhirClient.ContinueAsync(bundle);
+            }
+
+            return result;
+        }
+
         #endregion
 
         #region Questionnaire

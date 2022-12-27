@@ -14,6 +14,8 @@ namespace FhirBlaze.SharedComponents.Services
         Task<Patient> UpdatePatientAsync(string patientId, Patient patient);
         Task<int> GetPatientCountAsync();
         Task<IList<Patient>> SearchPatient(Patient patient);
+
+        Task<IList<Observation>> GetPatientObservations(string patientId);
         #endregion
 
         #region Questionnaire
@@ -38,6 +40,12 @@ namespace FhirBlaze.SharedComponents.Services
         Task<Practitioner> CreatePractitionersAsync(Practitioner practitioner);
 
         Task<Practitioner> UpdatePractitionerAsync(string practitionerId, Practitioner practitioner);
+        #endregion
+
+        #region Observation
+
+
+
         #endregion
     }
 }

@@ -1,0 +1,41 @@
+﻿@using Hl7.Fhir.Model;
+@using Task = System.Threading.Tasks.Task;
+
+<div class="input-group" style="border-radius: 5px; border: 2px solid gray; padding: 20px">
+    <div class="container">
+        @if (!string.IsNullOrWhiteSpace(Title))
+        {
+            <div class="row">
+                <div class="col">
+                    <h4>@Title</h4>
+                </div>
+            </div>
+        }
+
+        <div class="form-row">
+            <div class="col form-group">
+                <b>Display:</b> @ResourceReference?.Display
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col form-group">
+                <b>Reference:</b> @ResourceReference?.Reference
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col form-group">
+                <b>Type:</b> @ResourceReference?.Type
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string? Title { get; set; } = null;
+
+    [Parameter]
+    public ResourceReference ResourceReference { get; set; } = default!;
+}
