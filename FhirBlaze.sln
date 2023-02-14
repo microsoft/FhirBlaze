@@ -20,6 +20,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FhirBlaze.Api", "FhirBlaze.Api\FhirBlaze.Api.csproj", "{0AEFAE32-4A24-4B76-A88F-D03D854568B5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -50,6 +52,10 @@ Global
 		{C48D11F5-F4C3-495D-AD69-7C570E080AA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C48D11F5-F4C3-495D-AD69-7C570E080AA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C48D11F5-F4C3-495D-AD69-7C570E080AA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AEFAE32-4A24-4B76-A88F-D03D854568B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AEFAE32-4A24-4B76-A88F-D03D854568B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AEFAE32-4A24-4B76-A88F-D03D854568B5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AEFAE32-4A24-4B76-A88F-D03D854568B5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

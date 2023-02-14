@@ -20,6 +20,7 @@ namespace FhirBlaze.PatientModule
         protected bool ShowCreate { get; set; } = false;
         protected bool ShowUpdate { get; set; } = false;
         protected bool ShowSearch { get; set; } = false;
+        protected bool ShowNaturalLanguageSearch { get; set; } = false;
         protected bool Loading { get; set; } = true;
         
         protected bool ProcessingSearch { get; set; } = false;
@@ -120,6 +121,16 @@ namespace FhirBlaze.PatientModule
             ShowSearch = !ShowSearch;
             ResetSelectedPatient();
             if (ShowSearch)
+            {
+                DraftPatient = new SimplePatient();
+            }
+        }
+
+        public void ToggleNaturalLanguageSearch()
+        {
+            ShowNaturalLanguageSearch = !ShowNaturalLanguageSearch;
+            ResetSelectedPatient();
+            if (ShowNaturalLanguageSearch)
             {
                 DraftPatient = new SimplePatient();
             }

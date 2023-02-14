@@ -5,39 +5,44 @@
 @using Hl7.Fhir.Model
 @inject NavigationManager Navigation
 
-    <nav class="navbar navbar-light bg-light">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
-                <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch?"Cancel": "Search Patient")</button>
-                &nbsp;                       
-                Questionnaire: <button @onclick="()=>ToggleQList(null)" class="btn btn-primary">@((string.IsNullOrEmpty(QuestionnaireId))?"Select": "Change")</button>   
-            </li>
-        </ul>
-    </nav>
-        @if (ShowQuestionnaireList)
-        {
-            <QuestionnaireList OnSelectClick="ToggleQList" />
-        }
-       @if (ShowCreate)
-                {
-                   <PatientForm PersistPatient="CreatePatient" />
-                   <button class="btn btn-secondary" @onclick=@ToggleCreate>Cancel!</button>
-                }
+<nav class="navbar navbar-light bg-light">
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
+            <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch?"Cancel": "Search Patient")</button>
+            <button @onclick="ToggleNaturalLanguageSearch" class="btn btn-primary">@(ShowNaturalLanguageSearch?"Cancel":"Natural Language Search")</button>
+            &nbsp;
+            Questionnaire: <button @onclick="()=>ToggleQList(null)" class="btn btn-primary">@((string.IsNullOrEmpty(QuestionnaireId))?"Select": "Change")</button>
+        </li>
+    </ul>
+</nav>
+@if (ShowQuestionnaireList)
+{
+    <QuestionnaireList OnSelectClick="ToggleQList" />
+}
+@if (ShowCreate)
+{
+    <PatientForm PersistPatient="CreatePatient" />
+    <button class="btn btn-secondary" @onclick=@ToggleCreate>Cancel!</button>
+}
 
-                @if (ShowSearch)
-                {
-                     <PatientSearch Patient="DraftPatient" Processing="@ProcessingSearch" SearchPatient="SearchPatient" />
-                }
-                @if (ShowUpdate)
-                {   
-                    <PatientForm FhirPatient=@SelectedPatient PersistPatient="UpdatePatient" />
-                    <button class="btn btn-secondary" @onclick=@ToggleUpdate>Cancel!</button>
-                }
-    <div class="container">
-             
-        
-        <br/>
+@if (ShowSearch)
+{
+    <PatientSearch Patient="DraftPatient" Processing="@ProcessingSearch" SearchPatient="SearchPatient" />
+}
+@if (ShowNaturalLanguageSearch)
+{
+    <PatientNaturalLanguageSearch />
+}
+@if (ShowUpdate)
+{
+    <PatientForm FhirPatient=@SelectedPatient PersistPatient="UpdatePatient" />
+    <button class="btn btn-secondary" @onclick=@ToggleUpdate>Cancel!</button>
+}
+<div class="container">
+
+
+    <br />
     @if (!Loading)
     {
         <div class="container">
@@ -53,12 +58,12 @@
                 <tbody>
                     @foreach (var patient in Patients)
                     {
-                        <tr  >
+                        <tr>
                             <td>@patient.Name.FirstOrDefault()</td>
                             <td>@patient.BirthDate</td>
                             <td>
                                 <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
-                                <ChestistLauncher CurrentPatient=@patient/>
+                                <ChestistLauncher CurrentPatient=@patient />
                                 <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name.FirstOrDefault()))" class="btn btn-primary">Show Questionnaire</button>
                                 <button @onclick="@(e => GotoDetails(patient.Id))" class="btn btn-primary">Details</button>
                             </td>
@@ -71,12 +76,14 @@
 
         <br />
         <h3>Found: @Patients.Count patients!</h3>
-        
-    }else{
+
+    }
+    else
+    {
         <LoadingSpinner />
     }
-    
-    </div>
+
+</div>
 
 
 @code {
@@ -91,7 +98,7 @@
     void ShowQuestionnaire(string patientId, HumanName patientName)
     {
         var parameters = new ModalParameters();
-        var options = new ModalOptions 
+        var options = new ModalOptions
         {
             Class = "blazored-modal",
             ContentScrollable = true

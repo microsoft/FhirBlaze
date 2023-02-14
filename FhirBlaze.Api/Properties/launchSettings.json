@@ -1,0 +1,9 @@
+﻿{
+  "profiles": {
+    "FhirBlaze.Api": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7050",
+      "launchBrowser": false
+    }
+  }
+}
