@@ -2,11 +2,16 @@
 
 <h3>Patient Natural Language Search</h3>
 <button @onclick="(x => RequestFhirQuery())" class="btn btn-primary">Execute Query</button>
+<textarea value="@_nlp"></textarea>
+<textarea value="@_query"></textarea>
 
 @code {
+    private string _nlp = "female patients over 40 with diabetes in New York";
+    private string _query;
+
     private async Task RequestFhirQuery()
     {
-        await _openAIService.GetFhirQueryFromNaturalLanguage("");
+        _query = await _openAIService.GetFhirQueryFromNaturalLanguage(_nlp);
     }
 }
 

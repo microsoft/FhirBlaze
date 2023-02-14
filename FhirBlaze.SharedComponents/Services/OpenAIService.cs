@@ -1,8 +1,9 @@
-﻿using System;
+﻿using FhirBlaze.Models;
+using Newtonsoft.Json;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace FhirBlaze.SharedComponents.Services
 {
@@ -15,12 +16,16 @@ namespace FhirBlaze.SharedComponents.Services
             _httpClient = httpClient;
         }
 
-        public async Task GetFhirQueryFromNaturalLanguage(string prompt)
+        public async Task<string> GetFhirQueryFromNaturalLanguage(string prompt)
         {
             var response = await _httpClient.PostAsync("/api/GetFhirQuery", new StringContent(JsonConvert.SerializeObject(new
             {
-                prompt = prompt
+                prompt
             }), Encoding.Default, "application/json"));
+
+            var respModel = JsonConvert.DeserializeObject<CompletionResponse>(await response.Content.ReadAsStringAsync());
+
+            return respModel.Choices.FirstOrDefault()?.Text?.Trim();
         }
     }
 }
