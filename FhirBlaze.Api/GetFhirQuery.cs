@@ -1,15 +1,15 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using FhirBlaze.Api.Models;
+using FhirBlaze.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System;
+using System.IO;
 using System.Net.Http;
-using FhirBlaze.Api.Models;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace FhirBlaze.Api
 {
@@ -51,7 +51,7 @@ namespace FhirBlaze.Api
                     client.BaseAddress = new Uri($"https://{OPENAI_INSTANCE}");
                     client.DefaultRequestHeaders.Add("API-KEY", API_KEY);
 
-                    var response = await client.PostAsJsonAsync<CompletionRequest>("/openai/deployments/text-davinci-002/completions?api-version=2022-12-01", request);
+                    var response = await client.PostAsJsonAsync("/openai/deployments/text-davinci-002/completions?api-version=2022-12-01", request);
 
                     var result = JsonConvert.DeserializeObject<CompletionResponse>(await response.Content.ReadAsStringAsync());
 
