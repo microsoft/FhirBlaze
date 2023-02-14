@@ -1,6 +1,12 @@
-﻿<h3>Patient Natural Language Search</h3>
+﻿@inject OpenAIService _openAIService;
+
+<h3>Patient Natural Language Search</h3>
+<button @onclick="(x => RequestFhirQuery())" class="btn btn-primary">Execute Query</button>
 
 @code {
-
+    private async Task RequestFhirQuery()
+    {
+        await _openAIService.GetFhirQueryFromNaturalLanguage("");
+    }
 }
 

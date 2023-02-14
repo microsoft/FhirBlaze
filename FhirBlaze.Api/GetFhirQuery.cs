@@ -26,9 +26,6 @@ namespace FhirBlaze.Api
         {
             log.LogInformation("C# HTTP trigger function processed a request.");
 
-            log.LogInformation(API_KEY);
-            log.LogInformation(OPENAI_INSTANCE);
-
             string prompt = string.Empty;
 
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();

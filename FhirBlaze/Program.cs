@@ -73,6 +73,8 @@ namespace FhirBlaze
                 return launcher;
             });
 
+            builder.Services.AddScoped<OpenAIService>();
+
             
 
             await builder.Build().RunAsync();
