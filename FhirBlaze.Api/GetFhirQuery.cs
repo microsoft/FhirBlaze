@@ -35,7 +35,7 @@ public static class GetFhirQuery
         {
             Prompt = $"{PROMPT_PREFIX}{prompt}",
             Temperature = 1,
-            TopP = 0.5m,
+            TopP = 1,
             FrequencyPenalty = 0,
             PresencePenalty = 0,
             BestOf = 1,
