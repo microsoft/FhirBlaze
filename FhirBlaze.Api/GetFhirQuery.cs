@@ -54,8 +54,8 @@ public static class GetFhirQuery
         {
             case AiService.AzureOpenAi:
                 client.BaseAddress = new Uri($"https://{AZURE_OPENAI_INSTANCE}");
-                client.DefaultRequestHeaders.Add("API_KEY", AZURE_OPENAI_API_KEY);
-                response = await client.PostAsJsonAsync("/openai/deployments/text_davinci_002/completions?api_version=2022_12_01", request);
+                client.DefaultRequestHeaders.Add("API-KEY", AZURE_OPENAI_API_KEY);
+                response = await client.PostAsJsonAsync($"/openai/deployments/{fhirQueryRequest.Model}/completions?api-version=2022-12-01", request);
                 result = JsonConvert.DeserializeObject<CompletionResponse>(await response.Content.ReadAsStringAsync());
                 return new OkObjectResult(result);
             case AiService.OpenAi:

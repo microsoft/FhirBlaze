@@ -29,20 +29,45 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<List<TResource>> ExecuteFhirQueryAsync<TResource>(string queryStr) where TResource : Resource, new()
         {
+            // assuming query string for multiple resources at this juncture for simple mvp
+            Resource result;
+                
             try
             {
-                // assuming query string for multiple resources at this juncture for simple mvp
-                var result = await _fhirClient.GetAsync(queryStr);
-
-                var bundle = result as Bundle;
-
-                var resources = bundle.Entry.Select(e => (TResource)e.Resource).ToList();
-
-                return resources;
-            } catch(InvalidCastException exception)
+                result = await _fhirClient.GetAsync(queryStr);
+            } catch (Exception exception)
             {
-                throw exception;
+                Console.WriteLine(exception.Message);
+                throw new Exception("Poorly formed FHIR query. See inner exception", exception);
             }
+
+            Bundle bundle;
+            
+            // todo: test below, get new outputs to produce toast messages showing the errors
+            try
+            {
+                bundle = result as Bundle;
+            }
+            catch (InvalidCastException exception)
+            {
+                Console.WriteLine(exception.Message);
+                var newoutput1 = result as OperationOutcome;
+                throw new Exception("Poorly formed FHIR query. See inner exception", exception);
+            }
+
+            List<TResource> resources;
+
+            try
+            {
+                resources = bundle.Entry.Select(e => (TResource)e.Resource).ToList();
+            }
+            catch (InvalidCastException exception)
+            {
+                var newoutput2 = bundle.Entry.Select(e => (OperationOutcome)e.Resource).ToList();
+                throw new Exception("Poorly formed FHIR query. See inner exception", exception);
+            }
+
+            return resources;
         }
 
         #region Patient
@@ -58,7 +83,7 @@ namespace FhirBlaze.SharedComponents.Services
 
             return result;
         }
-       
+
         public async Task<int> GetPatientCountAsync()
         {
             var bundle = await _fhirClient.SearchAsync<Patient>(summary: SummaryType.Count);
@@ -67,10 +92,10 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<IList<Questionnaire>> SearchQuestionnaire(string title)
         {
-            Bundle bundle=new Bundle(); 
+            Bundle bundle = new Bundle();
             if (!string.IsNullOrEmpty(title))
             {
-                bundle = await _fhirClient.SearchAsync<Questionnaire>(criteria: new[] { $"title:contains={title}" });                  
+                bundle = await _fhirClient.SearchAsync<Questionnaire>(criteria: new[] { $"title:contains={title}" });
             }
             return bundle.Entry.Select(p => (Questionnaire)p.Resource).ToList();
 
@@ -98,7 +123,7 @@ namespace FhirBlaze.SharedComponents.Services
                     return bundle.Entry.Select(p => (Patient)p.Resource).ToList();
             }
 
-            return await GetPatientsAsync();           
+            return await GetPatientsAsync();
         }
 
         public async Task<Patient> CreatePatientsAsync(Patient patient)
@@ -122,7 +147,7 @@ namespace FhirBlaze.SharedComponents.Services
             {
                 throw new ArgumentNullException("patientId");
             }
-            
+
             var bundle = await _fhirClient.SearchAsync<Observation>(criteria: new[] { $"subject=Patient/{patientId}" });
             var result = new List<Observation>();
 
@@ -201,7 +226,7 @@ namespace FhirBlaze.SharedComponents.Services
         #endregion
 
         #region Practitioners
-        
+
         public async Task<IList<Practitioner>> GetPractitionersAsync()
         {
             var bundle = await _fhirClient.SearchAsync<Practitioner>(pageSize: 50);

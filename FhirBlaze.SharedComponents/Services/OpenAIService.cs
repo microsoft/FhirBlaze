@@ -1,33 +1,38 @@
 ﻿using FhirBlaze.Models;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FhirBlaze.SharedComponents.Services
+namespace FhirBlaze.SharedComponents.Services;
+
+public class OpenAIService
 {
-    public class OpenAIService
+    private HttpClient _httpClient;
+    private readonly string _model;
+    private readonly AiService _aiService;
+
+    public OpenAIService(IConfiguration configuration, HttpClient httpClient)
     {
-        private HttpClient _httpClient;
+        _httpClient = httpClient;
+        _aiService = bool.Parse(configuration.GetSection("OpenAi")["UseAzure"]) ? AiService.AzureOpenAi : AiService.OpenAi;
+        _model = configuration.GetSection("OpenAi")["Model"];
+    }
 
-        public OpenAIService(HttpClient httpClient)
+    public async Task<string> GetFhirQueryFromNaturalLanguage(string prompt)
+    {
+        var response = await _httpClient.PostAsync("/api/GetFhirQuery", new StringContent(JsonConvert.SerializeObject(new FhirQueryRequest
         {
-            _httpClient = httpClient;
-        }
+            Prompt = prompt,
+            Model = _model,
+            Service = _aiService
+        }), Encoding.Default, "application/json"));
 
-        public async Task<string> GetFhirQueryFromNaturalLanguage(string prompt, AiService service = AiService.AzureOpenAi)
-        {
-            var response = await _httpClient.PostAsync("/api/GetFhirQuery", new StringContent(JsonConvert.SerializeObject(new
-            {
-                prompt,
-                service
-            }), Encoding.Default, "application/json"));
+        var respModel = JsonConvert.DeserializeObject<CompletionResponse>(await response.Content.ReadAsStringAsync());
 
-            var respModel = JsonConvert.DeserializeObject<CompletionResponse>(await response.Content.ReadAsStringAsync());
-
-            return respModel.Choices.FirstOrDefault()?.Text?.Trim();
-        }
+        return respModel.Choices.FirstOrDefault()?.Text?.Trim();
     }
 }
 
