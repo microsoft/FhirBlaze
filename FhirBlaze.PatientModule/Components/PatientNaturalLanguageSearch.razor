@@ -8,11 +8,12 @@
         <h5 class="card-title">Patient Natural Language Search</h5>
         <div class="input-group">
             <button @onclick="(x => RequestFhirQuery())" class="input-group-text btn btn-primary">Request FHIR Query</button>
-            <textarea value="@_nlp" class="form-control"></textarea>
+            <textarea @bind="_nlp" class="form-control"></textarea>
         </div>
+        <hr />
         <div class="input-group">
             <button @onclick="(x => ExecuteFhirQuery())" class="btn btn-primary">Execute FHIR Query</button>
-            <textarea value="@_query" class="form-control"></textarea>
+            <textarea @bind="_query" class="form-control"></textarea>
         </div>
     </div>
 </div>
