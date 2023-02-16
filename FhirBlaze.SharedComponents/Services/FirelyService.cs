@@ -29,14 +29,20 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<List<TResource>> ExecuteFhirQueryAsync<TResource>(string queryStr) where TResource : Resource, new()
         {
-            // assuming query string for multiple resources at this juncture for simple mvp
-            var result = await _fhirClient.GetAsync(queryStr);
+            try
+            {
+                // assuming query string for multiple resources at this juncture for simple mvp
+                var result = await _fhirClient.GetAsync(queryStr);
 
-            var bundle = result as Bundle;
+                var bundle = result as Bundle;
 
-            var resources = bundle.Entry.Select(e => (TResource)e.Resource).ToList();
+                var resources = bundle.Entry.Select(e => (TResource)e.Resource).ToList();
 
-            return resources;
+                return resources;
+            } catch(InvalidCastException exception)
+            {
+                throw exception;
+            }
         }
 
         #region Patient
