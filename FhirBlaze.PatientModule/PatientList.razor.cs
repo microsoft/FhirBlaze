@@ -3,11 +3,12 @@ using FhirBlaze.SharedComponents.Services;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.Authorization;
 using Task = System.Threading.Tasks.Task;
 
 namespace FhirBlaze.PatientModule
@@ -34,7 +35,7 @@ namespace FhirBlaze.PatientModule
         public IList<Patient> Patients { get; set; } = new List<Patient>();
 
         protected override async Task OnInitializedAsync()
-        {            
+        {
             Loading = true;
             await base.OnInitializedAsync();
             Patients = await FhirService.GetPatientsAsync();
@@ -82,8 +83,6 @@ namespace FhirBlaze.PatientModule
 
         public async Task<Patient> UpdatePatient(Patient updatedPatient)
         {
-            
-            
             try
             {
                 updatedPatient = await FhirService.UpdatePatientAsync(updatedPatient.Id, updatedPatient);
@@ -103,6 +102,11 @@ namespace FhirBlaze.PatientModule
                 Console.WriteLine(e.Message);
             }
             return updatedPatient;
+        }
+
+        public async Task UpdatePatientListAsync(List<Patient> patients)
+        {
+            Patients = patients;
         }
 
         public void ToggleCreate()

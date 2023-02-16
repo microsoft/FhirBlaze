@@ -1,6 +1,5 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
-using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +19,24 @@ namespace FhirBlaze.SharedComponents.Services
             _fhirClient = client;
         }
 
-        public async Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Hl7.Fhir.Model.Resource, new()
+        public async Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Resource, new()
         {
             var result = await _fhirClient.SearchByIdAsync<TResource>(resourceId, pageSize: _defaultPageSize);
 
             TResource r = result.Entry.Select(e => (TResource)e.Resource).First();
-
             return r;
+        }
+
+        public async Task<List<TResource>> ExecuteFhirQueryAsync<TResource>(string queryStr) where TResource : Resource, new()
+        {
+            // assuming query string for multiple resources at this juncture for simple mvp
+            var result = await _fhirClient.GetAsync(queryStr);
+
+            var bundle = result as Bundle;
+
+            var resources = bundle.Entry.Select(e => (TResource)e.Resource).ToList();
+
+            return resources;
         }
 
         #region Patient
@@ -94,7 +104,7 @@ namespace FhirBlaze.SharedComponents.Services
         {
             if (patientId != patient.Id)
             {
-                throw new System.Exception("Unknown patient ID");
+                throw new Exception("Unknown patient ID");
             }
 
             return await _fhirClient.UpdateAsync(patient);

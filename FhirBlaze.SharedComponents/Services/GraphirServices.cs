@@ -3,9 +3,7 @@ using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FhirBlaze.SharedComponents.Services
@@ -17,10 +15,13 @@ namespace FhirBlaze.SharedComponents.Services
         public GraphirServices(HttpClient httpClient)
         {
             _httpClient = httpClient;
-            _fhirParser= new FhirJsonParser();
+            _fhirParser = new FhirJsonParser();
         }
 
-       
+        public Task<List<TResource>> ExecuteFhirQueryAsync<TResource>(string queryStr) where TResource : Resource, new()
+        {
+            throw new NotImplementedException();
+        }
 
         public Task<Patient> CreatePatientsAsync(Patient patient)
         {
@@ -56,17 +57,19 @@ namespace FhirBlaze.SharedComponents.Services
             };
             GraphQLResponse response = await request.PostAsync();
             var result = new List<Patient>();
-            foreach(var p in response.Data.PatientList)
+            foreach (var p in response.Data.PatientList)
             {
                 try
                 {
                     result.Add(_fhirParser.Parse<Patient>(p.RootElement.ToString()));
-                }catch (Exception e){
+                }
+                catch (Exception e)
+                {
 
                 }
-            } 
+            }
             return result;
-                
+
         }
 
         public Task<int> GetPractitionerCountAsync()
@@ -176,7 +179,7 @@ namespace FhirBlaze.SharedComponents.Services
 
             GraphQLResponse response = await request.PostAsync();
 
-            return response.Data.WhoAmI ;
+            return response.Data.WhoAmI;
         }
 
         Task<IList<Observation>> IFhirService.GetPatientObservations(string patientId)

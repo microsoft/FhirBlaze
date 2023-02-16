@@ -16,7 +16,7 @@ public static class GetFhirQuery
 {
     private static readonly string API_KEY = Environment.GetEnvironmentVariable("OPENAI-API-KEY");
     private static readonly string OPENAI_INSTANCE = Environment.GetEnvironmentVariable("OPENAI-INSTANCE");
-    private static readonly string PROMPT_PREFIX = "Generate a fhir query for ";
+    private static readonly string PROMPT_PREFIX = "Generate a FHIR r4 query for ";
 
     [FunctionName("GetFhirQuery")]
     public static async Task<IActionResult> Run(

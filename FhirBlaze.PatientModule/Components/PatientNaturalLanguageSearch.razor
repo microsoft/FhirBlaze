@@ -1,17 +1,46 @@
-﻿@inject OpenAIService _openAIService;
+﻿@using Hl7.Fhir.Model;
+@using Hl7.Fhir.Serialization;
+@inject OpenAIService _openAIService;
+@inject IFhirService _fhirService;
 
 <h3>Patient Natural Language Search</h3>
-<button @onclick="(x => RequestFhirQuery())" class="btn btn-primary">Execute Query</button>
+<button @onclick="(x => RequestFhirQuery())" class="btn btn-primary">Request FHIR Query</button>
 <textarea value="@_nlp"></textarea>
 <textarea value="@_query"></textarea>
+<button @onclick="(x => ExecuteFhirQuery())" class="btn btn-primary">Execute FHIR Query</button>
 
 @code {
-    private string _nlp = "female patients over 40 with diabetes in New York";
-    private string _query;
+    private string _nlp = "all females with a birthdate on or before 1983 who have been diagnosed with glaucoma";
+    private string _queryl; // = "Patient?gender=female&birthdate=lt1983&_has:Condition:subject:code=http://snomed.info/sct|258400003";
 
-    private async Task RequestFhirQuery()
+    [Parameter]
+    public EventCallback<List<Patient>> ExecuteFhirOnCLickCallback { get; set; }
+
+    private async System.Threading.Tasks.Task RequestFhirQuery()
     {
         _query = await _openAIService.GetFhirQueryFromNaturalLanguage(_nlp);
     }
-}
 
+    private async System.Threading.Tasks.Task ExecuteFhirQuery()
+    {
+        try
+        {
+            var patients = await _fhirService.ExecuteFhirQueryAsync<Patient>(_query);
+
+            var serializer = new FhirJsonSerializer();
+
+            var json = "[" + string.Join(',', patients.Select(p => serializer.SerializeToString(p)).ToArray()) + "]";
+
+            if (ExecuteFhirOnCLickCallback.HasDelegate)
+            {
+                await ExecuteFhirOnCLickCallback.InvokeAsync(patients);
+            }
+
+            Console.WriteLine("Patients: \n" + json);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Query failed: ", e.Message);
+        }
+    }
+}
