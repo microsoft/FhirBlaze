@@ -16,11 +16,12 @@ namespace FhirBlaze.SharedComponents.Services
             _httpClient = httpClient;
         }
 
-        public async Task<string> GetFhirQueryFromNaturalLanguage(string prompt)
+        public async Task<string> GetFhirQueryFromNaturalLanguage(string prompt, AiService service = AiService.AzureOpenAi)
         {
             var response = await _httpClient.PostAsync("/api/GetFhirQuery", new StringContent(JsonConvert.SerializeObject(new
             {
-                prompt
+                prompt,
+                service
             }), Encoding.Default, "application/json"));
 
             var respModel = JsonConvert.DeserializeObject<CompletionResponse>(await response.Content.ReadAsStringAsync());

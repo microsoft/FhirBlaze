@@ -36,6 +36,11 @@ namespace FhirBlaze.PatientModule
 
         protected override async Task OnInitializedAsync()
         {
+            await FetchPatientsAsync();
+        }
+
+        public async Task FetchPatientsAsync()
+        {
             Loading = true;
             await base.OnInitializedAsync();
             Patients = await FhirService.GetPatientsAsync();

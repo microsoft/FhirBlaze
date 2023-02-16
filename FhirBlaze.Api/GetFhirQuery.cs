@@ -24,13 +24,14 @@ public static class GetFhirQuery
     {
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
 
+        if (string.IsNullOrWhiteSpace(requestBody))
+            return new BadRequestObjectResult("Invalid Request");
+
         dynamic data = JsonConvert.DeserializeObject(requestBody);
 
         var prompt = data?.prompt ?? string.Empty;
+        var serviceStr = data?.service;
 
-        if (string.IsNullOrEmpty(prompt))
-            return new BadRequestObjectResult("Invalid Request");
-        
         var request = new CompletionRequest()
         {
             Prompt = $"{PROMPT_PREFIX}{prompt}",
