@@ -1,7 +1,10 @@
-﻿@using Hl7.Fhir.Model;
+﻿@using FhirBlaze.SharedComponents.Models;
+@using Hl7.Fhir.Model;
 @using Hl7.Fhir.Serialization;
+@using Task = System.Threading.Tasks.Task;
 @inject OpenAIService _openAIService;
 @inject IFhirService _fhirService;
+@inject NotificationService _notificationService;
 
 <div class="card">
     <div class="card-body">
@@ -15,6 +18,7 @@
             <button @onclick="(x => ExecuteFhirQuery())" class="btn btn-primary">Execute FHIR Query</button>
             <textarea @bind="_query" class="form-control"></textarea>
         </div>
+        @*<button class="card-link" @onclick="AddNotification">Add notification</button>*@
     </div>
 </div>
 
@@ -25,12 +29,23 @@
     [Parameter]
     public EventCallback<List<Patient>> ExecuteFhirOnCLickCallback { get; set; }
 
-    private async System.Threading.Tasks.Task RequestFhirQuery()
+    // todo remove
+    private async Task AddNotification()
+    {
+        _notificationService.AddNotification(
+        new Notification
+            {
+                Title = "Example notification",
+                Message = "This is would be your toast message body."
+            });
+    }
+
+    private async Task RequestFhirQuery()
     {
         _query = await _openAIService.GetFhirQueryFromNaturalLanguage(_nlp);
     }
 
-    private async System.Threading.Tasks.Task ExecuteFhirQuery()
+    private async Task ExecuteFhirQuery()
     {
         try
         {
@@ -41,8 +56,25 @@
         }
         catch (Exception e)
         {
-            // todo: add helpful toast message
-            Console.WriteLine("Query failed: ", e.Message);
+            _notificationService.AddNotification(new Notification
+                {
+                    Title = "Error trying to execute FHIR query",
+                    Message = BuildErrorMessage(e)
+                });
         }
+    }
+
+    private string BuildErrorMessage(Exception e, string message = "")
+    {
+        if (string.IsNullOrWhiteSpace(e?.Message))
+            return message;
+
+        if (string.IsNullOrWhiteSpace(message))
+            message += e?.Message + Environment.NewLine;
+
+        if (string.IsNullOrWhiteSpace(e?.InnerException?.Message))
+            return BuildErrorMessage(e.InnerException, message);
+
+        return message;
     }
 }

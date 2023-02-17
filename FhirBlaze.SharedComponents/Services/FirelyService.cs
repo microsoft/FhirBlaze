@@ -30,19 +30,10 @@ namespace FhirBlaze.SharedComponents.Services
         public async Task<List<TResource>> ExecuteFhirQueryAsync<TResource>(string queryStr) where TResource : Resource, new()
         {
             // assuming query string for multiple resources at this juncture for simple mvp
-            Resource result;
-                
-            try
-            {
-                result = await _fhirClient.GetAsync(queryStr);
-            } catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
-                throw new Exception("Poorly formed FHIR query. See inner exception", exception);
-            }
+            var result = await _fhirClient.GetAsync(queryStr);
 
             Bundle bundle;
-            
+
             // todo: test below, get new outputs to produce toast messages showing the errors
             try
             {
@@ -50,9 +41,8 @@ namespace FhirBlaze.SharedComponents.Services
             }
             catch (InvalidCastException exception)
             {
-                Console.WriteLine(exception.Message);
-                var newoutput1 = result as OperationOutcome;
-                throw new Exception("Poorly formed FHIR query. See inner exception", exception);
+                var outcome = result as OperationOutcome;
+                throw outcome.ToException();
             }
 
             List<TResource> resources;
@@ -63,8 +53,8 @@ namespace FhirBlaze.SharedComponents.Services
             }
             catch (InvalidCastException exception)
             {
-                var newoutput2 = bundle.Entry.Select(e => (OperationOutcome)e.Resource).ToList();
-                throw new Exception("Poorly formed FHIR query. See inner exception", exception);
+                var outcomes = bundle.Entry.Select(e => (OperationOutcome)e.Resource).ToList();
+                throw new AggregateException(outcomes.Select(o => o.ToException()));
             }
 
             return resources;

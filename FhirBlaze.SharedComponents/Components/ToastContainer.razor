@@ -1,0 +1,23 @@
+﻿@using FhirBlaze.SharedComponents.Services;
+@using FhirBlaze.SharedComponents.Models;
+@using FhirBlaze.SharedComponents.Components;
+@inject NotificationService _notificationService;
+
+<div>
+    @* this random div is used to make scoped css work... *@
+    <div class="toast-outer-container">
+        <div class="toast-inner-container">
+            @foreach (var notification in _notificationService.Notifications)
+            {
+                <Toast Notification="@notification"></Toast>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        _notificationService.OnChange += StateHasChanged;
+    }
+}

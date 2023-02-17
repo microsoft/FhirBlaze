@@ -65,6 +65,8 @@ namespace FhirBlaze
                 });
             }
 
+            builder.Services.AddSingleton(new NotificationService());
+
             builder.Services.AddBlazoredModal();
 
             builder.Services.AddScoped<SmartLauncher>(o => 
