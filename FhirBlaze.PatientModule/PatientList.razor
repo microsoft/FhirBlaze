@@ -3,19 +3,16 @@
 @using FhirBlaze.QuestionnaireModule.Pages
 @using FhirBlaze.SharedComponents
 @using Hl7.Fhir.Model
+@using Microsoft.Extensions.Configuration
 @inject NavigationManager Navigation
+@inject IConfiguration Configuration
 
-<nav class="navbar navbar-light bg-light">
-    <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-            <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
-            <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch?"Cancel": "Search Patient")</button>
-            <button @onclick="ToggleNaturalLanguageSearch" class="btn btn-primary">@(ShowNaturalLanguageSearch?"Cancel":"Natural Language Search")</button>
-            &nbsp;
-            Questionnaire: <button @onclick="()=>ToggleQList(null)" class="btn btn-primary">@((string.IsNullOrEmpty(QuestionnaireId))?"Select": "Change")</button>
-        </li>
-    </ul>
-</nav>
+<button @onclick="ToggleCreate" class="btn btn-primary mb-1 mr-1">@(ShowCreate ? "Cancel" : "Add Patient")</button>
+<button @onclick="ToggleSearch" class="btn btn-primary mb-1 mr-1">@(ShowSearch ? "Cancel" : "Search Patient")</button>
+<button @onclick="()=>ToggleQList(null)" class="btn btn-primary mb-1 mr-1">@((string.IsNullOrEmpty(QuestionnaireId)) ? "Select Questionnaire" : "Change Questionnaire")</button>
+<button @onclick="ToggleNaturalLanguageSearch" disabled="@(bool.Parse(Configuration["UseGraphir"]))" class="btn btn-primary mb-1 mr-1">Toggle Natural Language Search</button>
+<button @onclick="FetchPatientsAsync" class="btn btn-primary mb-1">Reset Search</button>
+
 @if (ShowQuestionnaireList)
 {
     <QuestionnaireList OnSelectClick="ToggleQList" />
@@ -32,7 +29,8 @@
 }
 @if (ShowNaturalLanguageSearch)
 {
-    <PatientNaturalLanguageSearch />
+
+    <PatientNaturalLanguageSearch ExecuteFhirOnCLickCallback="UpdatePatientListAsync" />
 }
 @if (ShowUpdate)
 {
@@ -99,10 +97,10 @@
     {
         var parameters = new ModalParameters();
         var options = new ModalOptions
-        {
-            Class = "blazored-modal",
-            ContentScrollable = true
-        };
+            {
+                Class = "blazored-modal",
+                ContentScrollable = true
+            };
         var formattedName = $"{patientName.Given.First()} {patientName.Family}";
         parameters.Add(nameof(RenderQuestionnaire.Id), QuestionnaireId);
         parameters.Add(nameof(RenderQuestionnaire.PatientId), patientId);

@@ -65,6 +65,8 @@ namespace FhirBlaze
                 });
             }
 
+            builder.Services.AddSingleton(new NotificationService());
+
             builder.Services.AddBlazoredModal();
 
             builder.Services.AddScoped<SmartLauncher>(o => 
@@ -72,6 +74,8 @@ namespace FhirBlaze
                 var launcher = new SmartLauncher(builder.Configuration["ChestistApp:LaunchUrl"], builder.Configuration["FhirConnection:FhirServerUri"]);
                 return launcher;
             });
+
+            builder.Services.AddScoped<OpenAIService>();
 
             
 

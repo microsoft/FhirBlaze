@@ -1,6 +1,55 @@
-﻿<h3>Patient Natural Language Search</h3>
+﻿@using FhirBlaze.SharedComponents.Models;
+@using FhirBlaze.SharedComponents;
+@using Hl7.Fhir.Model;
+@using Hl7.Fhir.Serialization;
+@using Task = System.Threading.Tasks.Task;
+@inject OpenAIService _openAIService;
+@inject IFhirService _fhirService;
+@inject NotificationService _notificationService;
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Patient Natural Language Search</h5>
+        <div class="input-group">
+            <button @onclick="(x => RequestFhirQuery())" class="input-group-text btn btn-primary">Request FHIR Query</button>
+            <textarea @bind="_nlp" class="form-control"></textarea>
+        </div>
+        <hr />
+        <div class="input-group">
+            <button @onclick="(x => ExecuteFhirQuery())" class="btn btn-primary">Execute FHIR Query</button>
+            <textarea @bind="_query" class="form-control"></textarea>
+        </div>
+    </div>
+</div>
 
 @code {
+    private string _nlp = "all females with a birthdate on or before 1983 who have been diagnosed with glaucoma";
+    private string _query;
 
+    [Parameter]
+    public EventCallback<List<Patient>> ExecuteFhirOnCLickCallback { get; set; }
+
+    private async Task RequestFhirQuery()
+    {
+        _query = await _openAIService.GetFhirQueryFromNaturalLanguage(_nlp);
+    }
+
+    private async Task ExecuteFhirQuery()
+    {
+        try
+        {
+            var patients = await _fhirService.ExecuteFhirQueryAsync<Patient>(_query);
+
+            if (ExecuteFhirOnCLickCallback.HasDelegate)
+                await ExecuteFhirOnCLickCallback.InvokeAsync(patients);
+        }
+        catch (Exception e)
+        {
+            _notificationService.AddNotification(new Notification
+                {
+                    Title = "FHIR query error",
+                    Message = e.RecurseErrorMessages()
+                });
+        }
+    }
 }
-

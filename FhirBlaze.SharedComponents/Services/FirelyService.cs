@@ -1,6 +1,5 @@
 ﻿using Hl7.Fhir.Model;
 using Hl7.Fhir.Rest;
-using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,13 +19,47 @@ namespace FhirBlaze.SharedComponents.Services
             _fhirClient = client;
         }
 
-        public async Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Hl7.Fhir.Model.Resource, new()
+        public async Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Resource, new()
         {
             var result = await _fhirClient.SearchByIdAsync<TResource>(resourceId, pageSize: _defaultPageSize);
 
             TResource r = result.Entry.Select(e => (TResource)e.Resource).First();
-
             return r;
+        }
+
+        public async Task<List<TResource>> ExecuteFhirQueryAsync<TResource>(string queryStr) where TResource : Resource, new()
+        {
+            // assuming query string for multiple resources at this juncture for simple mvp
+            var result = await _fhirClient.GetAsync(queryStr);
+
+            Bundle bundle;
+
+            // todo: test below, get new outputs to produce toast messages showing the errors
+            try
+            {
+                bundle = result as Bundle;
+            }
+            catch (InvalidCastException exception)
+            {
+                var outcome = result as OperationOutcome;
+
+                throw outcome.ToException();
+            }
+
+            List<TResource> resources;
+
+            try
+            {
+                resources = bundle.Entry.Select(e => (TResource)e.Resource).ToList();
+            }
+            catch (InvalidCastException exception)
+            {
+                var outcomes = bundle.Entry.Select(e => (OperationOutcome)e.Resource).ToList();
+
+                throw new AggregateException(outcomes.Select(o => o.ToException()));
+            }
+
+            return resources;
         }
 
         #region Patient
@@ -42,7 +75,7 @@ namespace FhirBlaze.SharedComponents.Services
 
             return result;
         }
-       
+
         public async Task<int> GetPatientCountAsync()
         {
             var bundle = await _fhirClient.SearchAsync<Patient>(summary: SummaryType.Count);
@@ -51,10 +84,10 @@ namespace FhirBlaze.SharedComponents.Services
 
         public async Task<IList<Questionnaire>> SearchQuestionnaire(string title)
         {
-            Bundle bundle=new Bundle(); 
+            Bundle bundle = new Bundle();
             if (!string.IsNullOrEmpty(title))
             {
-                bundle = await _fhirClient.SearchAsync<Questionnaire>(criteria: new[] { $"title:contains={title}" });                  
+                bundle = await _fhirClient.SearchAsync<Questionnaire>(criteria: new[] { $"title:contains={title}" });
             }
             return bundle.Entry.Select(p => (Questionnaire)p.Resource).ToList();
 
@@ -82,7 +115,7 @@ namespace FhirBlaze.SharedComponents.Services
                     return bundle.Entry.Select(p => (Patient)p.Resource).ToList();
             }
 
-            return await GetPatientsAsync();           
+            return await GetPatientsAsync();
         }
 
         public async Task<Patient> CreatePatientsAsync(Patient patient)
@@ -94,7 +127,7 @@ namespace FhirBlaze.SharedComponents.Services
         {
             if (patientId != patient.Id)
             {
-                throw new System.Exception("Unknown patient ID");
+                throw new Exception("Unknown patient ID");
             }
 
             return await _fhirClient.UpdateAsync(patient);
@@ -106,7 +139,7 @@ namespace FhirBlaze.SharedComponents.Services
             {
                 throw new ArgumentNullException("patientId");
             }
-            
+
             var bundle = await _fhirClient.SearchAsync<Observation>(criteria: new[] { $"subject=Patient/{patientId}" });
             var result = new List<Observation>();
 
@@ -185,7 +218,7 @@ namespace FhirBlaze.SharedComponents.Services
         #endregion
 
         #region Practitioners
-        
+
         public async Task<IList<Practitioner>> GetPractitionersAsync()
         {
             var bundle = await _fhirClient.SearchAsync<Practitioner>(pageSize: 50);

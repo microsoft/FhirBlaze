@@ -5,6 +5,8 @@ namespace FhirBlaze.Api.Models
 {
 	public class CompletionRequest
 	{
+		[JsonProperty(PropertyName = "model")]
+		public string Model { get; set; }
         [JsonProperty(PropertyName = "prompt")]
         public string Prompt { get; set; }
         [JsonProperty(PropertyName = "temperature")]
@@ -17,6 +19,8 @@ namespace FhirBlaze.Api.Models
 		public decimal PresencePenalty { get; set; }
         [JsonProperty(PropertyName = "best_of")]
 		public int BestOf { get; set; }
+		[JsonProperty(PropertyName = "n")]
+		public int N { get; set; }
         [JsonProperty(PropertyName = "max_tokens")]
 		public int MaxTokens { get; set; }
         [JsonProperty(PropertyName = "stop")]
