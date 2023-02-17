@@ -35,8 +35,8 @@ public static class GetFhirQuery
         {
             Model = fhirQueryRequest.Model,
             Prompt = $"{PROMPT_PREFIX}{fhirQueryRequest.Prompt}",
-            Temperature = 1,
-            TopP = 1,
+            Temperature = fhirQueryRequest.Temperature,
+            TopP = fhirQueryRequest.TopP,
             FrequencyPenalty = 0,
             PresencePenalty = 0,
             BestOf = 1,
@@ -44,7 +44,7 @@ public static class GetFhirQuery
             MaxTokens = 100,
             Stop = null
         };
-
+        
         using var client = new HttpClient();
 
         HttpResponseMessage response;
