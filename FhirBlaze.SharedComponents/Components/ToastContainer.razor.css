@@ -1,37 +1,10 @@
 ﻿/* ::deep required on everything to make scoped css work */
-
-::deep .toast-outer-container {
-    /* position */
+::deep .toast-container {
     position: fixed;
     bottom: 0px;
     right: 20px;
-    /* size */
-    /* min-height: fit-content;
-    min-width: fit-content;*/
-
-    max-height: fit-content;
-    max-width: 500px;
-
-    height: 500px;
-    width: 500px;
-
-    /*background-color: navy;*/
-}
-
-::deep .toast-inner-container {
-    /* position */
-    position: absolute;
-    top: 0;
-    right: 0;
-    /* size */
-    /*  min-height: fit-content;
-    min-width: fit-content;*/
-
-    max-height: fit-content;
-    max-width: 500px;
-
-    height: 500px;
-    width: 500px;
-
-    /*background-color: pink;*/
+    display: flex;
+    flex-direction: column;
+    min-height: 0vh;
+    margin-top: 3.5rem;
 }

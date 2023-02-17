@@ -20,18 +20,14 @@ public class NotificationService
 
     public void AddNotification(Notification notitication)
     {
-        Console.WriteLine("Pushing notification");
         Notifications.Add(notitication);
-        Console.WriteLine($"Now at {Notifications.Count} notifications");
 
         NotifyStateChanged();
     }
 
     public void RemoveNotification(Notification notitication)
     {
-        Console.WriteLine("Popping notification");
         Notifications.Remove(notitication);
-        Console.WriteLine($"Now at {Notifications.Count} notifications");
 
         NotifyStateChanged();
     }

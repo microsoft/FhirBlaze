@@ -42,6 +42,7 @@ namespace FhirBlaze.SharedComponents.Services
             catch (InvalidCastException exception)
             {
                 var outcome = result as OperationOutcome;
+
                 throw outcome.ToException();
             }
 
@@ -54,6 +55,7 @@ namespace FhirBlaze.SharedComponents.Services
             catch (InvalidCastException exception)
             {
                 var outcomes = bundle.Entry.Select(e => (OperationOutcome)e.Resource).ToList();
+
                 throw new AggregateException(outcomes.Select(o => o.ToException()));
             }
 

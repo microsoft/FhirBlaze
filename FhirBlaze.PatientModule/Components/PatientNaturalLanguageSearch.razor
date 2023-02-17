@@ -1,4 +1,5 @@
 ﻿@using FhirBlaze.SharedComponents.Models;
+@using FhirBlaze.SharedComponents;
 @using Hl7.Fhir.Model;
 @using Hl7.Fhir.Serialization;
 @using Task = System.Threading.Tasks.Task;
@@ -18,27 +19,15 @@
             <button @onclick="(x => ExecuteFhirQuery())" class="btn btn-primary">Execute FHIR Query</button>
             <textarea @bind="_query" class="form-control"></textarea>
         </div>
-        @*<button class="card-link" @onclick="AddNotification">Add notification</button>*@
     </div>
 </div>
 
 @code {
     private string _nlp = "all females with a birthdate on or before 1983 who have been diagnosed with glaucoma";
-    private string _query; // = "Patient?gender=female&birthdate=lt1983&_has:Condition:subject:code=http://snomed.info/sct|258400003";
+    private string _query;
 
     [Parameter]
     public EventCallback<List<Patient>> ExecuteFhirOnCLickCallback { get; set; }
-
-    // todo remove
-    private async Task AddNotification()
-    {
-        _notificationService.AddNotification(
-        new Notification
-            {
-                Title = "Example notification",
-                Message = "This is would be your toast message body."
-            });
-    }
 
     private async Task RequestFhirQuery()
     {
@@ -58,23 +47,9 @@
         {
             _notificationService.AddNotification(new Notification
                 {
-                    Title = "Error trying to execute FHIR query",
-                    Message = BuildErrorMessage(e)
+                    Title = "FHIR query error",
+                    Message = e.RecurseErrorMessages()
                 });
         }
-    }
-
-    private string BuildErrorMessage(Exception e, string message = "")
-    {
-        if (string.IsNullOrWhiteSpace(e?.Message))
-            return message;
-
-        if (string.IsNullOrWhiteSpace(message))
-            message += e?.Message + Environment.NewLine;
-
-        if (string.IsNullOrWhiteSpace(e?.InnerException?.Message))
-            return BuildErrorMessage(e.InnerException, message);
-
-        return message;
     }
 }
