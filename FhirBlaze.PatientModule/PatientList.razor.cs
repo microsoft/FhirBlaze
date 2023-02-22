@@ -1,4 +1,4 @@
-﻿using FhirBlaze.PatientModule.models;
+﻿using FhirBlaze.PatientModule.Models;
 using FhirBlaze.SharedComponents.Services;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Authorization;
