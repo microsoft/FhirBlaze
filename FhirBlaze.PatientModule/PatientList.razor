@@ -29,8 +29,7 @@
 }
 @if (ShowNaturalLanguageSearch)
 {
-
-    <PatientNaturalLanguageSearch ExecuteFhirOnCLickCallback="UpdatePatientListAsync" />
+    <PatientNaturalLanguageSearch IsLoading="(isLoading) => Loading = isLoading" ExecuteFhirOnCLickCallback="UpdatePatientListAsync" />
 }
 @if (ShowUpdate)
 {
@@ -54,27 +53,37 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var patient in Patients)
+                    @if (Patients != null)
+                    {
+                        @foreach (var patient in Patients)
+                        {
+                            <tr>
+                                <td>@patient.Name.FirstOrDefault()</td>
+                                <td>@patient.BirthDate</td>
+                                <td>
+                                    <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
+                                    <ChestistLauncher CurrentPatient=@patient />
+                                    <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name.FirstOrDefault()))" class="btn btn-primary">Show Questionnaire</button>
+                                    <button @onclick="@(e => GotoDetails(patient.Id))" class="btn btn-primary">Details</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
                     {
                         <tr>
-                            <td>@patient.Name.FirstOrDefault()</td>
-                            <td>@patient.BirthDate</td>
-                            <td>
-                                <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
-                                <ChestistLauncher CurrentPatient=@patient />
-                                <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name.FirstOrDefault()))" class="btn btn-primary">Show Questionnaire</button>
-                                <button @onclick="@(e => GotoDetails(patient.Id))" class="btn btn-primary">Details</button>
-                            </td>
+                            <td colspan="3" class="text-center text-danger">Error finding patients...</td>
                         </tr>
                     }
                 </tbody>
             </table>
 
         </div>
-
-        <br />
-        <h3>Found: @Patients.Count patients!</h3>
-
+        @if (Patients != null)
+        {
+            <br />
+            <h3>Found: @Patients.Count patients!</h3>
+        }
     }
     else
     {

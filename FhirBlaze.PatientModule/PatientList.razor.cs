@@ -111,6 +111,8 @@ namespace FhirBlaze.PatientModule
 
         public async Task UpdatePatientListAsync(List<Patient> patients)
         {
+            // todo: handle null
+
             Patients = patients;
         }
 

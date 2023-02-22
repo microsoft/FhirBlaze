@@ -29,6 +29,9 @@
     [Parameter]
     public EventCallback<List<Patient>> ExecuteFhirOnCLickCallback { get; set; }
 
+    [Parameter]
+    public EventCallback<bool> IsLoading { get; set; }
+
     private async Task RequestFhirQuery()
     {
         _query = await _openAIService.GetFhirQueryFromNaturalLanguage(_nlp);
@@ -38,6 +41,9 @@
     {
         try
         {
+            if (IsLoading.HasDelegate)
+                await IsLoading.InvokeAsync(true);
+
             var patients = await _fhirService.ExecuteFhirQueryAsync<Patient>(_query);
 
             if (ExecuteFhirOnCLickCallback.HasDelegate)
@@ -50,6 +56,15 @@
                     Title = "FHIR query error",
                     Message = e.RecurseErrorMessages()
                 });
+
+            // use null to indicate error
+            if (ExecuteFhirOnCLickCallback.HasDelegate)
+                await ExecuteFhirOnCLickCallback.InvokeAsync(null);
+        }
+        finally
+        {
+            if (IsLoading.HasDelegate)
+                await IsLoading.InvokeAsync(false);
         }
     }
 }
