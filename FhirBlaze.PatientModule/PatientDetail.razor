@@ -6,75 +6,88 @@
 @inject SmartLauncher Launcher
 @inject IFhirService fhirService
 <div class="container">
-    <h3>Patient Detail</h3>
-    <div class="card border-primary mb-6">
-        <h5 class="card-header">
-            @CurrentPatient.Name?.FirstOrDefault() - (@CurrentPatient.Gender)
-        </h5>
-        <div class="card-body">
-            <p class="card-text">
-                <dl class="row">
-                    <dt class="col-sm-3">Address:</dt>
-                    <dd class="col-sm-9"><AddressDisplay Address="@CurrentPatient.Address?.FirstOrDefault()" /></dd>
+  <h3>Patient Detail</h3>
+  <div class="card border-primary mb-6">
+    <h5 class="card-header">
+      @CurrentPatient.Name?.FirstOrDefault() - (@CurrentPatient.Gender)
+    </h5>
+    <div class="card-body">
+      <p class="card-text">
+      <dl class="row">
+        <dt class="col-sm-3">Address:</dt>
+        <dd class="col-sm-9">
+          <AddressDisplay Address="@CurrentPatient.Address?.FirstOrDefault()" />
+        </dd>
 
-                    <dt class="col-sm-3">Phone:</dt>
-                    <dd class="col-sm-9">@CurrentPatient.Telecom?.FirstOrDefault(t => t.System == ContactPoint.ContactPointSystem.Phone)?.Value</dd>
+        <dt class="col-sm-3">Phone:</dt>
+        <dd class="col-sm-9">@CurrentPatient.Telecom?.FirstOrDefault(t => t.System ==
+          ContactPoint.ContactPointSystem.Phone)?.Value</dd>
 
-                    <dt class="col-sm-3">Date of Birth:</dt>
-                    <dd class="col-sm-9">@CurrentPatient.BirthDate</dd>
+        <dt class="col-sm-3">Date of Birth:</dt>
+        <dd class="col-sm-9">@CurrentPatient.BirthDate</dd>
 
-                    <dt class="col-sm-3 text-truncate">E-mail:</dt>
-                    <dd class="col-sm-9">@CurrentPatient.Telecom?.FirstOrDefault(e => e.System == ContactPoint.ContactPointSystem.Email)?.Value</dd>
-                </dl>
-            </p>
-            <button type="button" class="btn btn-primary">Active: @CurrentPatient.Active</button>
-            <a class="btn btn-primary" target="_blank" href="@ChestistLaunchUrl">Chestist</a>
-            <button type="button" class="btn btn-primary" @onclick="LaunchQuestionnaire">Take Survey</button>
-        </div>
+        <dt class="col-sm-3 text-truncate">E-mail:</dt>
+        <dd class="col-sm-9">@CurrentPatient.Telecom?.FirstOrDefault(e => e.System ==
+          ContactPoint.ContactPointSystem.Email)?.Value</dd>
+      </dl>
+      </p>
+      <button type="button" class="btn btn-primary">Active: @CurrentPatient.Active</button>
+      <a class="btn btn-primary" target="_blank" href="@ChestistLaunchUrl">Chestist</a>
+      <button type="button" class="btn btn-primary" @onclick="LaunchQuestionnaire">Take Survey</button>
     </div>
-    <div class="mb-6">
-        <h3>Observations: @PatientObservations.Count</h3>
-        @foreach (var o in PatientObservations)
-        {
-            <ObservationDisplay Observation="o" />
-        }
-    </div>
+  </div>
+  <div class="mb-6">
+    <h3>Observations: @PatientObservations.Count</h3>
+    @foreach (var o in PatientObservations)
+    {
+      <ObservationDisplay Observation="o" />
+    }
+  </div>
+  <div class="mb-6">
+    <h3>Medication Statements: @PatientMedicationStatements.Count</h3>
+    @foreach (var s in PatientMedicationStatements)
+    {
+      <MedicationStatementDisplay MedicationStatement="s" />
+    }
+  </div>
 </div>
 
 
 @code {
 
-    [Parameter]
-    public string Id { get; set; }
+  [Parameter]
+  public string Id { get; set; }
 
-    public string ChestistLaunchUrl { get; set; }
-    public IList<Observation> PatientObservations { get; set; } = new List<Observation>();
-    public Patient CurrentPatient { get; set; } = new Patient();
+  public string ChestistLaunchUrl { get; set; }
+  public IList<Observation> PatientObservations { get; set; } = new List<Observation>();
+  public IList<MedicationStatement> PatientMedicationStatements { get; set; } = new List<MedicationStatement>();
+  public Patient CurrentPatient { get; set; } = new Patient();
 
-    protected override async System.Threading.Tasks.Task OnInitializedAsync()
+  protected override async System.Threading.Tasks.Task OnInitializedAsync()
+  {
+    CurrentPatient = await fhirService.GetResourceByIdAsync<Patient>(Id);
+    var ctx = new
     {
-        CurrentPatient = await fhirService.GetResourceByIdAsync<Patient>(Id);
-        var ctx = new
-        {
-            patient = CurrentPatient.Id
-        };
-        ChestistLaunchUrl = Launcher.GetLaunchUrl(JsonConvert.SerializeObject(ctx));
+      patient = CurrentPatient.Id
+    };
+    ChestistLaunchUrl = Launcher.GetLaunchUrl(JsonConvert.SerializeObject(ctx));
 
-        PatientObservations = await fhirService.GetPatientObservations(ctx.patient);
-    }
+    PatientObservations = await fhirService.GetPatientObservations(ctx.patient);
+    PatientMedicationStatements = await fhirService.GetPatientMedicationStatements(ctx.patient);
+  }
 
-    public void LaunchClick()
+  public void LaunchClick()
+  {
+    var ctx = new
     {
-        var ctx = new
-        {
-            patient = CurrentPatient.Id
-        };
-        var href = Launcher.GetLaunchUrl(JsonConvert.SerializeObject(ctx));
-        UriHelper.NavigateTo(href);
-    }
+      patient = CurrentPatient.Id
+    };
+    var href = Launcher.GetLaunchUrl(JsonConvert.SerializeObject(ctx));
+    UriHelper.NavigateTo(href);
+  }
 
-    public void LaunchQuestionnaire()
-    {
+  public void LaunchQuestionnaire()
+  {
 
-    }
+  }
 }
