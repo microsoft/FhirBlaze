@@ -10,6 +10,7 @@
 <div class="card">
     <div class="card-body">
         <h5 class="card-title">Patient Natural Language Search</h5>
+       
         <div class="input-group">
             <button @onclick="(x => RequestFhirQuery())" class="input-group-text btn btn-primary">Request FHIR Query</button>
             <textarea @bind="_nlp" class="form-control"></textarea>
@@ -20,11 +21,18 @@
             <textarea @bind="_query" class="form-control"></textarea>
         </div>
     </div>
+    <div class="card-body h-75 w-75">
+        <div class="input-group custom-switch">
+            <input type="checkbox" class="custom-control-input" id="useAzureOai" @bind="_useAzureOpenAi">
+            <label class="custom-control-label" for="useAzureOai">Use Azure Open AI</label>
+        </div>
+    </div>
 </div>
 
 @code {
     private string _nlp = "female patients with a birthdate less than or equal to 1983";
     private string _query;
+    private bool _useAzureOpenAi = true;
 
     [Parameter]
     public EventCallback<List<Patient>> ExecuteFhirOnCLickCallback { get; set; }
@@ -34,7 +42,7 @@
 
     private async Task RequestFhirQuery()
     {
-        _query = await _openAIService.GetFhirQueryFromNaturalLanguage(_nlp);
+        _query = await _openAIService.GetFhirQueryFromNaturalLanguage(_nlp, _useAzureOpenAi);
     }
 
     private async Task ExecuteFhirQuery()

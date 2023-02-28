@@ -12,6 +12,7 @@ public class OpenAIService
 {
     private HttpClient _httpClient;
     private readonly string _model;
+    // use the below AiService enum instance instead of the parameter if you want this to be controlled by configuration and not a toggle
     private readonly AiService _aiService;
 
     public OpenAIService(IConfiguration configuration, HttpClient httpClient)
@@ -21,13 +22,13 @@ public class OpenAIService
         _model = configuration.GetSection("OpenAi")["Model"];
     }
 
-    public async Task<string> GetFhirQueryFromNaturalLanguage(string prompt)
+    public async Task<string> GetFhirQueryFromNaturalLanguage(string prompt, bool useAzureOpenAi = true)
     {
         var response = await _httpClient.PostAsync("/api/GetFhirQuery", new StringContent(JsonConvert.SerializeObject(new FhirQueryRequest
         {
             Prompt = prompt,
             Model = _model,
-            Service = _aiService
+            Service = useAzureOpenAi ? AiService.AzureOpenAi : AiService.OpenAi
         }), Encoding.Default, "application/json"));
 
         var respModel = JsonConvert.DeserializeObject<CompletionResponse>(await response.Content.ReadAsStringAsync());
