@@ -12,7 +12,7 @@ public class NotificationService
 
     public NotificationService()
     {
-        _timer = new Timer(RemoveExpiredNotifications, null, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(3));
+        _timer = new Timer(RemoveExpiredNotifications, null, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(1));
     }
 
     private readonly Timer _timer;
