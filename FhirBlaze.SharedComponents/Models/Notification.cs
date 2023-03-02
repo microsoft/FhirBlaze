@@ -22,5 +22,4 @@ public class Notification
         }
     }
     public DateTime CreatedAt { get; set; } = DateTime.Now;
-
 }
