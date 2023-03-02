@@ -9,241 +9,256 @@
 @*@inject NotificationService _notificationService;*@
 
 <div class="card">
-    <div class="card-header">
-        <h3 class=".card-title">
-            <button class="btn btn-link btn-block text-left collapsed " type="button" @onclick="() => Collapsed = !Collapsed">
-                Observation
-            </button>
+  <div class="card-header">
+    <h3 class=".card-title">
+      <button class="btn btn-link btn-block text-left collapsed " type="button" @onclick="() => Collapsed = !Collapsed">
+        Observation
+      </button>
 
-        </h3>
-        <h4 class="card-subtitle mb-2 text-muted">@Observation?.Identifier?.FirstOrDefault()?.Value</h4>
-    </div>
-    <div class="collapse @ButtonClass()">
-        <div class="card-body">
-            @if (Observation?.Identifier?.Any() ?? false)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        @{
-                            var identifier = @Observation?.Identifier?.FirstOrDefault();
-                            <b>Identifier</b>
-                            <p>@identifier?.System</p>
-                            <p>@identifier?.Value</p>
-                        }
-                    </div>
-                </div>
+    </h3>
+    <h4 class="card-subtitle mb-2 text-muted">@Observation?.Identifier?.FirstOrDefault()?.Value</h4>
+  </div>
+  <div class="collapse @ButtonClass()">
+    <div class="card-body">
+      @if (Observation?.Identifier?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @{
+              var identifier = @Observation?.Identifier?.FirstOrDefault();
+              <b>Identifier</b>
+              <p>@identifier?.System</p>
+              <p>@identifier?.Value</p>
             }
-
-            @if (!string.IsNullOrWhiteSpace(@Observation?.Status?.ToString()))
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <b>Status:</b> @Observation?.Status?.ToString()
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Code != null)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <CodeableConceptDisplay CodeableConcept="Observation.Code" Title="Code"></CodeableConceptDisplay>
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Subject != null)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <ResourceReferenceDisplay ResourceReference="@Observation!.Subject" Title="Subject"></ResourceReferenceDisplay>
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Effective?.Any() ?? false)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <EffectiveDisplay Effective="@Observation!.Effective"></EffectiveDisplay>
-                    </div>
-                </div>
-            }
-
-            @if (!string.IsNullOrWhiteSpace(@Observation?.Issued?.ToString()))
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <b>Issued:</b> @Observation?.Issued?.ToString()
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Performer?.Any() ?? false)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        @foreach (var performer in Observation.Performer)
-                        {
-                            <ResourceReferenceDisplay ResourceReference="@performer" Title="Performer"></ResourceReferenceDisplay>
-                        }
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Value?.Any() ?? false)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <b>Value:</b> @string.Join(' ',  Observation?.Value?.Select(e => $"[{e.Key}: {e.Value}]")?.ToArray() ?? new string[]{})
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Interpretation?.Any() ?? false)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        @foreach (var interpretation in Observation.Interpretation)
-                        {
-                            <CodeableConceptDisplay CodeableConcept="interpretation" Title="Interpretation"></CodeableConceptDisplay>
-                        }
-                    </div>
-                </div>
-            }
-
-            @*
-            todo: add reference ranges
-            - low
-            - high
-            *@
-
-            @if (Observation?.BodySite != null)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <CodeableConceptDisplay CodeableConcept="Observation.BodySite" Title="Body Site"></CodeableConceptDisplay>
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.DataAbsentReason != null)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <CodeableConceptDisplay CodeableConcept="Observation.DataAbsentReason" Title="Code"></CodeableConceptDisplay>
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Method != null)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <CodeableConceptDisplay CodeableConcept="Observation.Method" Title="Code"></CodeableConceptDisplay>
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Category?.Any() ?? false)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        @foreach (var category in Observation.Category)
-                        {
-                            <CodeableConceptDisplay CodeableConcept="category" Title="Category"></CodeableConceptDisplay>
-                        }
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Encounter != null)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <ResourceReferenceDisplay ResourceReference="@Observation!.Encounter" Title="Encounter"></ResourceReferenceDisplay>
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Device != null)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <ResourceReferenceDisplay ResourceReference="@Observation!.Device" Title="Device"></ResourceReferenceDisplay>
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Specimen != null)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <ResourceReferenceDisplay ResourceReference="@Observation!.Specimen" Title="Specimen"></ResourceReferenceDisplay>
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.BasedOn?.Any() ?? false)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        <h4>Based On</h4>
-                        @foreach (var basedOn in Observation.BasedOn)
-                        {
-                            <ResourceReferenceDisplay ResourceReference="@basedOn" Title="Based On"></ResourceReferenceDisplay>
-                        }
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.DerivedFrom?.Any() ?? false)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        @foreach (var derivedFrom in Observation.DerivedFrom)
-                        {
-                            <ResourceReferenceDisplay ResourceReference="@derivedFrom" Title="Derived From"></ResourceReferenceDisplay>
-                        }
-                    </div>
-                </div>
-            }
-
-            @if (Observation?.Focus?.Any() ?? false)
-            {
-                <div class="row mt-2 mb-2">
-                    <div class="col">
-                        @foreach (var focus in Observation.Focus)
-                        {
-                            <ResourceReferenceDisplay ResourceReference="@focus" Title="Focus"></ResourceReferenceDisplay>
-                        }
-                    </div>
-                </div>
-            }
-
-            @*<button type="button" class="btn btn-primary" @onclick="@(e => HandleValidSubmit())">Submit</button>*@
         </div>
+      </div>
+      }
+
+      @if (!string.IsNullOrWhiteSpace(@Observation?.Status?.ToString()))
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <b>Status:</b> @Observation?.Status?.ToString()
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Code != null)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <CodeableConceptDisplay CodeableConcept="Observation.Code" Title="Code"></CodeableConceptDisplay>
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Subject != null)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <ResourceReferenceDisplay ResourceReference="@Observation!.Subject" Title="Subject">
+            </ResourceReferenceDisplay>
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Effective?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <EffectiveDisplay Effective="@Observation!.Effective"></EffectiveDisplay>
+          </div>
+        </div>
+      }
+
+      @if (!string.IsNullOrWhiteSpace(@Observation?.Issued?.ToString()))
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <b>Issued:</b> @Observation?.Issued?.ToString()
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Performer?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @foreach (var performer in Observation.Performer)
+            {
+              <ResourceReferenceDisplay ResourceReference="@performer" Title="Performer"></ResourceReferenceDisplay>
+            }
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Value?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <b>Value:</b> @string.Join(' ', Observation?.Value?.Select(e => $"[{e.Key}: {e.Value}]")?.ToArray() ?? new
+          string[]{})
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Interpretation?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @foreach (var interpretation in Observation.Interpretation)
+            {
+              <CodeableConceptDisplay CodeableConcept="interpretation" Title="Interpretation"></CodeableConceptDisplay>
+            }
+          </div>
+        </div>
+      }
+
+      @*
+      todo: add reference ranges
+      - low
+      - high
+      *@
+
+      @if (Observation?.BodySite != null)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <CodeableConceptDisplay CodeableConcept="Observation.BodySite" Title="Body Site"></CodeableConceptDisplay>
+          </div>
+        </div>
+      }
+
+      @if (Observation?.DataAbsentReason != null)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <CodeableConceptDisplay CodeableConcept="Observation.DataAbsentReason" Title="Code"></CodeableConceptDisplay>
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Method != null)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <CodeableConceptDisplay CodeableConcept="Observation.Method" Title="Code"></CodeableConceptDisplay>
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Category?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @foreach (var category in Observation.Category)
+            {
+              <CodeableConceptDisplay CodeableConcept="category" Title="Category"></CodeableConceptDisplay>
+            }
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Encounter != null)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <ResourceReferenceDisplay ResourceReference="@Observation!.Encounter" Title="Encounter">
+            </ResourceReferenceDisplay>
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Device != null)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <ResourceReferenceDisplay ResourceReference="@Observation!.Device" Title="Device"></ResourceReferenceDisplay>
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Specimen != null)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <ResourceReferenceDisplay ResourceReference="@Observation!.Specimen" Title="Specimen">
+            </ResourceReferenceDisplay>
+          </div>
+        </div>
+      }
+
+      @if (Observation?.BasedOn?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @foreach (var basedOn in Observation.BasedOn)
+            {
+              <ResourceReferenceDisplay ResourceReference="@basedOn" Title="Based On"></ResourceReferenceDisplay>
+            }
+          </div>
+        </div>
+      }
+
+      @if (Observation?.DerivedFrom?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @foreach (var derivedFrom in Observation.DerivedFrom)
+            {
+              <ResourceReferenceDisplay ResourceReference="@derivedFrom" Title="Derived From"></ResourceReferenceDisplay>
+            }
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Focus?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @foreach (var focus in Observation.Focus)
+            {
+              <ResourceReferenceDisplay ResourceReference="@focus" Title="Focus"></ResourceReferenceDisplay>
+            }
+          </div>
+        </div>
+      }
+
+      @if (Observation?.Note?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @foreach (var note in Observation.Note)
+            {
+              <AnnotationDisplay Note="@note" Title="Notes"></AnnotationDisplay>
+            }
+          </div>
+        </div>
+      }
+
+      @*<button type="button" class="btn btn-primary" @onclick="@(e => HandleValidSubmit())">Submit</button>*@
     </div>
+  </div>
 </div>
 
 @code {
-    private string ButtonClass() => Collapsed ? "show" : "";
+  private string ButtonClass() => Collapsed ? "show" : "";
 
-    [Parameter]
-    public bool Collapsed { get; set; } = false;
+  [Parameter]
+  public bool Collapsed { get; set; } = false;
 
-    [Parameter]
-    public Observation Observation { get; set; } = new Observation();
+  [Parameter]
+  public Observation Observation { get; set; } = new Observation();
 
-    //private async Task HandleValidSubmit()
-    //{
-    //    var returnedObservation = await _apiService.SubmitObservationAsync(Observation);
+  //private async Task HandleValidSubmit()
+  //{
+  // var returnedObservation = await _apiService.SubmitObservationAsync(Observation);
 
-    //    _notificationService.AddNotification(new Notification
-    //    {
-    //        Title = "Observation Created",
-    //        Message = $"Observation {returnedObservation.Id} created successfully",
-    //        CreatedAt = DateTime.Now
-    //    });
-    //}
+  // _notificationService.AddNotification(new Notification
+  // {
+  // Title = "Observation Created",
+  // Message = $"Observation {returnedObservation.Id} created successfully",
+  // CreatedAt = DateTime.Now
+  // });
+  //}
 }

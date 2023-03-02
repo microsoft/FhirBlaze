@@ -143,10 +143,21 @@
       {
         <div class="row mt-2 mb-2">
           <div class="col">
-            <h4>Based On</h4>
             @foreach (var basedOn in MedicationStatement.BasedOn)
             {
               <ResourceReferenceDisplay ResourceReference="@basedOn" Title="Based On"></ResourceReferenceDisplay>
+            }
+          </div>
+        </div>
+      }
+
+      @if (MedicationStatement?.Note?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @foreach (var note in MedicationStatement.Note)
+            {
+              <AnnotationDisplay Note="@note" Title="Notes"></AnnotationDisplay>
             }
           </div>
         </div>
