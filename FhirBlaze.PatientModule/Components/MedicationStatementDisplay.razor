@@ -34,7 +34,7 @@
       </div>
       }
 
-      @if (!string.IsNullOrWhiteSpace(@MedicationStatement?.Status?.ToString()))
+      @if (!string.IsNullOrWhiteSpace(MedicationStatement?.Status?.ToString()))
       {
         <div class="row mt-2 mb-2">
           <div class="col">
@@ -53,31 +53,72 @@
         </div>
       }
 
-      @* @if (MedicationStatement?.Medication?.Any() ?? false)
+      @if (MedicationStatement?.Medication?.Any() ?? false)
       {
-      <div class="row mt-2 mb-2">
-      <div class="col">
-      @{
-      var medication = (CodeableConcept)@MedicationStatement!.Medication;
-      <CodeableConceptDisplay CodeableConcept="@medication" Title="Medication">
-      </CodeableConceptDisplay>
-      }
-      </div>
-      </div>
-      }
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @{
+              var refType = MedicationStatement.Medication.GetType();
+              switch (refType.Name)
+              {
+                case "CodeableConcept":
+                  var MedicationCode = (CodeableConcept)MedicationStatement!.Medication;
+                  <CodeableConceptDisplay CodeableConcept="@MedicationCode" Title="Medication">
+                  </CodeableConceptDisplay>
+                  break;
+                default:
+                  var MedicationReference = (ResourceReference)MedicationStatement!.Medication;
+                  <ResourceReferenceDisplay ResourceReference="@MedicationReference" Title="Medication">
+                  </ResourceReferenceDisplay>
+                  @if (MedicationStatement?.Contained?.Any() ?? false)
+                  {
+                    <div class="mt-2 mb-2 input-group" style="border-radius: 5px; border: 2px solid gray; padding: 20px">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col">
+                            <h4>Contained</h4>
+                          </div>
+                        </div>
 
-      @if (MedicationStatement?.Medication != null)
-      {
-      <div class="row mt-2 mb-2">
-      <div class="col">
-      @{
-      var medication = (ResourceReference)@MedicationStatement!.Medication;
-      <ResourceReferenceDisplay ResourceReference="@medication" Title="Medication">
-      </ResourceReferenceDisplay>
+                        @foreach (var containedMed in MedicationStatement.Contained)
+                        {
+                          var Medication = (Medication)containedMed;
+
+                          <div class="row">
+                            <div class="col">
+                              <b>Text:</b> @Medication?.Text
+                            </div>
+                          </div>
+
+                          @if (Medication?.Code?.Any() ?? false)
+                          {
+                            <div class="form-row">
+                              <div class="col form-group">
+                                <CodeableConceptDisplay CodeableConcept="@Medication!.Code" Title="Code">
+                                </CodeableConceptDisplay>
+                              </div>
+                            </div>
+                          }
+
+                          @if (Medication?.Form?.Any() ?? false)
+                          {
+                            <div class="form-row">
+                              <div class="col form-group">
+                                <CodeableConceptDisplay CodeableConcept="@Medication!.Form" Title="Form">
+                                </CodeableConceptDisplay>
+                              </div>
+                            </div>
+                          }
+                        }
+                      </div>
+                    </div>
+                  }
+                  break;
+              }
+            }
+          </div>
+        </div>
       }
-      </div>
-      </div>
-      } *@
 
       @if (MedicationStatement?.Subject != null)
       {
