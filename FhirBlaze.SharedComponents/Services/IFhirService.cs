@@ -6,7 +6,8 @@ namespace FhirBlaze.SharedComponents.Services
 {
   public interface IFhirService
   {
-    Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Hl7.Fhir.Model.Resource, new();
+    Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Resource, new();
+    Task<List<TResource>> ExecuteFhirQueryAsync<TResource>(string queryStr) where TResource : Resource, new();
 
     #region Patient
     Task<Patient> CreatePatientsAsync(Patient patient);
@@ -44,8 +45,6 @@ namespace FhirBlaze.SharedComponents.Services
     #endregion
 
     #region Observation
-
-
 
     #endregion
   }

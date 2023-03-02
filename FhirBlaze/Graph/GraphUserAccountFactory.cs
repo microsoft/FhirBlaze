@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 
 namespace FhirBlaze.Graph
@@ -85,13 +86,20 @@ namespace FhirBlaze.Graph
 
             // Get user's photo
             // GET /me/photos/48x48/$value
-            var photo = await serviceClient.Me
-                .Photos["48x48"]  // Smallest standard size
-                .Content
-                .Request()
-                .GetAsync();
+            try
+            {
+                var photo = await serviceClient.Me
+                    .Photos["48x48"]  // Smallest standard size
+                    .Content
+                    .Request()
+                    .GetAsync();
 
-            claimsPrincipal.AddUserGraphPhoto(photo);
+                claimsPrincipal.AddUserGraphPhoto(photo);
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Failed to retrieve user image.");
+            }
         }
     }
 }

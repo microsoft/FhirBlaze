@@ -12,7 +12,7 @@ public class NotificationService
 
     public NotificationService()
     {
-        _timer = new Timer(RemoveExpiredNotifications, null, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(3));
+        _timer = new Timer(RemoveExpiredNotifications, null, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(1));
     }
 
     private readonly Timer _timer;
@@ -20,18 +20,14 @@ public class NotificationService
 
     public void AddNotification(Notification notitication)
     {
-        Console.WriteLine("Pushing notification");
         Notifications.Add(notitication);
-        Console.WriteLine($"Now at {Notifications.Count} notifications");
 
         NotifyStateChanged();
     }
 
     public void RemoveNotification(Notification notitication)
     {
-        Console.WriteLine("Popping notification");
         Notifications.Remove(notitication);
-        Console.WriteLine($"Now at {Notifications.Count} notifications");
 
         NotifyStateChanged();
     }

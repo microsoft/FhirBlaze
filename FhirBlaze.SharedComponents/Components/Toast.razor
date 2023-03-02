@@ -1,0 +1,39 @@
+﻿@using FhirBlaze.SharedComponents.Models;
+@using FhirBlaze.SharedComponents.Services;
+@inject NotificationService _notificationService;
+
+<div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" style="min-width: 300px; min-height: fit-content;">
+    <div class="toast-header d-flex">
+        <div class="p-2">
+            <strong class="me-auto mr-1">@Notification.Title</strong>
+        </div>
+        <div class="p-2">
+            <small class="text-muted">@Notification.TimeSinceStr</small>
+        </div>
+        <div class="ml-auto p-2">
+            <button type="button" class="btn btn-outline-secondary btn-sm py-0" style="font-size: 0.8em;" aria-label="Close" @onclick="DeleteNotification"><span class="oi oi-x"></span></button>
+        </div>
+    </div>
+    <div class="toast-body">
+        @Notification.Message
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public Notification Notification { get; set; } = default!;
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+
+    [Parameter]
+    public DateTime CreatedAt { get; set; } = DateTime.Now;
+
+    [Parameter]
+    public string Message { get; set; } = string.Empty;
+
+    private void DeleteNotification()
+    {
+        _notificationService.RemoveNotification(Notification);    
+    }
+}

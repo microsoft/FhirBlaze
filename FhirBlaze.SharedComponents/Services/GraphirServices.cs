@@ -3,9 +3,7 @@ using Hl7.Fhir.Model;
 using Hl7.Fhir.Serialization;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace FhirBlaze.SharedComponents.Services
@@ -20,7 +18,10 @@ namespace FhirBlaze.SharedComponents.Services
       _fhirParser = new FhirJsonParser();
     }
 
-
+    public Task<List<TResource>> ExecuteFhirQueryAsync<TResource>(string queryStr) where TResource : Resource, new()
+    {
+      throw new NotImplementedException();
+    }
 
     public Task<Patient> CreatePatientsAsync(Patient patient)
     {

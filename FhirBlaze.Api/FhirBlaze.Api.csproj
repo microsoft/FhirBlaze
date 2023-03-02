@@ -21,4 +21,7 @@
   <ItemGroup>
     <Folder Include="Models\" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FhirBlaze.Models\FhirBlaze.Models.csproj" />
+  </ItemGroup>
 </Project>

@@ -1,4 +1,4 @@
-﻿<EditForm Model="Patient" OnValidSubmit="updatePatient" class="form-horizontal">
+﻿<EditForm Model="Patient" OnValidSubmit="UpdatePatient" class="form-horizontal">
     <DataAnnotationsValidator/>
     <ValidationSummary />
     <div class="row mb-3">
@@ -43,20 +43,20 @@
 @code
 {
     [Parameter]
-    public EventCallback<models.SimplePatient> UpdatePatient { get; set; }
+    public EventCallback<Models.SimplePatient> UpdatePatientCallback { get; set; }
 
     [Parameter]
     public bool Processing { get; set; }
 
     [Parameter]
-    public models.SimplePatient Patient { get; set; }
+    public Models.SimplePatient Patient { get; set; }
 
-    protected async void updatePatient()
+    protected async void UpdatePatient()
     {
         try
         {
             Console.WriteLine(Patient.PatientID);
-            await UpdatePatient.InvokeAsync( Patient);
+            await UpdatePatientCallback.InvokeAsync(Patient);
         }
         catch (Exception)
         {
