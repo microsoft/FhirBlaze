@@ -7,12 +7,12 @@ namespace FhirBlaze.SharedComponents.Services;
 
 public class NotificationService
 {
-    // todo: move to configuration along with period to update notification window and due time potentially
-    private readonly int MINUTES_TO_LIVE = 15;
+    private readonly int _minutesToLive = 15;
 
-    public NotificationService()
+    public NotificationService(int minutesToLive = 15, TimeSpan? updateStateInterval = null)
     {
-        _timer = new Timer(RemoveExpiredNotifications, null, TimeSpan.FromSeconds(1), TimeSpan.FromMinutes(1));
+        _minutesToLive = minutesToLive;
+        _timer = new Timer(RemoveExpiredNotifications, null, TimeSpan.FromSeconds(1), updateStateInterval ?? TimeSpan.FromMinutes(1));
     }
 
     private readonly Timer _timer;
@@ -38,14 +38,14 @@ public class NotificationService
         {
             var difference = DateTime.Now - Notifications[i].CreatedAt;
 
-            if (difference >= TimeSpan.FromMinutes(MINUTES_TO_LIVE))
+            if (difference >= TimeSpan.FromMinutes(_minutesToLive))
                 Notifications.RemoveAt(i);
         }
 
         NotifyStateChanged();
     }
 
-    public event Action OnChange;
+    public event Action? OnChange;
 
     private void NotifyStateChanged() => OnChange?.Invoke();
 }
