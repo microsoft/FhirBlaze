@@ -18,7 +18,6 @@ Host your own with one of these popular offerings:
 * [Firely Server](https://fire.ly/products/firely-server/)
 
 OR, use one of these [publicly available test servers](https://wiki.hl7.org/index.php?title=Publicly_Available_FHIR_Servers_for_testing).
-```
 
 ### Web Host
 There are many options for hosting a Blazor WebAssembly application. This repo contains a Github Action workflow to automatically deploy the site to Azure Static Web Apps. 
