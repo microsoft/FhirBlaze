@@ -1,13 +1,14 @@
-﻿using FhirBlaze.PatientModule.models;
+﻿using FhirBlaze.PatientModule.Models;
 using FhirBlaze.SharedComponents.Services;
 using Hl7.Fhir.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.Graph;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Components.Authorization;
 using Task = System.Threading.Tasks.Task;
 
 namespace FhirBlaze.PatientModule
@@ -20,6 +21,7 @@ namespace FhirBlaze.PatientModule
         protected bool ShowCreate { get; set; } = false;
         protected bool ShowUpdate { get; set; } = false;
         protected bool ShowSearch { get; set; } = false;
+        protected bool ShowNaturalLanguageSearch { get; set; } = false;
         protected bool Loading { get; set; } = true;
         
         protected bool ProcessingSearch { get; set; } = false;
@@ -33,7 +35,12 @@ namespace FhirBlaze.PatientModule
         public IList<Patient> Patients { get; set; } = new List<Patient>();
 
         protected override async Task OnInitializedAsync()
-        {            
+        {
+            await FetchPatientsAsync();
+        }
+
+        public async Task FetchPatientsAsync()
+        {
             Loading = true;
             await base.OnInitializedAsync();
             Patients = await FhirService.GetPatientsAsync();
@@ -81,8 +88,6 @@ namespace FhirBlaze.PatientModule
 
         public async Task<Patient> UpdatePatient(Patient updatedPatient)
         {
-            
-            
             try
             {
                 updatedPatient = await FhirService.UpdatePatientAsync(updatedPatient.Id, updatedPatient);
@@ -104,6 +109,13 @@ namespace FhirBlaze.PatientModule
             return updatedPatient;
         }
 
+        public async Task UpdatePatientListAsync(List<Patient> patients)
+        {
+            // todo: handle null
+
+            Patients = patients;
+        }
+
         public void ToggleCreate()
         {
             ShowCreate = !ShowCreate;
@@ -120,6 +132,16 @@ namespace FhirBlaze.PatientModule
             ShowSearch = !ShowSearch;
             ResetSelectedPatient();
             if (ShowSearch)
+            {
+                DraftPatient = new SimplePatient();
+            }
+        }
+
+        public void ToggleNaturalLanguageSearch()
+        {
+            ShowNaturalLanguageSearch = !ShowNaturalLanguageSearch;
+            ResetSelectedPatient();
+            if (ShowNaturalLanguageSearch)
             {
                 DraftPatient = new SimplePatient();
             }

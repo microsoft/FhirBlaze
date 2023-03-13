@@ -18,16 +18,6 @@ Host your own with one of these popular offerings:
 * [Firely Server](https://fire.ly/products/firely-server/)
 
 OR, use one of these [publicly available test servers](https://wiki.hl7.org/index.php?title=Publicly_Available_FHIR_Servers_for_testing).
-
-### ValueSet Data
-Provided are sample data for [medication](./resources/valueset-medication-codes.json), [medication form](./resources/valueset-medication-form-codes.json), and [observation](./resources/valueset-observation-codes.json) ValueSet codes to be used when creating Medication and Observation records. These data must be inserted into your FHIR Server:
-
-```sh
-# Example: Using 'curl' command to insert into a locally-running FHIR server:
-
-curl -H 'Content-Type: application/json' -d @resources/valueset-medication-codes.json -X PUT 'http://localhost:8080/fhir/ValueSet/medication-codes'
-curl -H 'Content-Type: application/json' -d @resources/valueset-medication-form-codes.json -X PUT 'http://localhost:8080/fhir/ValueSet/medication-form-codes'
-curl -H 'Content-Type: application/json' -d @resources/valueset-observation-codes.json -X PUT 'http://localhost:8080/fhir/ValueSet/observation-codes'
 ```
 
 ### Web Host
@@ -55,6 +45,9 @@ provided by the bot. You will only need to do this once across all repos using o
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
 contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+## Community Discord
+If you are interested in projects like this or connecting with the health and life sciences developer community, please join our Discord server at https://aka.ms/HLS-Discord. We're a technology agnostic community seeking to share and collaborate on all things related to developing healthcare solutions. For in-depth questions specific to this project, please use the "Discussions" tab on GitHub. We welcome your thoughts and feedback.
 
 ## Trademarks
 

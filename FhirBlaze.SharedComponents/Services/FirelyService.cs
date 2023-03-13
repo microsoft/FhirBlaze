@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Bundle = Hl7.Fhir.Model.Bundle;
 
 namespace FhirBlaze.SharedComponents.Services
 {
@@ -16,6 +17,49 @@ namespace FhirBlaze.SharedComponents.Services
     public FirelyService(FhirClient client)
     {
       _fhirClient = client;
+    }
+
+    public async Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Resource, new()
+    {
+      var result = await _fhirClient.SearchByIdAsync<TResource>(resourceId, pageSize: _defaultPageSize);
+
+      TResource r = result.Entry.Select(e => (TResource)e.Resource).First();
+      return r;
+    }
+
+    public async Task<List<TResource>> ExecuteFhirQueryAsync<TResource>(string queryStr) where TResource : Resource, new()
+    {
+      // assuming query string for multiple resources at this juncture for simple mvp
+      var result = await _fhirClient.GetAsync(queryStr);
+
+      Bundle bundle;
+
+      // todo: test below, get new outputs to produce toast messages showing the errors
+      try
+      {
+        bundle = result as Bundle;
+      }
+      catch (InvalidCastException exception)
+      {
+        var outcome = result as OperationOutcome;
+
+        throw outcome.ToException();
+      }
+
+      List<TResource> resources;
+
+      try
+      {
+        resources = bundle.Entry.Select(e => (TResource)e.Resource).ToList();
+      }
+      catch (InvalidCastException exception)
+      {
+        var outcomes = bundle.Entry.Select(e => (OperationOutcome)e.Resource).ToList();
+
+        throw new AggregateException(outcomes.Select(o => o.ToException()));
+      }
+
+      return resources;
     }
 
     #region Patient
@@ -83,215 +127,50 @@ namespace FhirBlaze.SharedComponents.Services
     {
       if (patientId != patient.Id)
       {
-        throw new System.Exception("Unknown patient ID");
+        throw new Exception("Unknown patient ID");
       }
 
       return await _fhirClient.UpdateAsync(patient);
     }
-    #endregion
 
-    #region Medication
-    public async Task<IList<Medication>> GetMedicationsAsync()
+    public async Task<IList<Observation>> GetPatientObservations(string patientId)
     {
-      var bundle = await _fhirClient.SearchAsync<Medication>(pageSize: 50);
-      var result = new List<Medication>();
-      while (bundle != null)
+      if (string.IsNullOrEmpty(patientId))
       {
-        result.AddRange(bundle.Entry.Select(m => (Medication)m.Resource).ToList());
-        bundle = await _fhirClient.ContinueAsync(bundle);
+        throw new ArgumentNullException("patientId");
       }
 
-      return result;
-    }
-
-    public async Task<int> GetMedicationCountAsync()
-    {
-      var bundle = await _fhirClient.SearchAsync<Medication>(summary: SummaryType.Count);
-      return bundle.Total ?? 0;
-    }
-
-    public async Task<IList<Medication>> SearchMedication(IDictionary<string, string> searchParameters)
-    {
-      string identifier = searchParameters["identifier"];
-
-      var searchResults = new List<Medication>();
-
-      if (!string.IsNullOrEmpty(identifier))
-      {
-        Bundle bundle = await _fhirClient.SearchByIdAsync<Medication>(identifier);
-
-        if (bundle != null)
-          searchResults = bundle.Entry.Select(m => (Medication)m.Resource).ToList();
-      }
-      else
-      {
-        IList<string> filterStrings = new List<string>();
-        foreach (var parameter in searchParameters)
-        {
-          if (!string.IsNullOrEmpty(parameter.Value))
-          {
-            filterStrings.Add($"{parameter.Key}:contains={parameter.Value}");
-          }
-        }
-        Bundle bundle = await _fhirClient.SearchAsync<Medication>(criteria: filterStrings.ToArray<string>());
-
-        if (bundle != null)
-          searchResults = bundle.Entry.Select(m => (Medication)m.Resource).ToList();
-      }
-
-      return searchResults;
-    }
-
-    public async Task<Medication> CreateMedicationsAsync(Medication medication)
-    {
-      return await _fhirClient.CreateAsync(medication);
-    }
-
-    public async Task<Medication> UpdateMedicationAsync(string medicationId, Medication medication)
-    {
-      if (medicationId != medication.Id)
-      {
-        throw new System.Exception("Unknown medication ID");
-      }
-
-      return await _fhirClient.UpdateAsync(medication);
-    }
-    #endregion
-
-    #region MedicationStatement
-    public async Task<IList<MedicationStatement>> GetMedicationStatementsAsync()
-    {
-      var bundle = await _fhirClient.SearchAsync<MedicationStatement>(pageSize: 50);
-      var result = new List<MedicationStatement>();
-      while (bundle != null)
-      {
-        result.AddRange(bundle.Entry.Select(s => (MedicationStatement)s.Resource).ToList());
-        bundle = await _fhirClient.ContinueAsync(bundle);
-      }
-
-      return result;
-    }
-
-    public async Task<int> GetMedicationStatementCountAsync()
-    {
-      var bundle = await _fhirClient.SearchAsync<MedicationStatement>(summary: SummaryType.Count);
-      return bundle.Total ?? 0;
-    }
-
-    public async Task<IList<MedicationStatement>> SearchMedicationStatement(IDictionary<string, string> searchParameters)
-    {
-      string identifier = searchParameters["identifier"];
-
-      var searchResults = new List<MedicationStatement>();
-
-      if (!string.IsNullOrEmpty(identifier))
-      {
-        Bundle bundle = await _fhirClient.SearchByIdAsync<MedicationStatement>(identifier);
-
-        if (bundle != null)
-          searchResults = bundle.Entry.Select(s => (MedicationStatement)s.Resource).ToList();
-      }
-      else
-      {
-        IList<string> filterStrings = new List<string>();
-        foreach (var parameter in searchParameters)
-        {
-          if (!string.IsNullOrEmpty(parameter.Value))
-          {
-            filterStrings.Add($"{parameter.Key}:contains={parameter.Value}");
-          }
-        }
-        Bundle bundle = await _fhirClient.SearchAsync<MedicationStatement>(criteria: filterStrings.ToArray<string>());
-
-        if (bundle != null)
-          searchResults = bundle.Entry.Select(s => (MedicationStatement)s.Resource).ToList();
-      }
-
-      return searchResults;
-    }
-
-    public async Task<MedicationStatement> CreateMedicationStatementsAsync(MedicationStatement statement)
-    {
-      return await _fhirClient.CreateAsync(statement);
-    }
-
-    public async Task<MedicationStatement> UpdateMedicationStatementAsync(string statementId, MedicationStatement statement)
-    {
-      if (statementId != statement.Id)
-      {
-        throw new System.Exception("Unknown medication ID");
-      }
-
-      return await _fhirClient.UpdateAsync(statement);
-    }
-    #endregion
-
-    #region Observation
-    public async Task<IList<Observation>> GetObservationsAsync()
-    {
-      var bundle = await _fhirClient.SearchAsync<Observation>(pageSize: 50);
+      var bundle = await _fhirClient.SearchAsync<Observation>(criteria: new[] { $"subject=Patient/{patientId}" });
       var result = new List<Observation>();
+
       while (bundle != null)
       {
-        result.AddRange(bundle.Entry.Select(o => (Observation)o.Resource).ToList());
+        result.AddRange(bundle.Entry.Select(p => (Observation)p.Resource).ToList());
         bundle = await _fhirClient.ContinueAsync(bundle);
       }
 
       return result;
     }
 
-    public async Task<int> GetObservationCountAsync()
+    public async Task<IList<MedicationStatement>> GetPatientMedicationStatements(string patientId)
     {
-      var bundle = await _fhirClient.SearchAsync<Observation>(summary: SummaryType.Count);
-      return bundle.Total ?? 0;
-    }
-
-    public async Task<IList<Observation>> SearchObservation(IDictionary<string, string> searchParameters)
-    {
-      string identifier = searchParameters["identifier"];
-
-      var searchResults = new List<Observation>();
-
-      if (!string.IsNullOrEmpty(identifier))
+      if (string.IsNullOrEmpty(patientId))
       {
-        Bundle bundle = await _fhirClient.SearchByIdAsync<Observation>(identifier);
-
-        if (bundle != null)
-          searchResults = bundle.Entry.Select(o => (Observation)o.Resource).ToList();
-      }
-      else
-      {
-        IList<string> filterStrings = new List<string>();
-        foreach (var parameter in searchParameters)
-        {
-          if (!string.IsNullOrEmpty(parameter.Value))
-          {
-            filterStrings.Add($"{parameter.Key}:contains={parameter.Value}");
-          }
-        }
-        Bundle bundle = await _fhirClient.SearchAsync<Observation>(criteria: filterStrings.ToArray<string>());
-
-        if (bundle != null)
-          searchResults = bundle.Entry.Select(o => (Observation)o.Resource).ToList();
+        throw new ArgumentNullException("patientId");
       }
 
-      return searchResults;
-    }
+      var bundle = await _fhirClient.SearchAsync<MedicationStatement>(criteria: new[] { $"subject=Patient/{patientId}" });
+      var result = new List<MedicationStatement>();
 
-    public async Task<Observation> CreateObservationsAsync(Observation observation)
-    {
-      return await _fhirClient.CreateAsync(observation);
-    }
-
-    public async Task<Observation> UpdateObservationAsync(string observationId, Observation observation)
-    {
-      if (observationId != observation.Id)
+      while (bundle != null)
       {
-        throw new System.Exception("Unknown observation ID");
+        result.AddRange(bundle.Entry.Select(p => (MedicationStatement)p.Resource).ToList());
+        bundle = await _fhirClient.ContinueAsync(bundle);
       }
 
-      return await _fhirClient.UpdateAsync(observation);
+      return result;
     }
+
     #endregion
 
     #region Questionnaire
@@ -358,14 +237,6 @@ namespace FhirBlaze.SharedComponents.Services
     #endregion
 
     #region Practitioners
-    public async Task<TResource> GetResourceByIdAsync<TResource>(string resourceId) where TResource : Hl7.Fhir.Model.Resource, new()
-    {
-      var result = await _fhirClient.SearchByIdAsync<TResource>(resourceId, pageSize: _defaultPageSize);
-
-      TResource r = result.Entry.Select(e => (TResource)e.Resource).First();
-
-      return r;
-    }
 
     public async Task<IList<Practitioner>> GetPractitionersAsync()
     {

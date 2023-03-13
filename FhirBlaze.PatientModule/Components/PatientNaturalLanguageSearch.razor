@@ -1,0 +1,78 @@
+﻿@using FhirBlaze.SharedComponents.Models;
+@using FhirBlaze.SharedComponents;
+@using Hl7.Fhir.Model;
+@using Hl7.Fhir.Serialization;
+@using Task = System.Threading.Tasks.Task;
+@inject OpenAIService _openAIService;
+@inject IFhirService _fhirService;
+@inject NotificationService _notificationService;
+
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Patient Natural Language Search</h5>
+       
+        <div class="input-group">
+            <button @onclick="(x => RequestFhirQuery())" class="input-group-text btn btn-primary">Request FHIR Query</button>
+            <textarea @bind="_nlp" class="form-control"></textarea>
+        </div>
+        <hr />
+        <div class="input-group">
+            <button @onclick="(x => ExecuteFhirQuery())" class="btn btn-primary">Execute FHIR Query</button>
+            <textarea @bind="_query" class="form-control"></textarea>
+        </div>
+    </div>
+    <div class="card-body h-75 w-75">
+        <div class="input-group custom-switch">
+            <input type="checkbox" class="custom-control-input" id="useAzureOai" @bind="_useAzureOpenAi">
+            <label class="custom-control-label" for="useAzureOai">Use Azure Open AI</label>
+        </div>
+    </div>
+</div>
+
+@code {
+    private string _nlp = "female patients with a birthdate less than or equal to 1983";
+    private string _query;
+    private bool _useAzureOpenAi = true;
+
+    [Parameter]
+    public EventCallback<List<Patient>> ExecuteFhirOnCLickCallback { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsLoading { get; set; }
+
+    private async Task RequestFhirQuery()
+    {
+        _query = await _openAIService.GetFhirQueryFromNaturalLanguage(_nlp, _useAzureOpenAi);
+    }
+
+    private async Task ExecuteFhirQuery()
+    {
+        try
+        {
+            if (IsLoading.HasDelegate)
+                await IsLoading.InvokeAsync(true);
+
+            var patients = await _fhirService.ExecuteFhirQueryAsync<Patient>(_query);
+
+            if (ExecuteFhirOnCLickCallback.HasDelegate)
+                await ExecuteFhirOnCLickCallback.InvokeAsync(patients);
+        }
+        catch (Exception e)
+        {
+            _notificationService.AddNotification(new Notification
+                {
+                    Title = "FHIR query error",
+                    Message = e.RecurseErrorMessages()
+                });
+
+            // use null to indicate error
+            if (ExecuteFhirOnCLickCallback.HasDelegate)
+                await ExecuteFhirOnCLickCallback.InvokeAsync(null);
+        }
+        finally
+        {
+            if (IsLoading.HasDelegate)
+                await IsLoading.InvokeAsync(false);
+        }
+    }
+}

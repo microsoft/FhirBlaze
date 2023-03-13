@@ -6,7 +6,7 @@
     <PackageReference Include="Verify.AngleSharp" Version="2.7.2" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.10.0" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="bunit" Version="1.2.49" />
     <PackageReference Include="Verify.Bunit" Version="7.1.1" />
     <PackageReference Include="Verify.Xunit" Version="11.23.1" />

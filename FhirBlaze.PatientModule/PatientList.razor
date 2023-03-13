@@ -3,40 +3,43 @@
 @using FhirBlaze.QuestionnaireModule.Pages
 @using FhirBlaze.SharedComponents
 @using Hl7.Fhir.Model
+@using Microsoft.Extensions.Configuration
+@inject NavigationManager Navigation
+@inject IConfiguration Configuration
 
-    <nav class="navbar navbar-light bg-light">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <button @onclick="ToggleCreate" class="btn btn-primary">@(ShowCreate?"Cancel": "Add Patient")</button>
-                <button @onclick="ToggleSearch" class="btn btn-primary">@(ShowSearch?"Cancel": "Search Patient")</button>
-                &nbsp;                       
-                Questionnaire: <button @onclick="()=>ToggleQList(null)" class="btn btn-primary">@((string.IsNullOrEmpty(QuestionnaireId))?"Select": "Change")</button>   
-            </li>
-        </ul>
-    </nav>
-        @if (ShowQuestionnaireList)
-        {
-            <QuestionnaireList OnSelectClick="ToggleQList" />
-        }
-       @if (ShowCreate)
-                {
-                   <PatientForm PersistPatient="CreatePatient" />
-                   <button class="btn btn-secondary" @onclick=@ToggleCreate>Cancel!</button>
-                }
+<button @onclick="ToggleCreate" class="btn btn-primary mb-1 mr-1">@(ShowCreate ? "Cancel" : "Add Patient")</button>
+<button @onclick="ToggleSearch" class="btn btn-primary mb-1 mr-1">@(ShowSearch ? "Cancel" : "Search Patient")</button>
+<button @onclick="()=>ToggleQList(null)" class="btn btn-primary mb-1 mr-1">@((string.IsNullOrEmpty(QuestionnaireId)) ? "Select Questionnaire" : "Change Questionnaire")</button>
+<button @onclick="ToggleNaturalLanguageSearch" disabled="@(bool.Parse(Configuration["UseGraphir"]))" class="btn btn-primary mb-1 mr-1">Toggle Natural Language Search</button>
+<button @onclick="FetchPatientsAsync" class="btn btn-primary mb-1">Reset Search</button>
 
-                @if (ShowSearch)
-                {
-                     <PatientSearch Patient="DraftPatient" Processing="@ProcessingSearch" SearchPatient="SearchPatient" />
-                }
-                @if (ShowUpdate)
-                {   
-                    <PatientForm FhirPatient=@SelectedPatient PersistPatient="UpdatePatient" />
-                    <button class="btn btn-secondary" @onclick=@ToggleUpdate>Cancel!</button>
-                }
-    <div class="container">
-             
-        
-        <br/>
+@if (ShowQuestionnaireList)
+{
+    <QuestionnaireList OnSelectClick="ToggleQList" />
+}
+@if (ShowCreate)
+{
+    <PatientForm PersistPatient="CreatePatient" />
+    <button class="btn btn-secondary" @onclick=@ToggleCreate>Cancel!</button>
+}
+
+@if (ShowSearch)
+{
+    <PatientSearch Patient="DraftPatient" Processing="@ProcessingSearch" SearchPatient="SearchPatient" />
+}
+@if (ShowNaturalLanguageSearch)
+{
+    <PatientNaturalLanguageSearch IsLoading="(isLoading) => Loading = isLoading" ExecuteFhirOnCLickCallback="UpdatePatientListAsync" />
+}
+@if (ShowUpdate)
+{
+    <PatientForm FhirPatient=@SelectedPatient PersistPatient="UpdatePatient" />
+    <button class="btn btn-secondary" @onclick=@ToggleUpdate>Cancel!</button>
+}
+<div class="container">
+
+
+    <br />
     @if (!Loading)
     {
         <div class="container">
@@ -50,45 +53,63 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var patient in Patients)
+                    @if (Patients != null)
                     {
-                        <tr  >
-                            <td>@patient.Name.FirstOrDefault()</td>
-                            <td>@patient.BirthDate</td>
-                            <td>
-                                <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
-                                <ChestistLauncher CurrentPatient=@patient/>
-                                <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name.FirstOrDefault()))" class="btn btn-primary">View</button>
-                            </td>
+                        @foreach (var patient in Patients)
+                        {
+                            <tr>
+                                <td>@patient.Name.FirstOrDefault()</td>
+                                <td>@patient.BirthDate</td>
+                                <td>
+                                    <button @onclick="@(e => PatientSelected(e, patient))" class="btn btn-primary">Edit</button>
+                                    <ChestistLauncher CurrentPatient=@patient />
+                                    <button @onclick="@((e)=> ShowQuestionnaire(patient.Id, patient.Name.FirstOrDefault()))" class="btn btn-primary">Show Questionnaire</button>
+                                    <button @onclick="@(e => GotoDetails(patient.Id))" class="btn btn-primary">Details</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="3" class="text-center text-danger">Error finding patients...</td>
                         </tr>
                     }
                 </tbody>
             </table>
 
         </div>
-
-        <br />
-        <h3>Found: @Patients.Count patients!</h3>
-        
-    }else{
+        @if (Patients != null)
+        {
+            <br />
+            <h3>Found: @Patients.Count patients!</h3>
+        }
+    }
+    else
+    {
         <LoadingSpinner />
     }
-    
-    </div>
+
+</div>
 
 
 @code {
     [CascadingParameter] public IModalService Modal { get; set; }
 
 
+    private async System.Threading.Tasks.Task GotoDetails(string patientId)
+    {
+        Navigation.NavigateTo($"patient/{patientId}");
+    }
+
     void ShowQuestionnaire(string patientId, HumanName patientName)
     {
         var parameters = new ModalParameters();
-        var options = new ModalOptions 
-        {
-            Class = "blazored-modal",
-            ContentScrollable = true
-        };
+        var options = new ModalOptions
+            {
+                Class = "blazored-modal",
+                ContentScrollable = true
+            };
         var formattedName = $"{patientName.Given.First()} {patientName.Family}";
         parameters.Add(nameof(RenderQuestionnaire.Id), QuestionnaireId);
         parameters.Add(nameof(RenderQuestionnaire.PatientId), patientId);

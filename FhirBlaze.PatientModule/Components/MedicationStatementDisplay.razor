@@ -1,0 +1,191 @@
+@using FhirBlaze.SharedComponents.Services;
+@using Hl7.Fhir.Introspection;
+@using Hl7.Fhir.Model;
+@using Hl7.Fhir.Serialization;
+@using Hl7.Fhir.Specification;
+@using Newtonsoft.Json;
+@inject HttpClient Http
+@using Task = System.Threading.Tasks.Task;
+@*@inject NotificationService _notificationService;*@
+
+<div class="card">
+  <div class="card-header">
+    <h3 class=".card-title">
+      <button class="btn btn-link btn-block text-left collapsed " type="button" @onclick="() => Collapsed = !Collapsed">
+        Medication Statement
+      </button>
+
+    </h3>
+    <h4 class="card-subtitle mb-2 text-muted">@MedicationStatement?.Identifier?.FirstOrDefault()?.Value</h4>
+  </div>
+  <div class="collapse @ButtonClass()">
+    <div class="card-body">
+      @if (MedicationStatement?.Identifier?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @{
+              var identifier = @MedicationStatement?.Identifier?.FirstOrDefault();
+              <b>Identifier</b>
+              <p>@identifier?.System</p>
+              <p>@identifier?.Value</p>
+            }
+        </div>
+      </div>
+      }
+
+      @if (!string.IsNullOrWhiteSpace(MedicationStatement?.Status?.ToString()))
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <b>Status:</b> @MedicationStatement?.Status?.ToString()
+          </div>
+        </div>
+      }
+
+      @if (MedicationStatement?.Category?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <CodeableConceptDisplay CodeableConcept="@MedicationStatement!.Category" Title="Category">
+            </CodeableConceptDisplay>
+          </div>
+        </div>
+      }
+
+      @if (MedicationStatement?.Medication?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @{
+              var refType = MedicationStatement.Medication.GetType();
+              switch (refType.Name)
+              {
+                case "CodeableConcept":
+                  var MedicationCode = (CodeableConcept)MedicationStatement!.Medication;
+                  <CodeableConceptDisplay CodeableConcept="@MedicationCode" Title="Medication">
+                  </CodeableConceptDisplay>
+                  break;
+                default:
+                  var MedicationReference = (ResourceReference)MedicationStatement!.Medication;
+                  <ResourceReferenceDisplay ResourceReference="@MedicationReference" Title="Medication">
+                  </ResourceReferenceDisplay>
+                  @if (MedicationStatement?.Contained?.Any() ?? false)
+                  {
+                    <div class="mt-2 mb-2 input-group" style="border-radius: 5px; border: 2px solid gray; padding: 20px">
+                      <div class="container">
+                        <div class="row">
+                          <div class="col">
+                            <h4>Contained</h4>
+                          </div>
+                        </div>
+
+                        @foreach (var containedMed in MedicationStatement.Contained)
+                        {
+                          var Medication = (Medication)containedMed;
+
+                          <div class="row">
+                            <div class="col">
+                              <b>Text:</b> @Medication?.Text
+                            </div>
+                          </div>
+
+                          @if (Medication?.Code?.Any() ?? false)
+                          {
+                            <div class="form-row">
+                              <div class="col form-group">
+                                <CodeableConceptDisplay CodeableConcept="@Medication!.Code" Title="Code">
+                                </CodeableConceptDisplay>
+                              </div>
+                            </div>
+                          }
+
+                          @if (Medication?.Form?.Any() ?? false)
+                          {
+                            <div class="form-row">
+                              <div class="col form-group">
+                                <CodeableConceptDisplay CodeableConcept="@Medication!.Form" Title="Form">
+                                </CodeableConceptDisplay>
+                              </div>
+                            </div>
+                          }
+                        }
+                      </div>
+                    </div>
+                  }
+                  break;
+              }
+            }
+          </div>
+        </div>
+      }
+
+      @if (MedicationStatement?.Subject != null)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <ResourceReferenceDisplay ResourceReference="@MedicationStatement!.Subject" Title="Subject">
+            </ResourceReferenceDisplay>
+          </div>
+        </div>
+      }
+
+      @if (MedicationStatement?.Effective?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            <EffectiveDisplay Effective="@MedicationStatement!.Effective"></EffectiveDisplay>
+          </div>
+        </div>
+      }
+
+      @if (MedicationStatement?.BasedOn?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @foreach (var basedOn in MedicationStatement.BasedOn)
+            {
+              <ResourceReferenceDisplay ResourceReference="@basedOn" Title="Based On"></ResourceReferenceDisplay>
+            }
+          </div>
+        </div>
+      }
+
+      @if (MedicationStatement?.Note?.Any() ?? false)
+      {
+        <div class="row mt-2 mb-2">
+          <div class="col">
+            @foreach (var note in MedicationStatement.Note)
+            {
+              <AnnotationDisplay Note="@note" Title="Notes"></AnnotationDisplay>
+            }
+          </div>
+        </div>
+      }
+
+      @*<button type="button" class="btn btn-primary" @onclick="@(e => HandleValidSubmit())">Submit</button>*@
+    </div>
+  </div>
+</div>
+
+@code {
+  private string ButtonClass() => Collapsed ? "show" : "";
+
+  [Parameter]
+  public bool Collapsed { get; set; } = false;
+
+  [Parameter]
+  public MedicationStatement MedicationStatement { get; set; } = default!;
+
+  //private async Task HandleValidSubmit()
+  //{
+  // var returnedMedicationStatement = await _apiService.SubmitMedicationStatementAsync(MedicationStatement);
+
+  // _notificationService.AddNotification(new Notification
+  // {
+  // Title = "Medication Statement Created",
+  // Message = $"MedicationStatement {returnedMedicationStatement.Id} created successfully",
+  // CreatedAt = DateTime.Now
+  // });
+  //}
+}
